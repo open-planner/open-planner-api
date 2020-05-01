@@ -8,6 +8,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -75,8 +76,8 @@ public class UsuarioControllerTest extends BaseControllerTest {
         usuarioListMock.add(usuarioAdminMock);
 
         for (Long i = 2L; i <= 8; i++) {
-            usuarioListMock.add(UsuarioTestUtils.createUsuario(i, RandomStringUtils.random(10), RandomStringUtils.random(10), true,
-                    Set.of(grupoAdminMock)));
+            usuarioListMock.add(UsuarioTestUtils.createUsuario(i, RandomStringUtils.random(10), LocalDate.now().minusYears(20),
+                    RandomStringUtils.random(10), true, Set.of(grupoAdminMock)));
         }
 
         usuarioPageMock = new PageImpl<>(usuarioListMock, PageRequest.of(0, 10), 8);
@@ -98,7 +99,7 @@ public class UsuarioControllerTest extends BaseControllerTest {
                 .statusCode(HttpStatus.OK.value()).assertThat()
                 .body("content[0].id", equalTo(usuarioAdminMock.getId().intValue()))
                 .body("content[0].nome", equalTo(usuarioAdminMock.getNome()))
-                .body("content[0].login", equalTo(usuarioAdminMock.getLogin()))
+                .body("content[0].email", equalTo(usuarioAdminMock.getEmail()))
                 .body("content[0].pendente", equalTo(usuarioAdminMock.getPendente()))
                 .body("content[0].bloqueado", equalTo(usuarioAdminMock.getBloqueado()))
                 .body("content[0].ativo", equalTo(usuarioAdminMock.getAtivo()))
@@ -151,19 +152,20 @@ public class UsuarioControllerTest extends BaseControllerTest {
                 .body("size()", equalTo(usuarioListMock.size()))
                 .body("[0].id", equalTo(usuarioAdminMock.getId().intValue()))
                 .body("[0].nome", equalTo(usuarioAdminMock.getNome()))
-                .body("[0].login", equalTo(usuarioAdminMock.getLogin()))
+                .body("[0].email", equalTo(usuarioAdminMock.getEmail()))
                 .body("[0].links.size()", equalTo(3));
     }
 
     @Test
     public void testSave() {
-        Usuario usuarioMock = UsuarioTestUtils.createUsuario(21L, "Test", "user.test", true, Set.of(grupoAdminMock));
+        Usuario usuarioMock = UsuarioTestUtils.createUsuario(21L, "Test", LocalDate.now().minusYears(20), "user.test@email.com", true,
+                Set.of(grupoAdminMock));
         when(usuarioServiceMock.save(any())).thenReturn(usuarioMock);
 
         String requestBody = "{\n" + 
                 "  \"nome\": \"Test\",\n" + 
-                "  \"email\": \"test@email.com\",\n" + 
-                "  \"login\": \"user.test\",\n" + 
+                "  \"dataNascimento\": \"" + LocalDate.now().minusYears(20) + "\",\n" + 
+                "  \"email\": \"user.test@email.com\",\n" + 
                 "  \"grupos\": [\n" + 
                 "    1\n" + 
                 "  ],\n" + 
@@ -182,13 +184,14 @@ public class UsuarioControllerTest extends BaseControllerTest {
 
     @Test
     public void testUpdate() {
-        Usuario usuarioMock = UsuarioTestUtils.createUsuario(21L, "Test", "user.test", true, Set.of(grupoAdminMock));
+        Usuario usuarioMock = UsuarioTestUtils.createUsuario(21L, "Test", LocalDate.now().minusYears(20), "user.test@email.com", true,
+                Set.of(grupoAdminMock));
         when(usuarioServiceMock.update(any(), any())).thenReturn(usuarioMock);
 
         String requestBody = "{\n" + 
                 "  \"nome\": \"Test\",\n" + 
-                "  \"email\": \"test@email.com\",\n" + 
-                "  \"login\": \"user.test\",\n" + 
+                "  \"dataNascimento\": \"" + LocalDate.now().minusYears(20) + "\",\n" + 
+                "  \"email\": \"user.test@email.com\",\n" + 
                 "  \"grupos\": [\n" + 
                 "    1\n" + 
                 "  ],\n" + 
@@ -225,7 +228,8 @@ public class UsuarioControllerTest extends BaseControllerTest {
 
     @Test
     public void testSwitchActive() {
-        Usuario usuarioMock = UsuarioTestUtils.createUsuario(21L, "Test", "user.test", true, Set.of(grupoAdminMock));
+        Usuario usuarioMock = UsuarioTestUtils.createUsuario(21L, "Test", LocalDate.now().minusYears(20), "user.test@email.com", true,
+                Set.of(grupoAdminMock));
         when(usuarioServiceMock.switchActive(any())).thenReturn(usuarioMock);
 
         Response response = given()
@@ -235,21 +239,22 @@ public class UsuarioControllerTest extends BaseControllerTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
-    @Test
-    public void testRecoverLogin() {
-        doNothing().when(usuarioServiceMock).recoverLogin(any());
-
-        String requestBody = "{\n" + 
-                "  \"email\": \"user.test@email.com\"\n" + 
-                "}";
-        Response response = given()
-                .auth().oauth2(givenAccessTokenAsAdmin())
-                .contentType(ContentType.JSON)
-                .body(requestBody)
-                .when().post(buildUrl(BASE_PATH, "recuperacao", "login"));
-
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
-    }
+    // TODO implementar método recoverLogin
+//    @Test
+//    public void testRecoverLogin() {
+//        doNothing().when(usuarioServiceMock).recoverLogin(any());
+//
+//        String requestBody = "{\n" + 
+//                "  \"email\": \"user.test@email.com\"\n" + 
+//                "}";
+//        Response response = given()
+//                .auth().oauth2(givenAccessTokenAsAdmin())
+//                .contentType(ContentType.JSON)
+//                .body(requestBody)
+//                .when().post(buildUrl(BASE_PATH, "recuperacao", "login"));
+//
+//        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+//    }
 
     @Test
     public void testRecoverSenha() {

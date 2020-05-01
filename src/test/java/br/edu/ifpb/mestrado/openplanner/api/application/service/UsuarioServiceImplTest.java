@@ -12,6 +12,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,7 +53,8 @@ import br.edu.ifpb.mestrado.openplanner.api.test.util.UsuarioTestUtils;
 @SpringBootTest
 public class UsuarioServiceImplTest {
 
-    private static final String MOCK_LOGGED_ADMIN = Usuario.LOGIN_ADMIN;
+    private static final String MOCK_EMAIL_ADMIN = "admin@email.com";
+    private static final String MOCK_EMAIL_ROOT = "root@email.com";
     private static final String MOCK_SENHA_PREFIX = "Senha123#";
     private static final String MOCK_RESET_TOKEN_PREFIX = "Token123#";
 
@@ -74,15 +76,17 @@ public class UsuarioServiceImplTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        mockAuthenticationForAuditing(MOCK_LOGGED_ADMIN);
+        mockAuthenticationForAuditing(MOCK_EMAIL_ADMIN);
         doNothing().when(mailService).send(any(MailRequestTO.class));
 
+        LocalDate dataNascimento = LocalDate.now().minusYears(20);
         Set<Grupo> grupos = findGruposByIds(Grupo.ID_ADMIN);
-        usuarioRepository.save(UsuarioTestUtils.createUsuarioPendente("José de Souza", "jose.souza", grupos));
-        usuarioRepository.save(UsuarioTestUtils.createUsuarioPendente("José de Paula", "jose.paula", grupos));
-        usuarioRepository.save(UsuarioTestUtils.createUsuarioInativo("Maria da Silva", "maria.silva", grupos));
-        usuarioRepository.save(UsuarioTestUtils.createUsuarioBloqueado("Isabel dos Santos", "isabel.santos", grupos));
-        usuarioRepository.save(UsuarioTestUtils.createUsuarioAtivo("João Paulo de Lima", "joao.lima", grupos));
+        usuarioRepository.save(UsuarioTestUtils.createUsuarioPendente("José de Souza", dataNascimento, "jose.souza@email.com", grupos));
+        usuarioRepository.save(UsuarioTestUtils.createUsuarioPendente("José de Paula", dataNascimento, "jose.paula@email.com", grupos));
+        usuarioRepository.save(UsuarioTestUtils.createUsuarioInativo("Maria da Silva", dataNascimento, "maria.silva@email.com", grupos));
+        usuarioRepository
+                .save(UsuarioTestUtils.createUsuarioBloqueado("Isabel dos Santos", dataNascimento, "isabel.santos@email.com", grupos));
+        usuarioRepository.save(UsuarioTestUtils.createUsuarioAtivo("João Paulo de Lima", dataNascimento, "joao.lima@email.com", grupos));
     }
 
     @AfterEach
@@ -117,7 +121,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void findBySenhaResetToken() {
-        Usuario usuario = usuarioService.findBySenhaResetToken(MOCK_RESET_TOKEN_PREFIX + "jose.souza");
+        Usuario usuario = usuarioService.findBySenhaResetToken(MOCK_RESET_TOKEN_PREFIX + "jose.souza@email.com");
 
         assertThat(usuario.getNome()).isEqualTo("José de Souza");
     }
@@ -136,7 +140,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testFindAllByPageable_whenRoot() {
-        mockAuthenticationForAuditing(Usuario.LOGIN_ROOT);
+        mockAuthenticationForAuditing(MOCK_EMAIL_ROOT);
         Page<Usuario> usuariosPage = usuarioService.findAll(PageRequest.of(0, 10));
 
         assertPage(usuariosPage, 10, 0, 8, 1, 8);
@@ -169,17 +173,6 @@ public class UsuarioServiceImplTest {
     public void testFindAllBySpecificationAndPageable_filterByEmail() {
         UsuarioFilterRequestTO filter = new UsuarioFilterRequestTOBuilder()
                 .withEmail("jose")
-                .build();
-
-        Page<Usuario> usuariosPage = usuarioService.findAll(createSpecification(filter, Usuario.class), PageRequest.of(0, 10));
-
-        assertPage(usuariosPage, 10, 0, 2, 1, 2);
-    }
-
-    @Test
-    public void testFindAllBySpecificationAndPageable_filterByLogin() {
-        UsuarioFilterRequestTO filter = new UsuarioFilterRequestTOBuilder()
-                .withNome("jose")
                 .build();
 
         Page<Usuario> usuariosPage = usuarioService.findAll(createSpecification(filter, Usuario.class), PageRequest.of(0, 10));
@@ -234,8 +227,8 @@ public class UsuarioServiceImplTest {
     public void testSave() {
         Usuario usuario = new UsuarioBuilder()
                 .withNome("Miguel Lima")
+                .withDataNascimento(LocalDate.now().minusYears(20))
                 .withEmail("miguel.LIMA@email.com")
-                .withLogin("MIGUEL.lima")
                 .withGrupos(findGruposByIds(Grupo.ID_ADMIN))
                 .withAtivo(true)
                 .build();
@@ -243,32 +236,36 @@ public class UsuarioServiceImplTest {
 
         verifySendMail(1);
         assertThat(usuario.getId()).isNotNull();
+        assertThat(usuario.getNome()).isEqualTo("Miguel Lima");
+        assertThat(usuario.getDataNascimento()).isEqualTo(LocalDate.now().minusYears(20));
         assertThat(usuario.getEmail()).isEqualTo("miguel.lima@email.com");
-        assertThat(usuario.getLogin()).isEqualTo("miguel.lima");
         assertThat(usuario.getPendente()).isTrue();
         assertThat(usuario.getBloqueado()).isFalse();
         assertThat(usuario.getSenha().getResetToken()).isNotBlank();
         assertThat(usuario.getSenha().getValor()).isNull();
-        assertAuditingFields(usuario, MOCK_LOGGED_ADMIN);
+        assertAuditingFields(usuario, MOCK_EMAIL_ADMIN);
     }
 
     @Test
     public void testSave_whenHasGrupoRoot() {
-        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", "miguel.lima", findGruposByIds(Grupo.ID_ROOT));
+        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", LocalDate.now().minusYears(20), "miguel.lima@email.com",
+                findGruposByIds(Grupo.ID_ROOT));
 
         assertThrows(BusinessException.class, () -> usuarioService.save(usuario), "usuario.save.grupos.root");
     }
 
     @Test
     public void testSave_whenHasGrupoSystem() {
-        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", "miguel.lima", findGruposByIds(Grupo.ID_SYSTEM));
+        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", LocalDate.now().minusYears(20), "miguel.lima@email.com",
+                findGruposByIds(Grupo.ID_SYSTEM));
 
         assertThrows(BusinessException.class, () -> usuarioService.save(usuario), "usuario.save.grupos.system");
     }
 
     @Test
     public void testSave_whenHasGrupoAdmin() {
-        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", "miguel.lima", findGruposByIds(Grupo.ID_ADMIN));
+        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", LocalDate.now().minusYears(20), "miguel.lima@email.com",
+                findGruposByIds(Grupo.ID_ADMIN));
         usuarioService.save(usuario);
 
         verifySendMail(1);
@@ -277,22 +274,24 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testSave_whenHasGrupoAdminAndAdminOrRootNotAuthenticated() {
-        mockAuthenticationForAuditing("system");
+        mockAuthenticationForAuditing("system@email.com");
 
-        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", "miguel.lima", findGruposByIds(Grupo.ID_ADMIN));
+        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", LocalDate.now().minusYears(20), "miguel.lima@email.com",
+                findGruposByIds(Grupo.ID_ADMIN));
 
         assertThrows(BusinessException.class, () -> usuarioService.save(usuario), "usuario.save.grupos.admin");
     }
 
     @Test
     public void testSave_whenEmailNotUnique() {
-        Usuario usuario1 = UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", "miguel.lima", findGruposByIds(Grupo.ID_ADMIN));
+        Usuario usuario1 = UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", LocalDate.now().minusYears(20), "miguel.lima@email.com",
+                findGruposByIds(Grupo.ID_ADMIN));
         usuarioService.save(usuario1);
 
         Usuario usuario2 = new UsuarioBuilder()
                 .withNome("Miguel Lima")
+                .withDataNascimento(LocalDate.now().minusYears(20))
                 .withEmail("miguel.lima@email.com")
-                .withLogin("miguel.lima1")
                 .withGrupos(findGruposByIds(Grupo.ID_ADMIN))
                 .withAtivo(true)
                 .build();
@@ -301,30 +300,15 @@ public class UsuarioServiceImplTest {
     }
 
     @Test
-    public void testSave_whenLoginNotUnique() {
-        Usuario usuario1 = UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", "miguel.lima", findGruposByIds(Grupo.ID_ADMIN));
-        usuarioService.save(usuario1);
-
-        Usuario usuario2 = new UsuarioBuilder()
-                .withNome("Miguel Lima")
-                .withEmail("miguel.lima1@email.com")
-                .withLogin("miguel.lima")
-                .withGrupos(findGruposByIds(Grupo.ID_ADMIN))
-                .withAtivo(true)
-                .build();
-
-        assertThrows(DuplicateKeyException.class, () -> usuarioService.save(usuario2), "usuario.duplicate-key.login");
-    }
-
-    @Test
     public void testUpdate() {
-        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", "miguel.lima", findGruposByIds(Grupo.ID_ADMIN));
+        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", LocalDate.now().minusYears(20), "miguel.lima@email.com",
+                findGruposByIds(Grupo.ID_ADMIN));
         usuarioService.save(usuario);
 
         Usuario usuarioModificado = new UsuarioBuilder()
                 .withNome("Miguel Borba Lima")
+                .withDataNascimento(LocalDate.now().minusYears(20))
                 .withEmail("miguel.lima@email.com")
-                .withLogin("miguel.lima")
                 .withGrupos(findGruposByIds(Grupo.ID_ADMIN))
                 .withAtivo(true)
                 .build();
@@ -337,36 +321,38 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testUpdate_whenRootGrupoAlterado() {
-        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("Super User", "root", findGruposByIds(Grupo.ID_ADMIN));
+        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("Super User", LocalDate.now().minusYears(20), "root@email.com",
+                findGruposByIds(Grupo.ID_ADMIN));
 
         assertThrows(BusinessException.class, () -> usuarioService.update(Usuario.ID_ROOT, usuario), "usuario.update.grupos.root");
     }
 
     @Test
     public void testUpdate_whenSystemGrupoAlterado() {
-        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("System User", "system", findGruposByIds(Grupo.ID_ADMIN));
+        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("System User", LocalDate.now().minusYears(20), "system@email.com",
+                findGruposByIds(Grupo.ID_ADMIN));
 
         assertThrows(BusinessException.class, () -> usuarioService.update(Usuario.ID_SYSTEM, usuario), "usuario.update.grupos.system");
     }
 
     @Test
     public void testUpdate_whenAdminGrupoAlterado() {
-        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("Super User", "root", findGruposByIds(Grupo.ID_SYSTEM));
+        Usuario usuario = UsuarioTestUtils.createUsuarioAtivo("Super User", LocalDate.now().minusYears(20), "root@email.com",
+                findGruposByIds(Grupo.ID_SYSTEM));
 
         assertThrows(BusinessException.class, () -> usuarioService.update(Usuario.ID_ADMIN, usuario), "usuario.update.grupos.admin");
     }
 
     @Test
     public void testUpdateAutenticado() {
-        Usuario usuario = usuarioRepository
-                .save(UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", "miguel.lima", findGruposByIds(Grupo.ID_ADMIN)));
-
-        mockAuthenticationForAuditing("miguel.lima");
+        Usuario usuario = usuarioRepository.save(UsuarioTestUtils.createUsuarioAtivo("Miguel Lima", LocalDate.now().minusYears(20),
+                "miguel.lima@email.com", findGruposByIds(Grupo.ID_ADMIN)));
+        mockAuthenticationForAuditing("miguel.lima@email.com");
 
         Usuario usuarioAtualizado = usuarioService.updateAutenticado(new UsuarioBuilder()
                 .withNome("Miguel Borba Lima")
+                .withDataNascimento(LocalDate.now().minusYears(20))
                 .withEmail("miguel.lima@email.com")
-                .withLogin("miguel.lima")
                 .withGrupos(findGruposByIds(Grupo.ID_ADMIN))
                 .withAtivo(true)
                 .build());
@@ -375,12 +361,16 @@ public class UsuarioServiceImplTest {
         assertThat(usuarioAtualizado.getNome()).isEqualTo("Miguel Borba Lima");
     }
 
+    public static void main(String[] args) {
+        System.out.println((MOCK_SENHA_PREFIX + "manoel.alves@email.com").substring(0, 30));
+    }
+
     @Test
     public void testUpdateSenhaByResetToken() {
-        Usuario usuario = usuarioRepository
-                .save(UsuarioTestUtils.createUsuarioPendente("Manoel Alves", "manoel.alves", findGruposByIds(Grupo.ID_ADMIN)));
+        Usuario usuario = usuarioRepository.save(UsuarioTestUtils.createUsuarioPendente("Manoel Alves", LocalDate.now().minusYears(20),
+                "manoel.alves@email.com", findGruposByIds(Grupo.ID_ADMIN)));
 
-        String valorSenha = MOCK_SENHA_PREFIX + "manoel.alves";
+        String valorSenha = (MOCK_SENHA_PREFIX + "manoel.alves@email.com").substring(0, 30);
         Usuario usuarioAtualizado = usuarioService.updateSenhaByResetToken(usuario.getSenha().getResetToken(), valorSenha);
 
         assertThat(BcryptUtils.validate(valorSenha, usuarioAtualizado.getSenha().getValor())).isTrue();
@@ -389,8 +379,8 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testUpdateSenhaByResetToken_whenSenhaIsNotValid() {
-        Usuario usuario = usuarioRepository
-                .save(UsuarioTestUtils.createUsuarioPendente("Manoel Alves", "manoel.alves", findGruposByIds(Grupo.ID_ADMIN)));
+        Usuario usuario = usuarioRepository.save(UsuarioTestUtils.createUsuarioPendente("Manoel Alves", LocalDate.now().minusYears(20),
+                "manoel.alves@email.com", findGruposByIds(Grupo.ID_ADMIN)));
         
         assertThrows(InvalidPasswordException.class,
                 () -> usuarioService.updateSenhaByResetToken(usuario.getSenha().getResetToken(), "manoel.alves"));
@@ -398,44 +388,50 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testUpdateSenhaAutenticado() {
-        usuarioRepository.save(UsuarioTestUtils.createUsuarioAtivo("Alice Lima", "alice.lima", findGruposByIds(Grupo.ID_ADMIN)));
-        mockAuthenticationForAuditing("alice.lima");
+        usuarioRepository.save(UsuarioTestUtils.createUsuarioAtivo("Alice Lima", LocalDate.now().minusYears(20), "alice.lima@email.com",
+                findGruposByIds(Grupo.ID_ADMIN)));
+        mockAuthenticationForAuditing("alice.lima@email.com");
 
-        Usuario usuarioAtualizado = usuarioService.updateSenhaAutenticado(MOCK_SENHA_PREFIX + "alice.lima", "Alice.Lima@987");
+        Usuario usuarioAtualizado = usuarioService.updateSenhaAutenticado(MOCK_SENHA_PREFIX + "alice.lima@email.com", "Alice.Lima@987");
 
         assertThat(BcryptUtils.validate("Alice.Lima@987", usuarioAtualizado.getSenha().getValor()));
     }
 
     @Test
     public void testUpdateSenhaAutenticado_whenInvalidActualPassword() {
-        usuarioRepository.save(UsuarioTestUtils.createUsuarioAtivo("Alice Lima", "alice.lima", findGruposByIds(Grupo.ID_ADMIN)));
-        mockAuthenticationForAuditing("alice.lima");
+        usuarioRepository.save(UsuarioTestUtils.createUsuarioAtivo("Alice Lima", LocalDate.now().minusYears(20), "alice.lima@email.com",
+                findGruposByIds(Grupo.ID_ADMIN)));
+        mockAuthenticationForAuditing("alice.lima@email.com");
 
         assertThrows(InvalidActualPasswordException.class,
-                () -> usuarioService.updateSenhaAutenticado(MOCK_SENHA_PREFIX + "alicelima", "Alice.Lima@987"));
+                () -> usuarioService.updateSenhaAutenticado(MOCK_SENHA_PREFIX + "alicelima@email.com", "Alice.Lima@987"));
     }
 
     @Test
     public void testUpdateSenhaAutenticado_whenInvalidPassword() {
-        usuarioRepository.save(UsuarioTestUtils.createUsuarioAtivo("Alice Lima", "alice.lima", findGruposByIds(Grupo.ID_ADMIN)));
-        mockAuthenticationForAuditing("alice.lima");
+        usuarioRepository.save(UsuarioTestUtils.createUsuarioAtivo("Alice Lima", LocalDate.now().minusYears(20), "alice.lima@email.com",
+                findGruposByIds(Grupo.ID_ADMIN)));
+        mockAuthenticationForAuditing("alice.lima@email.com");
         
         assertThrows(InvalidPasswordException.class,
-                () -> usuarioService.updateSenhaAutenticado(MOCK_SENHA_PREFIX + "alice.lima", "alice.lima"));
+                () -> usuarioService.updateSenhaAutenticado(MOCK_SENHA_PREFIX + "alice.lima@email.com", "alice.lima"));
     }
 
-    @Test
-    public void testRecoverLogin() {
-        usuarioRepository.save(UsuarioTestUtils.createUsuarioAtivo("Alice Lima", "alice.lima", findGruposByIds(Grupo.ID_ADMIN)));
-
-        usuarioService.recoverLogin("alice.lima@email.com");
-
-        verifySendMail(1);
-    }
+    // TODO implementar método recoverLogin
+//    @Test
+//    public void testRecoverLogin() {
+//        usuarioRepository.save(UsuarioTestUtils.createUsuarioAtivo("Alice Lima", LocalDate.now().minusYears(20), "alice.lima@email.com",
+//                findGruposByIds(Grupo.ID_ADMIN)));
+//
+//        usuarioService.recoverLogin("alice.lima@email.com");
+//
+//        verifySendMail(1);
+//    }
 
     @Test
     public void testRecoverSenha() {
-        usuarioRepository.save(UsuarioTestUtils.createUsuarioAtivo("Alice Lima", "alice.lima", findGruposByIds(Grupo.ID_ADMIN)));
+        usuarioRepository.save(UsuarioTestUtils.createUsuarioAtivo("Alice Lima", LocalDate.now().minusYears(20), "alice.lima@email.com",
+                findGruposByIds(Grupo.ID_ADMIN)));
 
         String email = "alice.lima@email.com";
         usuarioService.recoverSenha(email);

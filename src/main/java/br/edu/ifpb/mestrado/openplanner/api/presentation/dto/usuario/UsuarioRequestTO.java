@@ -1,6 +1,7 @@
 package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Set;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
@@ -12,9 +13,9 @@ public class UsuarioRequestTO implements Serializable {
 
     private String nome;
 
-    private String email;
+    private LocalDate dataNascimento;
 
-    private String login;
+    private String email;
 
     @IdReference(target = Grupo.class, property = "grupos")
     private Set<Long> grupos;
@@ -33,20 +34,20 @@ public class UsuarioRequestTO implements Serializable {
         this.nome = nome;
     }
 
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public Set<Long> getGrupos() {
@@ -67,7 +68,8 @@ public class UsuarioRequestTO implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("UsuarioRequestTO [nome=%s, email=%s, login=%s, grupos=%s, ativo=%s]", nome, email, login, grupos, ativo);
+        return String.format("UsuarioRequestTO [nome=%s, dataNascimento=%s, email=%s, grupos=%s, ativo=%s]", nome, dataNascimento, email,
+                grupos, ativo);
     }
 
 }

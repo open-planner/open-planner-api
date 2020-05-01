@@ -31,9 +31,21 @@ public class OAuth2UserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UsuarioAuth loadUserByUsername(String login) throws UsernameNotFoundException {
+    public UsuarioAuth loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
-            Usuario usuario = usuarioRepository.findByLoginIgnoreCase(login)
+            Usuario usuario = usuarioRepository.findByEmailIgnoreCase(email)
+                    .orElseThrow(() -> new InformationNotFoundException());
+            validateUsuario(usuario);
+
+            return new UsuarioAuth(usuario, getAuthorities(usuario));
+        } catch (InformationNotFoundException informationNotFoundException) {
+            throw new IncorrectUsernameOrPasswordException();
+        }
+    }
+
+    public UsuarioAuth loadUserById(Long id) throws UsernameNotFoundException {
+        try {
+            Usuario usuario = usuarioRepository.findById(id)
                     .orElseThrow(() -> new InformationNotFoundException());
             validateUsuario(usuario);
 
@@ -55,6 +67,10 @@ public class OAuth2UserDetailsService implements UserDetailsService {
         }
 
         return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    public String getUsernameSystem() {
+        return loadUserById(Usuario.ID_SYSTEM).getUsername();
     }
 
     public UsuarioAuth getUsuarioAuth() {

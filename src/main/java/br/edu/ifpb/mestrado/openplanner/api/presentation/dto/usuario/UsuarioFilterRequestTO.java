@@ -1,6 +1,7 @@
 package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Set;
 
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.specification.SpecificationField;
@@ -18,11 +19,11 @@ public class UsuarioFilterRequestTO implements Serializable {
     @SpecificationField(operation = Operation.LIKE_IGNORE_CASE_UNACCENT)
     private String nome;
 
-    @SpecificationField(operation = Operation.LIKE_IGNORE_CASE)
-    private String email;
+    @SpecificationField
+    private LocalDate dataNascimento;
 
     @SpecificationField(operation = Operation.LIKE_IGNORE_CASE)
-    private String login;
+    private String email;
 
     private Boolean ativo;
 
@@ -54,20 +55,20 @@ public class UsuarioFilterRequestTO implements Serializable {
         this.nome = nome;
     }
 
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public Boolean getAtivo() {
@@ -80,7 +81,8 @@ public class UsuarioFilterRequestTO implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("UsuarioFilterRequestTO [id=%s, nome=%s, email=%s, login=%s, ativo=%s]", id, nome, email, login, ativo);
+        return String.format("UsuarioFilterRequestTO [id=%s, nome=%s, dataNascimento=%s, email=%s, ativo=%s]", id, nome, dataNascimento,
+                email, ativo);
     }
 
 }

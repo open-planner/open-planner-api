@@ -48,7 +48,7 @@ public class UsuarioController {
         this.converterService = converterService;
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_USUARIO_LISTAR') and #oauth2.hasScope('read')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('read')")
     @GetMapping
     public ResponseEntity<Page<UsuarioReducedResponseTO>> findAll(UsuarioFilterRequestTO filterRequestTO, Pageable pageable) {
         Specification<Usuario> specification = new SpecificationFactory<Usuario>().create(filterRequestTO, Usuario.class);
@@ -60,7 +60,7 @@ public class UsuarioController {
         return ResponseEntityFacade.ok(responseTOPage);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_USUARIO_BUSCAR') and #oauth2.hasScope('read')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('read')")
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponseTO> findById(@PathVariable Long id) {
         Usuario usuario = usuarioService.findById(id);
@@ -71,7 +71,7 @@ public class UsuarioController {
         return ResponseEntityFacade.ok(responseTO);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_USUARIO_LISTAR') and #oauth2.hasScope('read')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('read')")
     @GetMapping("/ativos")
     public ResponseEntity<List<UsuarioMinResponseTO>> findAllActive() {
         List<Usuario> usuarios = usuarioService.findAllActive();
@@ -82,7 +82,7 @@ public class UsuarioController {
         return ResponseEntityFacade.ok(responseTOList);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_USUARIO_SALVAR') and #oauth2.hasScope('write')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('write')")
     @PostMapping
     public ResponseEntity<UsuarioResponseTO> save(@RequestBody UsuarioRequestTO requestTO) {
         Usuario usuario = converterService.map(requestTO, Usuario.class);
@@ -94,7 +94,7 @@ public class UsuarioController {
         return ResponseEntityFacade.created(responseTO);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_USUARIO_EDITAR') and #oauth2.hasScope('write')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('write')")
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseTO> update(@PathVariable Long id, @RequestBody UsuarioRequestTO requestTO) {
         Usuario usuario = converterService.map(requestTO, Usuario.class);
@@ -112,18 +112,19 @@ public class UsuarioController {
         usuarioService.updateSenhaByResetToken(requestTO.getToken(), requestTO.getSenha());
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_USUARIO_ALTERAR_STATUS') and #oauth2.hasScope('write')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('write')")
     @PatchMapping("/{id}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void switchActive(@PathVariable Long id) {
         usuarioService.switchActive(id);
     }
 
-    @PostMapping("/recuperacao/login")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void recoverLogin(@Valid @RequestBody UsuarioEmailRequestTO requestTO) {
-        usuarioService.recoverLogin(requestTO.getEmail());
-    }
+    // TODO implementar método recoverLogin
+//    @PostMapping("/recuperacao/login")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void recoverLogin(@Valid @RequestBody UsuarioEmailRequestTO requestTO) {
+//        usuarioService.recoverLogin(requestTO.getEmail());
+//    }
 
     @PostMapping("/recuperacao/senha")
     @ResponseStatus(HttpStatus.NO_CONTENT)

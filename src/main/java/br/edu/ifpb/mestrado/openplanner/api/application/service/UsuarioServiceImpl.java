@@ -57,13 +57,6 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 
     @Transactional(readOnly = true)
     @Override
-    public Usuario findByLogin(String login) {
-        return usuarioRepository.findByLoginIgnoreCase(login)
-                .orElseThrow(() -> new InformationNotFoundException(messageService.getMessage("resource.information-not-found")));
-    }
-
-    @Transactional(readOnly = true)
-    @Override
     public Usuario findBySenhaResetToken(String resetToken) {
         return usuarioRepository.findBySenhaResetToken(resetToken).orElseThrow(() -> new InvalidTokenException());
     }
@@ -91,7 +84,6 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         usuario.setSenha(new Senha());
         usuario.getSenha().generateResetToken();
         usuario.setEmail(usuario.getEmail().toLowerCase());
-        usuario.setLogin(usuario.getLogin().toLowerCase());
         usuario.setPendente(true);
         usuario.setBloqueado(false);
 
@@ -109,7 +101,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 
         checkUpdate(id, usuario, usuarioSaved);
 
-        if (!usuario.getLogin().equalsIgnoreCase(usuarioSaved.getLogin()) && usuarioSaved.getPendente()) {
+        if (!usuario.getEmail().equalsIgnoreCase(usuarioSaved.getEmail()) && usuarioSaved.getPendente()) {
             resendMailPendente = true;
         }
 
@@ -153,12 +145,13 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         return super.update(usuario.getId(), usuario);
     }
 
-    @Override
-    public void recoverLogin(String email) {
-        Usuario usuario = findByEmail(email);
-
-        sendMailRecoveryLogin(usuario);
-    }
+    // TODO implementar método recoverLogin
+//    @Override
+//    public void recoverLogin(String email) {
+//        Usuario usuario = findByEmail(email);
+//
+//        sendMailRecoveryLogin(usuario);
+//    }
 
     @Override
     public void recoverSenha(String email) {
@@ -171,9 +164,9 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
     }
 
     @Override
-    public void loginFailed(String login) {
+    public void loginFailed(String email) {
         try {
-            Usuario usuario = findByLogin(login);
+            Usuario usuario = findByEmail(email);
             usuario.getSenha().addTentativaErro();
 
             if (usuario.getSenha().getTentativasErro() >= securityProperties.getMaximumAttemptsLogin()) {
@@ -186,8 +179,8 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
     }
 
     @Override
-    public void loginSucceded(String login) {
-        Usuario usuario = findByLogin(login);
+    public void loginSucceded(String email) {
+        Usuario usuario = findByEmail(email);
 
         if (usuario.getSenha().getTentativasErro() == 0) {
             return;
@@ -212,7 +205,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
     }
 
     private void checkSave(Usuario usuario) {
-        if (usuario.getGrupos() == null) {
+        if (usuario.getGrupos() == null || usuario.getGrupos().isEmpty()) {
             return;
         }
 
@@ -248,11 +241,6 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
             checkUniqueEmail(usuario);
             usuario.setEmail(usuario.getEmail().toLowerCase());
         }
-
-        if (!usuario.getLogin().equalsIgnoreCase(usuarioSaved.getLogin())) {
-            checkUniqueLogin(usuario);
-            usuario.setLogin(usuario.getLogin().toLowerCase());
-        }
     }
 
     private void checkUpdateRoot(Usuario usuario) {
@@ -278,7 +266,6 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 
     private void checkUniqueFields(Usuario usuario) {
         checkUniqueEmail(usuario);
-        checkUniqueLogin(usuario);
     }
 
     @Transactional(readOnly = true)
@@ -288,20 +275,14 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         });
     }
 
-    @Transactional(readOnly = true)
-    private void checkUniqueLogin(Usuario usuario) {
-        usuarioRepository.findByLoginIgnoreCase(usuario.getLogin()).ifPresent(u -> {
-            throw new DuplicateKeyException("usuario.duplicate-key.login");
-        });
-    }
-
     private void sendMailRegistration(Usuario usuario) {
         mailService.send(mailFactory.createRegistrationUsuario(usuario));
     }
 
-    private void sendMailRecoveryLogin(Usuario usuario) {
-        mailService.send(mailFactory.createRecoveryUsuarioLogin(usuario));
-    }
+    // TODO implementar método recoverLogin
+//    private void sendMailRecoveryLogin(Usuario usuario) {
+//        mailService.send(mailFactory.createRecoveryUsuarioLogin(usuario));
+//    }
 
     private void sendMailRecoverySenha(Usuario usuario) {
         mailService.send(mailFactory.createRecoveryUsuarioSenha(usuario));

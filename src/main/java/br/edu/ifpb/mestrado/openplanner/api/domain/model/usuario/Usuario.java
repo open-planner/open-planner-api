@@ -1,5 +1,6 @@
 package br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -34,25 +35,20 @@ public class Usuario extends AuditedBaseEntity {
     public static final Long ID_SYSTEM = -2L;
     public static final Long ID_ADMIN = 1L;
 
-    public static final String LOGIN_ROOT = "root";
-    public static final String LOGIN_SYSTEM = "system";
-    public static final String LOGIN_ADMIN = "admin";
-
     @NotNull
     @Size(min = 5, max = 128)
     @Column(name = "nome", nullable = false)
     private String nome;
 
     @NotNull
+    @Column(name = "data_nascimento", nullable = false)
+    private LocalDate dataNascimento;
+
+    @NotNull
     @Size(min = 5, max = 128)
     @Email
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-
-    @NotNull
-    @Size(min = 4, max = 32)
-    @Column(name = "login", nullable = false, unique = true)
-    private String login;
 
     @Valid
     @Embedded
@@ -70,11 +66,7 @@ public class Usuario extends AuditedBaseEntity {
     @NotEmpty
     @ManyToMany
     @Fetch(FetchMode.JOIN)
-    @JoinTable(
-            name = "usuario_grupo",
-            schema = "auth",
-            joinColumns = @JoinColumn(name = "id_usuario"),
-            inverseJoinColumns = @JoinColumn(name = "id_grupo"))
+    @JoinTable(name = "usuario_grupo", schema = "auth", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_grupo"))
     private Set<Grupo> grupos;
 
     public Usuario() {
@@ -123,20 +115,20 @@ public class Usuario extends AuditedBaseEntity {
         this.nome = nome;
     }
 
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public Senha getSenha() {
@@ -173,7 +165,7 @@ public class Usuario extends AuditedBaseEntity {
 
     @Override
     public String toString() {
-        return String.format("Usuario [id=%s, nome=%s, email=%s, login=%s, ativo=%s, pendente=%s, bloqueado=%s, grupos=%s]", id, nome,
-                email, login, ativo, pendente, bloqueado, grupos);
+        return String.format("Usuario [id=%s, nome=%s, dataNascimento=%s, email=%s, ativo=%s, pendente=%s, bloqueado=%s, grupos=%s]", id,
+                nome, dataNascimento, email, ativo, pendente, bloqueado, grupos);
     }
 }

@@ -1,5 +1,6 @@
 package br.edu.ifpb.mestrado.openplanner.api.test.builder;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioFilterRequestTO;
@@ -23,13 +24,13 @@ public class UsuarioFilterRequestTOBuilder {
         return this;
     }
 
-    public UsuarioFilterRequestTOBuilder withEmail(String email) {
-        usuarioFilter.setEmail(email);
+    public UsuarioFilterRequestTOBuilder withDataNascimento(LocalDate dataNascimento) {
+        usuarioFilter.setDataNascimento(dataNascimento);
         return this;
     }
 
-    public UsuarioFilterRequestTOBuilder withLogin(String login) {
-        usuarioFilter.setLogin(login);
+    public UsuarioFilterRequestTOBuilder withEmail(String email) {
+        usuarioFilter.setEmail(email);
         return this;
     }
 

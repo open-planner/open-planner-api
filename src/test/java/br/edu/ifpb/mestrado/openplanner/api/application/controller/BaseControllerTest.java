@@ -9,7 +9,7 @@ import br.edu.ifpb.mestrado.openplanner.api.test.auth.OAuth2AuthenticationTestUt
 
 public abstract class BaseControllerTest {
 
-    protected static final String ADMIN_USERNAME = "admin";
+    protected static final String ADMIN_USERNAME = "admin@email.com";
     protected static final String ADMIN_PASSWORD = "Admin@123";
     protected static final String TOKEN_PATH = "/oauth/token";
 

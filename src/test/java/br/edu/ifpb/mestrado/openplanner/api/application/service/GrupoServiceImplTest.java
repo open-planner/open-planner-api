@@ -26,7 +26,6 @@ import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.Busine
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InformationNotFoundException;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.permissao.Permissao;
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.GrupoService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.repository.GrupoRepository;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.repository.PermissaoRepository;
@@ -39,7 +38,8 @@ import br.edu.ifpb.mestrado.openplanner.api.test.util.GrupoTestUtils;
 @SpringBootTest
 public class GrupoServiceImplTest {
 
-    private static final String MOCK_LOGGED_ADMIN = Usuario.LOGIN_ADMIN;
+    private static final String MOCK_EMAIL_ADMIN = "admin@email.com";
+    private static final String MOCK_EMAIL_ROOT = "root@email.com";
 
     private GrupoService grupoService;
 
@@ -56,7 +56,7 @@ public class GrupoServiceImplTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        mockAuthenticationForAuditing(MOCK_LOGGED_ADMIN);
+        mockAuthenticationForAuditing(MOCK_EMAIL_ADMIN);
 
         grupoRepository.save(GrupoTestUtils.createGrupo("Gerência", true, findPermissoesByIds(1L)));
         grupoRepository.save(GrupoTestUtils.createGrupo("Recepção", true, findPermissoesByIds(2L, 3L, 4L)));
@@ -91,7 +91,7 @@ public class GrupoServiceImplTest {
 
     @Test
     public void testFindAllByPageable_whenRoot() {
-        mockAuthenticationForAuditing(Usuario.LOGIN_ROOT);
+        mockAuthenticationForAuditing(MOCK_EMAIL_ROOT);
         Page<Grupo> gruposPage = grupoService.findAll(PageRequest.of(0, 10));
         
         assertPage(gruposPage, 10, 0, 7, 1, 7);
@@ -154,14 +154,14 @@ public class GrupoServiceImplTest {
 
     @Test
     public void testSave() {
-        Grupo grupo = GrupoTestUtils.createGrupo("Marketing", true, findPermissoesByIds(4L, 5L, 6L));
+        Grupo grupo = GrupoTestUtils.createGrupo("Marketing", true, findPermissoesByIds(Permissao.ID_ADMIN));
         grupoService.save(grupo);
 
         assertThat(grupo.getId()).isGreaterThan(1L);
         assertThat(grupo.getNome()).isEqualTo("Marketing");
-        assertThat(grupo.getPermissoes()).hasSize(3);
+        assertThat(grupo.getPermissoes()).hasSize(1);
         assertThat(grupo.getAtivo()).isTrue();
-        assertAuditingFields(grupo, MOCK_LOGGED_ADMIN);
+        assertAuditingFields(grupo, MOCK_EMAIL_ADMIN);
     }
 
     @Test
@@ -180,13 +180,13 @@ public class GrupoServiceImplTest {
 
     @Test
     public void testSave_whenHasPermissaoAdmin() {
-        Grupo grupo = grupoService.save(GrupoTestUtils.createGrupo("Marketing", true, findPermissoesByIds(4L, 5L, 6L)));
+        Grupo grupo = grupoService.save(GrupoTestUtils.createGrupo("Marketing", true, findPermissoesByIds(Permissao.ID_ADMIN)));
 
         assertThat(grupo.getId()).isGreaterThan(1L);
         assertThat(grupo.getNome()).isEqualTo("Marketing");
-        assertThat(grupo.getPermissoes()).hasSize(3);
+        assertThat(grupo.getPermissoes()).hasSize(1);
         assertThat(grupo.getAtivo()).isTrue();
-        assertAuditingFields(grupo, MOCK_LOGGED_ADMIN);
+        assertAuditingFields(grupo, MOCK_EMAIL_ADMIN);
     }
 
     @Test
@@ -202,13 +202,13 @@ public class GrupoServiceImplTest {
     public void testUpdate() {
         Long idGrupo = grupoRepository.save(GrupoTestUtils.createGrupo("Marketing", false)).getId();
 
-        Grupo grupo = grupoService.update(idGrupo, GrupoTestUtils.createGrupo("Marketing", true, findPermissoesByIds(4L, 5L, 6L)));
+        Grupo grupo = grupoService.update(idGrupo, GrupoTestUtils.createGrupo("Marketing", true, findPermissoesByIds(Permissao.ID_ADMIN)));
 
         assertThat(grupo.getId()).isEqualTo(idGrupo);
         assertThat(grupo.getNome()).isEqualTo("Marketing");
-        assertThat(grupo.getPermissoes()).hasSize(3);
+        assertThat(grupo.getPermissoes()).hasSize(1);
         assertThat(grupo.getAtivo()).isTrue();
-        assertAuditingFields(grupo, MOCK_LOGGED_ADMIN);
+        assertAuditingFields(grupo, MOCK_EMAIL_ADMIN);
     }
 
     @Test
@@ -241,15 +241,16 @@ public class GrupoServiceImplTest {
 
     @Test
     public void testSwitchActive() {
-        Long idGrupo = grupoRepository.save(GrupoTestUtils.createGrupo("Marketing", false, findPermissoesByIds(4L, 5L, 6L))).getId();
+        Long idGrupo = grupoRepository.save(GrupoTestUtils.createGrupo("Marketing", false, findPermissoesByIds(Permissao.ID_ADMIN)))
+                .getId();
 
         Grupo grupo = grupoService.switchActive(idGrupo);
 
         assertThat(grupo.getId()).isEqualTo(idGrupo);
         assertThat(grupo.getNome()).isEqualTo("Marketing");
-        assertThat(grupo.getPermissoes()).hasSize(3);
+        assertThat(grupo.getPermissoes()).hasSize(1);
         assertThat(grupo.getAtivo()).isTrue();
-        assertAuditingFields(grupo, MOCK_LOGGED_ADMIN);
+        assertAuditingFields(grupo, MOCK_EMAIL_ADMIN);
     }
 
     @Test

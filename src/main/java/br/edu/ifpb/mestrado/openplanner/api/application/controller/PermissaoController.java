@@ -29,7 +29,7 @@ public class PermissaoController {
     }
 
     @GetMapping("/ativos")
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_PERMISSAO_LISTAR') and #oauth2.hasScope('read')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('read')")
     public ResponseEntity<List<PermissaoResponseTO>> findAllActive() {
         List<Permissao> permissoes = permissaoService.findAllActive();
         List<PermissaoResponseTO> responseTOList = converterService.map(permissoes, PermissaoResponseTO.class);

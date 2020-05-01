@@ -6,13 +6,12 @@ public interface UsuarioService extends BaseService<Usuario> {
 
     Usuario findByEmail(String email);
 
-    Usuario findByLogin(String login);
-
     Usuario findBySenhaResetToken(String resetToken);
 
     Usuario updateSenhaByResetToken(String resetToken, String senha);
 
-    void recoverLogin(String email);
+    // TODO implementar método recoverLogin
+//    void recoverLogin(String email);
 
     void recoverSenha(String email);
 

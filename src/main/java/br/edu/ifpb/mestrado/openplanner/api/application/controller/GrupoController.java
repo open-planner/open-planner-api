@@ -43,7 +43,7 @@ public class GrupoController {
         this.modelMapperFacade = modelMapperFacade;
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_GRUPO_LISTAR') and #oauth2.hasScope('read')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('read')")
     @GetMapping
     public ResponseEntity<Page<GrupoReducedResponseTO>> findAll(GrupoFilterRequestTO filterRequestTO, Pageable pageable) {
         Specification<Grupo> specification = new SpecificationFactory<Grupo>().create(filterRequestTO, Grupo.class);
@@ -55,7 +55,7 @@ public class GrupoController {
         return ResponseEntityFacade.ok(responseTOPage);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_GRUPO_BUSCAR') and #oauth2.hasScope('read')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('read')")
     @GetMapping("/{id}")
     public ResponseEntity<GrupoResponseTO> findById(@PathVariable Long id) {
         Grupo grupo = grupoService.findById(id);
@@ -66,7 +66,7 @@ public class GrupoController {
         return ResponseEntityFacade.ok(responseTO);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_GRUPO_LISTAR') and #oauth2.hasScope('read')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('read')")
     @GetMapping("/ativos")
     public ResponseEntity<List<GrupoMinResponseTO>> findAllActive() {
         List<Grupo> grupos = grupoService.findAllActive();
@@ -77,7 +77,7 @@ public class GrupoController {
         return ResponseEntityFacade.ok(responseTOList);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_GRUPO_SALVAR') and #oauth2.hasScope('write')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('write')")
     @PostMapping
     public ResponseEntity<GrupoResponseTO> save(@RequestBody GrupoRequestTO requestTO) {
         Grupo grupo = modelMapperFacade.map(requestTO, Grupo.class);
@@ -89,7 +89,7 @@ public class GrupoController {
         return ResponseEntityFacade.created(responseTO);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_GRUPO_EDITAR') and #oauth2.hasScope('write')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('write')")
     @PutMapping("/{id}")
     public ResponseEntity<GrupoResponseTO> update(@PathVariable Long id, @RequestBody GrupoRequestTO requestTO) {
         Grupo grupo = modelMapperFacade.map(requestTO, Grupo.class);
@@ -101,7 +101,7 @@ public class GrupoController {
         return ResponseEntityFacade.ok(responseTO);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_GRUPO_ALTERAR_STATUS') and #oauth2.hasScope('write')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('write')")
     @PatchMapping("/{id}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void switchActive(@PathVariable Long id) {

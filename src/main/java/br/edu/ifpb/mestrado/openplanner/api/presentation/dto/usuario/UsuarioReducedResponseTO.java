@@ -12,7 +12,7 @@ public class UsuarioReducedResponseTO extends RepresentationModel<UsuarioReduced
 
     private String nome;
 
-    private String login;
+    private String email;
 
     private Boolean pendente;
 
@@ -40,12 +40,12 @@ public class UsuarioReducedResponseTO extends RepresentationModel<UsuarioReduced
         this.nome = nome;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Boolean getPendente() {
@@ -74,7 +74,7 @@ public class UsuarioReducedResponseTO extends RepresentationModel<UsuarioReduced
 
     @Override
     public String toString() {
-        return String.format("UsuarioReducedResponseTO [id=%s, nome=%s, login=%s, pendente=%s, bloqueado=%s, ativo=%s]", id, nome, login,
+        return String.format("UsuarioReducedResponseTO [id=%s, nome=%s, email=%s, pendente=%s, bloqueado=%s, ativo=%s]", id, nome, email,
                 pendente, bloqueado, ativo);
     }
 

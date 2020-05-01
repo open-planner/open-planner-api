@@ -4,8 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.StringUtils;
-
 public class StringUtilsTest {
 
     @Test

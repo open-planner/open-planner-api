@@ -1,5 +1,6 @@
 package br.edu.ifpb.mestrado.openplanner.api.test.builder;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
@@ -20,13 +21,13 @@ public class UsuarioBuilder {
         return this;
     }
 
-    public UsuarioBuilder withEmail(String email) {
-        usuario.setEmail(email);
+    public UsuarioBuilder withDataNascimento(LocalDate dataNascimento) {
+        usuario.setDataNascimento(dataNascimento);
         return this;
     }
 
-    public UsuarioBuilder withLogin(String login) {
-        usuario.setLogin(login);
+    public UsuarioBuilder withEmail(String email) {
+        usuario.setEmail(email);
         return this;
     }
 

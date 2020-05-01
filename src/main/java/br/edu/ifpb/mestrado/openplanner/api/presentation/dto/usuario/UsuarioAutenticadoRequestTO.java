@@ -10,8 +10,6 @@ public class UsuarioAutenticadoRequestTO implements Serializable {
 
     private String email;
 
-    private String login;
-
     public UsuarioAutenticadoRequestTO() {
         super();
     }
@@ -32,17 +30,9 @@ public class UsuarioAutenticadoRequestTO implements Serializable {
         this.email = email;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     @Override
     public String toString() {
-        return String.format("UsuarioRequestTO [nome=%s, email=%s, login=%s]", nome, email, login);
+        return String.format("UsuarioRequestTO [nome=%s, email=%s]", nome, email);
     }
 
 }

@@ -19,7 +19,7 @@ services:
 #    ports:
 #      - "8080:8080"
 #    environment:
-#      DB_URL: jdbc:postgresql://auth-db:5432/open-planner
+#      DB_URL: jdbc:postgresql://open-planner-db:5432/open-planner
 #      DB_USER: user.auth
 #      DB_PASSWORD: user.pass
 #      MAIL_HOST: ?

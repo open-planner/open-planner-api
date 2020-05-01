@@ -70,13 +70,15 @@ public class UsuarioAutenticadoControllerTest extends BaseControllerTest {
 
         String requestBody = "{\n" + 
                 "        \"nome\": \"Administrador do Sistema\",\n" + 
-                "        \"email\": \"admin@email.com\",\n" + 
-                "        \"login\": \"admin\"\n" + 
+                "        \"dataNascimento\": \"" + usuarioAdminMock.getDataNascimento() + "\",\n" + 
+                "        \"email\": \"admin@email.com\"\n" + 
                 "}";
+        System.out.println(requestBody);
         Response response = given()
                 .auth().oauth2(givenAccessTokenAsAdmin())
                 .contentType(ContentType.JSON)
                 .body(requestBody)
+                .then().log().ifValidationFails()
                 .when().put(buildUrl(BASE_PATH));
 
         response.then()

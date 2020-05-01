@@ -1,6 +1,7 @@
 package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Set;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -15,9 +16,9 @@ public class UsuarioResponseTO extends RepresentationModel<UsuarioResponseTO> im
 
     private String nome;
 
-    private String email;
+    private LocalDate dataNascimento;
 
-    private String login;
+    private String email;
 
     private Boolean pendente;
 
@@ -47,20 +48,20 @@ public class UsuarioResponseTO extends RepresentationModel<UsuarioResponseTO> im
         this.nome = nome;
     }
 
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public Boolean getPendente() {
@@ -97,8 +98,9 @@ public class UsuarioResponseTO extends RepresentationModel<UsuarioResponseTO> im
 
     @Override
     public String toString() {
-        return String.format("UsuarioResponseTO [id=%s, nome=%s, email=%s, login=%s, pendente=%s, bloqueado=%s, ativo=%s, grupos=%s]", id,
-                nome, email, login, pendente, bloqueado, ativo, grupos);
+        return String.format(
+                "UsuarioResponseTO [id=%s, nome=%s, dataNascimento=%s, email=%s, pendente=%s, bloqueado=%s, ativo=%s, grupos=%s]", id, nome,
+                dataNascimento, email, pendente, bloqueado, ativo, grupos);
     }
 
 }

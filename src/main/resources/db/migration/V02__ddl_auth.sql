@@ -6,7 +6,7 @@ CREATE TABLE auth.usuario (
   id SERIAL,
   nome VARCHAR(128) NOT NULL,
   email VARCHAR(128) NOT NULL,
-  login VARCHAR(32) NOT NULL,
+  data_nascimento VARCHAR(32) NOT NULL,
   valor_senha VARCHAR(64),
   reset_token_senha VARCHAR(255),
   tentativas_erro_senha SMALLINT,
@@ -20,8 +20,7 @@ CREATE TABLE auth.usuario (
   updated_by VARCHAR(32) NOT NULL,
   version INTEGER NOT NULL DEFAULT 0,
   CONSTRAINT pk_usuario PRIMARY KEY(id),
-  CONSTRAINT uk_usuario_email UNIQUE(email),
-  CONSTRAINT uk_usuario_login UNIQUE(login)
+  CONSTRAINT uk_usuario_email UNIQUE(email)
 );
 
 CREATE INDEX idx_usuario_ativo ON auth.usuario (ativo);

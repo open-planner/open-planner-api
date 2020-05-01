@@ -12,7 +12,7 @@ public class UsuarioMinResponseTO extends RepresentationModel<UsuarioMinResponse
 
     private String nome;
 
-    private String login;
+    private String email;
 
     public UsuarioMinResponseTO() {
         super();
@@ -34,17 +34,17 @@ public class UsuarioMinResponseTO extends RepresentationModel<UsuarioMinResponse
         this.nome = nome;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
     public String toString() {
-        return String.format("UsuarioMinResponseTO [id=%s, nome=%s, login=%s]", id, nome, login);
+        return String.format("UsuarioMinResponseTO [id=%s, nome=%s, email=%s]", id, nome, email);
     }
 
 }

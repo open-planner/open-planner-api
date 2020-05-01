@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.springframework.data.domain.AuditorAware;
 
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.service.OAuth2UserDetailsService;
 
 public class AuditorAwareImpl implements AuditorAware<String> {
@@ -19,7 +18,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
     public Optional<String> getCurrentAuditor() {
         return Optional.of(userDetailsService.isAuthenticated()
                 ? userDetailsService.getUsernameAuth()
-                : Usuario.LOGIN_SYSTEM);
+                : userDetailsService.getUsernameSystem());
     }
 
 }
