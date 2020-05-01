@@ -1,0 +1,69 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  jackson:
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: true
+    date-format: yyyy-MM-dd
+    joda-date-time-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT-03:00
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/open-planner}
+    username: ${DB_USER:user.auth}
+    password: ${DB_PASSWORD:user.pass}
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 60000
+  jpa:
+    properties:
+      org:
+        hibernate:
+          envers:
+            default_schema: audit
+            audit_table_suffix: _aud
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+  flyway:
+    schemas: public
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:username}
+    password: ${MAIL_PASSWORD:password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+open-planner-api:
+  api-info:
+    title: ${API_TITLE:OpenPlanner API}
+    description: ${API_DESCRIPTION:Documentação da API}
+    version: ${API_VERSION:1.0.0}
+    base-package: br.edu.ifpb.mestrado.openplanner.api.application
+  web-app:
+    base-url: ${WEB_APP_BASE_URL:http://localhost:4200}
+  cors:
+    allowed-origin: ${CORS_ALLOWED_ORIGIN:http://localhost:4200}
+  security:
+    oauth2:
+      client: ${OAUTH2_CLIENT:auth}
+      secret: ${OAUTH2_SECRET:P@55-@uth-1937}
+      scopes: ${OAUTH2_SCOPES:read,write}
+      authorized-grant-types: ${OAUTH2_AUTHORIZED_GRANT_TYPES:password,refresh_token}
+      access-token:
+        validity-seconds: ${OAUTH2_ACCESS_TOKEN_VALIDITY_SECONDS:1800}
+      refresh-token:
+        enabled: ${OAUTH2_REFRESH_TOKEN_ENABLED:true}
+        secure-cookie: ${OAUTH2_REFRESH_TOKEN_SECURE_COOKIE:true}
+        validity-seconds: ${OAUTH2_REFRESH_TOKEN_VALIDITY_SECONDS:86400}
+    jwt:
+      signing-key: ${JWT_SIGNING_KEY:0p3n-p1ann3r-ap1}
+    maximum-attempts-login: ${MAXIMUM_ATTEMPTS_LOGIN:5}
+  mail:
+    sender: ${MAIL_SENDER:sender@email.com}

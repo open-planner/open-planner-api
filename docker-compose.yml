@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+  open-planner-db:
+    container_name: open-planner-db
+    image: postgres:10-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: open-planner
+      POSTGRES_USER: user.auth
+      POSTGRES_PASSWORD: user.pass
+    volumes:
+      - ./.docker-volumes/open-planner-db:/var/lib/postgresql/data
+#  open-planner-api:
+#    container_name: open-planner-api
+#    image: open-planner-api
+#    restart: always
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      DB_URL: jdbc:postgresql://auth-db:5432/open-planner
+#      DB_USER: user.auth
+#      DB_PASSWORD: user.pass
+#      MAIL_HOST: ?
+#      MAIL_PASSWORD: ?
+#      MAIL_PORT: ?
+#      MAIL_SENDER: ?
+#      MAIL_USERNAME: ?
+#      WEB_APP_BASE_URL: http://localhost:4200
+#      CORS_ALLOWED_ORIGIN: http://localhost:4200
+#      SPRING_PROFILES_ACTIVE: dev
+#    links:
+#      - open-planner-db
+#    depends_on:
+#      - open-planner-db
