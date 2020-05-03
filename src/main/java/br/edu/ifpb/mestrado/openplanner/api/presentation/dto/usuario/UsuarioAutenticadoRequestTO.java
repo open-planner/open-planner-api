@@ -1,12 +1,15 @@
 package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public class UsuarioAutenticadoRequestTO implements Serializable {
 
     private static final long serialVersionUID = -4976627326375118702L;
 
     private String nome;
+
+    private LocalDate dataNascimento;
 
     private String email;
 
@@ -20,6 +23,14 @@ public class UsuarioAutenticadoRequestTO implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
     public String getEmail() {
