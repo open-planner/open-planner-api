@@ -3,6 +3,7 @@ package br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -23,6 +24,7 @@ import org.hibernate.envers.Audited;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.AuditedBaseEntity;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.bean.Nullable;
 
 @Audited
 @Entity
@@ -69,6 +71,10 @@ public class Usuario extends AuditedBaseEntity {
     @JoinTable(name = "usuario_grupo", schema = "auth", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_grupo"))
     private Set<Grupo> grupos;
 
+    @Nullable
+    @Column(name = "ativacao_token")
+    private String ativacaoToken;
+
     public Usuario() {
         super();
     }
@@ -83,6 +89,10 @@ public class Usuario extends AuditedBaseEntity {
 
     public Boolean isAdmin() {
         return id != null && id.equals(ID_ADMIN);
+    }
+
+    public void generateAtivacaoToken() {
+        ativacaoToken = UUID.randomUUID().toString();
     }
 
     public void bloquear() {
@@ -161,6 +171,14 @@ public class Usuario extends AuditedBaseEntity {
 
     public void setGrupos(Set<Grupo> grupos) {
         this.grupos = grupos;
+    }
+
+    public String getAtivacaoToken() {
+        return ativacaoToken;
+    }
+
+    public void setAtivacaoToken(String ativacaoToken) {
+        this.ativacaoToken = ativacaoToken;
     }
 
     @Override

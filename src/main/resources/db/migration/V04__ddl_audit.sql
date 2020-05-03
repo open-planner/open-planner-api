@@ -22,6 +22,7 @@ CREATE TABLE audit.usuario_aud (
   pendente BOOLEAN,
   bloqueado BOOLEAN,
   ativo BOOLEAN,
+  ativacao_token VARCHAR(255),
   created_at TIMESTAMP WITHOUT TIME ZONE,
   created_by VARCHAR(32),
   updated_at TIMESTAMP WITHOUT TIME ZONE,

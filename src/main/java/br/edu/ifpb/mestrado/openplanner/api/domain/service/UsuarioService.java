@@ -4,7 +4,11 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 
 public interface UsuarioService extends BaseService<Usuario> {
 
+    Usuario activate(String token);
+
     Usuario findByEmail(String email);
+
+    Usuario findByAtivacaoToken(String token);
 
     Usuario findBySenhaResetToken(String resetToken);
 

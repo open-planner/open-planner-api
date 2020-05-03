@@ -2,7 +2,7 @@ package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario;
 
 import java.io.Serializable;
 
-public class UsuarioSenhaResetTokenRequestTO implements Serializable {
+public class UsuarioPublicSenhaTokenRequestTO implements Serializable {
 
     private static final long serialVersionUID = 1003205023105314425L;
 
@@ -10,7 +10,7 @@ public class UsuarioSenhaResetTokenRequestTO implements Serializable {
 
     private String senha;
 
-    public UsuarioSenhaResetTokenRequestTO() {
+    public UsuarioPublicSenhaTokenRequestTO() {
         super();
     }
 

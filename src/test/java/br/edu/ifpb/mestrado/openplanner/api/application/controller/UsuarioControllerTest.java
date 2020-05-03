@@ -4,7 +4,6 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -157,32 +156,6 @@ public class UsuarioControllerTest extends BaseControllerTest {
     }
 
     @Test
-    public void testSave() {
-        Usuario usuarioMock = UsuarioTestUtils.createUsuario(21L, "Test", LocalDate.now().minusYears(20), "user.test@email.com", true,
-                Set.of(grupoAdminMock));
-        when(usuarioServiceMock.save(any())).thenReturn(usuarioMock);
-
-        String requestBody = "{\n" + 
-                "  \"nome\": \"Test\",\n" + 
-                "  \"dataNascimento\": \"" + LocalDate.now().minusYears(20) + "\",\n" + 
-                "  \"email\": \"user.test@email.com\",\n" + 
-                "  \"grupos\": [\n" + 
-                "    1\n" + 
-                "  ],\n" + 
-                "  \"ativo\": true\n" + 
-                "}";
-        Response response = given()
-                .auth().oauth2(givenAccessTokenAsAdmin())
-                .contentType(ContentType.JSON)
-                .body(requestBody)
-                .when().post(buildUrl(BASE_PATH));
-
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-
-        assertUsuarioResponseTO(response, usuarioMock);
-    }
-
-    @Test
     public void testUpdate() {
         Usuario usuarioMock = UsuarioTestUtils.createUsuario(21L, "Test", LocalDate.now().minusYears(20), "user.test@email.com", true,
                 Set.of(grupoAdminMock));
@@ -210,23 +183,6 @@ public class UsuarioControllerTest extends BaseControllerTest {
     }
 
     @Test
-    public void testUpdateSenhaByResetToken() {
-        when(usuarioServiceMock.updateSenhaByResetToken(any(), any())).thenReturn(usuarioAdminMock);
-
-        String requestBody = "{\n" + 
-                "  \"token\": \"1234-56-7890\",\n" + 
-                "  \"senha\": \"P@ss3210\"\n" + 
-                "}";
-        Response response = given()
-                .auth().oauth2(givenAccessTokenAsAdmin())
-                .contentType(ContentType.JSON)
-                .body(requestBody)
-                .when().patch(buildUrl(BASE_PATH, "senha"));
-
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
-    }
-
-    @Test
     public void testSwitchActive() {
         Usuario usuarioMock = UsuarioTestUtils.createUsuario(21L, "Test", LocalDate.now().minusYears(20), "user.test@email.com", true,
                 Set.of(grupoAdminMock));
@@ -235,39 +191,6 @@ public class UsuarioControllerTest extends BaseControllerTest {
         Response response = given()
                 .auth().oauth2(givenAccessTokenAsAdmin())
                 .when().patch(buildUrl(BASE_PATH, usuarioMock.getId().intValue(), "ativo"));
-
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
-    }
-
-    // TODO implementar método recoverLogin
-//    @Test
-//    public void testRecoverLogin() {
-//        doNothing().when(usuarioServiceMock).recoverLogin(any());
-//
-//        String requestBody = "{\n" + 
-//                "  \"email\": \"user.test@email.com\"\n" + 
-//                "}";
-//        Response response = given()
-//                .auth().oauth2(givenAccessTokenAsAdmin())
-//                .contentType(ContentType.JSON)
-//                .body(requestBody)
-//                .when().post(buildUrl(BASE_PATH, "recuperacao", "login"));
-//
-//        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
-//    }
-
-    @Test
-    public void testRecoverSenha() {
-        doNothing().when(usuarioServiceMock).recoverSenha(any());
-
-        String requestBody = "{\n" + 
-                "  \"email\": \"user.test@email.com\"\n" + 
-                "}";
-        Response response = given()
-                .auth().oauth2(givenAccessTokenAsAdmin())
-                .contentType(ContentType.JSON)
-                .body(requestBody)
-                .when().post(buildUrl(BASE_PATH, "recuperacao", "senha"));
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }

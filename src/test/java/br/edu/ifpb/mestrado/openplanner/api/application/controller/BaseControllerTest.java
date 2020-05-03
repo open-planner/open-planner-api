@@ -20,6 +20,10 @@ public abstract class BaseControllerTest {
 
     private OAuth2Properties oauth2Properties;
 
+    public BaseControllerTest() {
+        super();
+    }
+
     public BaseControllerTest(OAuth2Properties oauth2Properties) {
         this.oauth2Properties = oauth2Properties;
     }

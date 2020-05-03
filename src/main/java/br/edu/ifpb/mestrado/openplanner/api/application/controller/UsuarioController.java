@@ -2,8 +2,6 @@ package br.edu.ifpb.mestrado.openplanner.api.application.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -13,7 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,13 +24,11 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecificationFactory;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioEmailRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioMinResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioReducedResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioResponseTO;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioSenhaResetTokenRequestTO;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -83,18 +78,6 @@ public class UsuarioController {
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('write')")
-    @PostMapping
-    public ResponseEntity<UsuarioResponseTO> save(@RequestBody UsuarioRequestTO requestTO) {
-        Usuario usuario = converterService.map(requestTO, Usuario.class);
-        Usuario savedUsuario = usuarioService.save(usuario);
-        UsuarioResponseTO responseTO = converterService.map(savedUsuario, UsuarioResponseTO.class);
-
-        addLinks(responseTO);
-
-        return ResponseEntityFacade.created(responseTO);
-    }
-
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('write')")
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseTO> update(@PathVariable Long id, @RequestBody UsuarioRequestTO requestTO) {
         Usuario usuario = converterService.map(requestTO, Usuario.class);
@@ -106,30 +89,11 @@ public class UsuarioController {
         return ResponseEntityFacade.ok(responseTO);
     }
 
-    @PatchMapping("/senha")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateSenhaByResetToken(@RequestBody UsuarioSenhaResetTokenRequestTO requestTO) {
-        usuarioService.updateSenhaByResetToken(requestTO.getToken(), requestTO.getSenha());
-    }
-
     @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('write')")
     @PatchMapping("/{id}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void switchActive(@PathVariable Long id) {
         usuarioService.switchActive(id);
-    }
-
-    // TODO implementar método recoverLogin
-//    @PostMapping("/recuperacao/login")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void recoverLogin(@Valid @RequestBody UsuarioEmailRequestTO requestTO) {
-//        usuarioService.recoverLogin(requestTO.getEmail());
-//    }
-
-    @PostMapping("/recuperacao/senha")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void recoverSenha(@Valid @RequestBody UsuarioEmailRequestTO requestTO) {
-        usuarioService.recoverSenha(requestTO.getEmail());
     }
 
     private void addLinks(UsuarioResponseTO responseTO) {

@@ -9,6 +9,8 @@ public interface UsuarioRepository extends BaseRepository<Usuario> {
 
     Optional<Usuario> findByEmailIgnoreCase(String email);
 
+    Optional<Usuario> findByAtivacaoToken(String token);
+
     Optional<Usuario> findBySenhaResetToken(String resetToken);
 
     List<Usuario> findByAtivoAndPendenteAndBloqueado(Boolean ativo, Boolean pendente, Boolean bloqueado);

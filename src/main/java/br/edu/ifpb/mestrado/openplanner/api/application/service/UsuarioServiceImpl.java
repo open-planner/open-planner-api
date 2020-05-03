@@ -13,7 +13,6 @@ import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.Invali
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InvalidTokenException;
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.NotAuthenticatedUserException;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Senha;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.factory.MailFactory;
@@ -57,6 +56,13 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 
     @Transactional(readOnly = true)
     @Override
+    public Usuario findByAtivacaoToken(String token) {
+        return usuarioRepository.findByAtivacaoToken(token)
+                .orElseThrow(() -> new InformationNotFoundException(messageService.getMessage("resource.information-not-found")));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public Usuario findBySenhaResetToken(String resetToken) {
         return usuarioRepository.findBySenhaResetToken(resetToken).orElseThrow(() -> new InvalidTokenException());
     }
@@ -81,17 +87,25 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
     public Usuario save(Usuario usuario) {
         checkSave(usuario);
 
-        usuario.setSenha(new Senha());
-        usuario.getSenha().generateResetToken();
         usuario.setEmail(usuario.getEmail().toLowerCase());
         usuario.setPendente(true);
         usuario.setBloqueado(false);
+        usuario.generateAtivacaoToken();
 
         Usuario usuarioSaved = super.save(usuario);
 
         sendMailRegistration(usuarioSaved);
 
         return usuarioSaved;
+    }
+
+    @Override
+    public Usuario activate(String token) {
+        Usuario usuario = findByAtivacaoToken(token);
+        usuario.setAtivacaoToken(null);
+        usuario.setPendente(false);
+
+        return super.save(usuario);
     }
 
     @Override

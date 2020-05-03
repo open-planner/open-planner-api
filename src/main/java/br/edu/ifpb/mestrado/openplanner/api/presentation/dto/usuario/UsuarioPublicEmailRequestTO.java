@@ -4,14 +4,14 @@ import java.io.Serializable;
 
 import javax.validation.constraints.Email;
 
-public class UsuarioEmailRequestTO implements Serializable {
+public class UsuarioPublicEmailRequestTO implements Serializable {
 
     private static final long serialVersionUID = 3538601138000055055L;
 
     @Email
     private String email;
 
-    public UsuarioEmailRequestTO() {
+    public UsuarioPublicEmailRequestTO() {
         super();
     }
 
