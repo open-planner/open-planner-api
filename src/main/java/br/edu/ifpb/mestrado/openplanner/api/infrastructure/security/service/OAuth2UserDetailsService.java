@@ -20,14 +20,18 @@ import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.auth.Usuario
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.exception.AuthenticationException;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.exception.IncorrectUsernameOrPasswordException;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.exception.UnauthenticatedException;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.service.MessageService;
 
 @Service
 public class OAuth2UserDetailsService implements UserDetailsService {
 
     private UsuarioRepository usuarioRepository;
 
-    public OAuth2UserDetailsService(UsuarioRepository usuarioRepository) {
+    private MessageService messageService;
+
+    public OAuth2UserDetailsService(UsuarioRepository usuarioRepository, MessageService messageService) {
         this.usuarioRepository = usuarioRepository;
+        this.messageService = messageService;
     }
 
     @Override
@@ -39,20 +43,16 @@ public class OAuth2UserDetailsService implements UserDetailsService {
 
             return new UsuarioAuth(usuario, getAuthorities(usuario));
         } catch (InformationNotFoundException informationNotFoundException) {
-            throw new IncorrectUsernameOrPasswordException();
+            throw new IncorrectUsernameOrPasswordException(messageService.getMessage("security.incorrect-username-or-password"));
         }
     }
 
-    public UsuarioAuth loadUserById(Long id) throws UsernameNotFoundException {
-        try {
-            Usuario usuario = usuarioRepository.findById(id)
-                    .orElseThrow(() -> new InformationNotFoundException());
-            validateUsuario(usuario);
+    public UsuarioAuth loadUserById(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new InformationNotFoundException());
+        validateUsuario(usuario);
 
-            return new UsuarioAuth(usuario, getAuthorities(usuario));
-        } catch (InformationNotFoundException informationNotFoundException) {
-            throw new IncorrectUsernameOrPasswordException();
-        }
+        return new UsuarioAuth(usuario, getAuthorities(usuario));
     }
 
     public Boolean isAuthenticated() {

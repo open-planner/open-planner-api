@@ -28,7 +28,6 @@ import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.Invali
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InvalidTokenException;
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.NotAuthenticatedUserException;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.exception.AuthenticationException;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.exception.IncorrectUsernameOrPasswordException;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.service.MessageService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.service.exception.MailException;
 
@@ -68,11 +67,6 @@ public class ApplicationResponseEntityExceptionHandler extends ResponseEntityExc
     @ExceptionHandler({ InformationNotFoundException.class })
     public ResponseEntity<Object> handleInformationNotFoundException(InformationNotFoundException exception, WebRequest request) {
         return handleException(exception, HttpStatus.NOT_FOUND, request, "resource.information-not-found");
-    }
-
-    @ExceptionHandler({ IncorrectUsernameOrPasswordException.class })
-    public ResponseEntity<Object> handleUsernameNotFoundException(IncorrectUsernameOrPasswordException exception, WebRequest request) {
-        return handleException(exception, HttpStatus.BAD_REQUEST, request, "security.incorrect-username-or-password");
     }
 
     @ExceptionHandler({ InvalidPasswordException.class })

@@ -4,4 +4,12 @@ public class IncorrectUsernameOrPasswordException extends RuntimeException {
 
     private static final long serialVersionUID = 7110798280122702917L;
 
+    public IncorrectUsernameOrPasswordException() {
+        super();
+    }
+
+    public IncorrectUsernameOrPasswordException(String message) {
+        super(message);
+    }
+
 }
