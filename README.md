@@ -1,5 +1,7 @@
 # OpenPlanner API
 
+[![Build Status](https://travis-ci.org/open-planner/open-planner-api.svg?branch=master)](https://travis-ci.org/open-planner/open-planner-api)
+
 ## Requisitos
 
 * JDK11
@@ -10,8 +12,8 @@
 
 * Autenticação com OAuth2 e JWT
 * Usuário
-  * Listagem
   * Cadastro (*com confirmação por e-mail*)
+  * Listagem
   * Edição de Informações Pessoais
   * Edição de Senha
   * Alteração de Status
