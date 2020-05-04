@@ -16,7 +16,7 @@ import br.edu.ifpb.mestrado.openplanner.api.test.builder.UsuarioBuilder;
 public class UsuarioTestUtils {
 
     private static final String MOCK_SENHA_PREFIX = "Senha123#";
-    private static final String MOCK_RESET_TOKEN_PREFIX = "Token123#";
+    private static final String MOCK_TOKEN_PREFIX = "Token123#";
 
     public static void assertResponseTO(UsuarioResponseTO usuarioResponseTO, Usuario usuario) {
         assertThat(usuarioResponseTO.getId()).isEqualTo(usuario.getId());
@@ -74,9 +74,10 @@ public class UsuarioTestUtils {
                 .withPendente(pendente)
                 .withBloqueado(bloqueado)
                 .withSenha(new Senha(
-                        !pendente && !bloqueado ? BcryptUtils.encode(valorSenha) : null,
-                        pendente || bloqueado ? MOCK_RESET_TOKEN_PREFIX + email : null))
+                        !bloqueado ? BcryptUtils.encode(valorSenha) : null,
+                        bloqueado ? MOCK_TOKEN_PREFIX + email : null))
                 .withGrupos(grupos)
+                .withAtivacaoToken(pendente ? MOCK_TOKEN_PREFIX + email : null)
                 .build();
     }
 

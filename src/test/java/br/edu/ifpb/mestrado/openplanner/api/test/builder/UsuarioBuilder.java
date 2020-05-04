@@ -56,6 +56,11 @@ public class UsuarioBuilder {
         return this;
     }
 
+    public UsuarioBuilder withAtivacaoToken(String ativacaoToken) {
+        usuario.setAtivacaoToken(ativacaoToken);
+        return this;
+    }
+
     public Usuario build() {
         return usuario;
     }

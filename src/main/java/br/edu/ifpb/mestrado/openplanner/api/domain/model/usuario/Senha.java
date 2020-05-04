@@ -36,6 +36,11 @@ public class Senha implements Serializable {
         dataAtualizacao = LocalDateTime.now();
     }
 
+    public Senha(String valor) {
+        this();
+        this.valor = valor;
+    }
+
     public Senha(String valor, String resetToken) {
         this();
         this.valor = valor;

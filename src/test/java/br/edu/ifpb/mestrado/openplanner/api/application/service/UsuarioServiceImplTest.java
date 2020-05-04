@@ -36,6 +36,7 @@ import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.Invali
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InvalidTokenException;
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.NotAuthenticatedUserException;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Senha;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.repository.GrupoRepository;
@@ -56,7 +57,7 @@ public class UsuarioServiceImplTest {
     private static final String MOCK_EMAIL_ADMIN = "admin@email.com";
     private static final String MOCK_EMAIL_ROOT = "root@email.com";
     private static final String MOCK_SENHA_PREFIX = "Senha123#";
-    private static final String MOCK_RESET_TOKEN_PREFIX = "Token123#";
+    private static final String MOCK_TOKEN_PREFIX = "Token123#";
 
     private UsuarioService usuarioService;
 
@@ -120,10 +121,22 @@ public class UsuarioServiceImplTest {
     }
 
     @Test
-    public void findBySenhaResetToken() {
-        Usuario usuario = usuarioService.findBySenhaResetToken(MOCK_RESET_TOKEN_PREFIX + "jose.souza@email.com");
+    public void findByAtivacaoToken() {
+        Usuario usuario = usuarioService.findByAtivacaoToken(MOCK_TOKEN_PREFIX + "jose.souza@email.com");
 
         assertThat(usuario.getNome()).isEqualTo("José de Souza");
+    }
+
+    @Test
+    public void findByAtivacaoToken_whenNotFound() {
+        assertThrows(InformationNotFoundException.class, () -> usuarioService.findByEmail("test@email.com"));
+    }
+
+    @Test
+    public void findBySenhaResetToken() {
+        Usuario usuario = usuarioService.findBySenhaResetToken(MOCK_TOKEN_PREFIX + "isabel.santos@email.com");
+
+        assertThat(usuario.getNome()).isEqualTo("Isabel dos Santos");
     }
 
     @Test
@@ -229,8 +242,7 @@ public class UsuarioServiceImplTest {
                 .withNome("Miguel Lima")
                 .withDataNascimento(LocalDate.now().minusYears(20))
                 .withEmail("miguel.LIMA@email.com")
-                .withGrupos(findGruposByIds(Grupo.ID_ADMIN))
-                .withAtivo(true)
+                .withSenha(new Senha(MOCK_SENHA_PREFIX + "miguel.lima@email.com"))
                 .build();
         usuarioService.save(usuario);
 
@@ -241,8 +253,27 @@ public class UsuarioServiceImplTest {
         assertThat(usuario.getEmail()).isEqualTo("miguel.lima@email.com");
         assertThat(usuario.getPendente()).isTrue();
         assertThat(usuario.getBloqueado()).isFalse();
-        assertThat(usuario.getSenha().getResetToken()).isNotBlank();
-        assertThat(usuario.getSenha().getValor()).isNull();
+        assertThat(usuario.getAtivo()).isFalse();
+        assertThat(usuario.getSenha().getValor()).isNotNull();
+        assertThat(usuario.getSenha().getResetToken()).isNull();
+        assertThat(usuario.getAtivacaoToken()).isNotNull();
+        assertAuditingFields(usuario, MOCK_EMAIL_ADMIN);
+    }
+
+    @Test
+    public void testAtivacao() {
+        Usuario usuario = usuarioService.activate(MOCK_TOKEN_PREFIX + "jose.souza@email.com");
+
+        assertThat(usuario.getId()).isNotNull();
+        assertThat(usuario.getNome()).isEqualTo("José de Souza");
+        assertThat(usuario.getDataNascimento()).isEqualTo(LocalDate.now().minusYears(20));
+        assertThat(usuario.getEmail()).isEqualTo("jose.souza@email.com");
+        assertThat(usuario.getPendente()).isFalse();
+        assertThat(usuario.getBloqueado()).isFalse();
+        assertThat(usuario.getAtivo()).isTrue();
+        assertThat(usuario.getSenha().getValor()).isNotNull();
+        assertThat(usuario.getSenha().getResetToken()).isNull();
+        assertThat(usuario.getAtivacaoToken()).isNull();
         assertAuditingFields(usuario, MOCK_EMAIL_ADMIN);
     }
 
@@ -367,7 +398,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testUpdateSenhaByResetToken() {
-        Usuario usuario = usuarioRepository.save(UsuarioTestUtils.createUsuarioPendente("Manoel Alves", LocalDate.now().minusYears(20),
+        Usuario usuario = usuarioRepository.save(UsuarioTestUtils.createUsuarioBloqueado("Manoel Alves", LocalDate.now().minusYears(20),
                 "manoel.alves@email.com", findGruposByIds(Grupo.ID_ADMIN)));
 
         String valorSenha = (MOCK_SENHA_PREFIX + "manoel.alves@email.com").substring(0, 30);
@@ -379,7 +410,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testUpdateSenhaByResetToken_whenSenhaIsNotValid() {
-        Usuario usuario = usuarioRepository.save(UsuarioTestUtils.createUsuarioPendente("Manoel Alves", LocalDate.now().minusYears(20),
+        Usuario usuario = usuarioRepository.save(UsuarioTestUtils.createUsuarioBloqueado("Manoel Alves", LocalDate.now().minusYears(20),
                 "manoel.alves@email.com", findGruposByIds(Grupo.ID_ADMIN)));
         
         assertThrows(InvalidPasswordException.class,

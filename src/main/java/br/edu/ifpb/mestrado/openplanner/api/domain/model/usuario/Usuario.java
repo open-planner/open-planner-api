@@ -14,7 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -64,8 +63,6 @@ public class Usuario extends AuditedBaseEntity {
     @Column(name = "bloqueado", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean bloqueado;
 
-    @NotNull
-    @NotEmpty
     @ManyToMany
     @Fetch(FetchMode.JOIN)
     @JoinTable(name = "usuario_grupo", schema = "auth", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_grupo"))

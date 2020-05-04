@@ -90,6 +90,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         usuario.setEmail(usuario.getEmail().toLowerCase());
         usuario.setPendente(true);
         usuario.setBloqueado(false);
+        usuario.setAtivo(false);
         usuario.generateAtivacaoToken();
 
         Usuario usuarioSaved = super.save(usuario);
@@ -104,6 +105,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         Usuario usuario = findByAtivacaoToken(token);
         usuario.setAtivacaoToken(null);
         usuario.setPendente(false);
+        usuario.setAtivo(true);
 
         return super.save(usuario);
     }
