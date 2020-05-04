@@ -6,7 +6,7 @@ CREATE TABLE auth.usuario (
   id SERIAL,
   nome VARCHAR(128) NOT NULL,
   email VARCHAR(128) NOT NULL,
-  data_nascimento VARCHAR(32) NOT NULL,
+  data_nascimento DATE NOT NULL,
   valor_senha VARCHAR(64),
   reset_token_senha VARCHAR(255),
   tentativas_erro_senha SMALLINT,

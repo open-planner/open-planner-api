@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioPublicAtivacaoRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioPublicEmailRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioPublicRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioPublicSenhaTokenRequestTO;
@@ -32,14 +33,14 @@ public class UsuarioPublicController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody UsuarioPublicRequestTO requestTO) {
+    public void create(@Valid @RequestBody UsuarioPublicRequestTO requestTO) {
         Usuario usuario = converterService.map(requestTO, Usuario.class);
         usuarioService.save(usuario);
     }
 
     @PostMapping("/ativacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void activate(@RequestBody UsuarioPublicSenhaTokenRequestTO requestTO) {
+    public void activate(@RequestBody UsuarioPublicAtivacaoRequestTO requestTO) {
         usuarioService.activate(requestTO.getToken());
     }
 

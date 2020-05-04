@@ -104,14 +104,6 @@ public class Usuario extends AuditedBaseEntity {
         this.senha.setValor(senha);
         this.senha.clearResetToken();
         this.senha.setDataAtualizacao(LocalDateTime.now());
-
-        if (pendente) {
-            pendente = false;
-        }
-
-        if (bloqueado) {
-            bloqueado = false;
-        }
     }
 
     public String getNome() {

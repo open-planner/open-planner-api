@@ -3,18 +3,29 @@ package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UsuarioPublicRequestTO implements Serializable {
 
     private static final long serialVersionUID = -7433561693465074511L;
 
+    @NotNull
+    @NotBlank
     private String nome;
 
     private LocalDate dataNascimento;
 
+    @NotNull
+    @Email
     private String email;
 
+    @NotNull
+    @Size(min = 6, max = 64)
     @JsonProperty("senha")
     private String senhaValor;
 

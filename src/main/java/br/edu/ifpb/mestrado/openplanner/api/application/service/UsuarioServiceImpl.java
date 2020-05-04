@@ -83,15 +83,17 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         return usuarioRepository.findAll(UsuarioSpecification.positiveIdAndActiveAndNotPendenteAndNotBloqueado());
     }
 
+    @Transactional
     @Override
     public Usuario save(Usuario usuario) {
         checkSave(usuario);
 
         usuario.setEmail(usuario.getEmail().toLowerCase());
+        usuario.updateSenha(BcryptUtils.encode(usuario.getSenha().getValor()));
         usuario.setPendente(true);
         usuario.setBloqueado(false);
-        usuario.setAtivo(false);
         usuario.generateAtivacaoToken();
+        usuario.setAtivo(false);
 
         Usuario usuarioSaved = super.save(usuario);
 
@@ -100,6 +102,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         return usuarioSaved;
     }
 
+    @Transactional
     @Override
     public Usuario activate(String token) {
         Usuario usuario = findByAtivacaoToken(token);
@@ -110,6 +113,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         return super.save(usuario);
     }
 
+    @Transactional
     @Override
     public Usuario update(Long id, Usuario usuario) {
         Boolean resendMailPendente = false;
@@ -132,6 +136,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         return super.update(id, usuario);
     }
 
+    @Transactional
     @Override
     public Usuario updateAutenticado(Usuario usuario) {
         Usuario usuarioAutenticado = getUserDetailsService().getUsuarioAuth().getUsuario();
@@ -140,14 +145,18 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         return update(usuarioAutenticado.getId(), usuario);
     }
 
+    @Transactional
     @Override
     public Usuario updateSenhaByResetToken(String resetToken, String senha) {
         Usuario usuario = findBySenhaResetToken(resetToken);
         usuario.updateSenha(BcryptUtils.encode(senha));
+        usuario.setPendente(false);
+        usuario.setBloqueado(false);
 
         return super.update(usuario.getId(), usuario);
     }
 
+    @Transactional
     @Override
     public Usuario updateSenhaAutenticado(String senhaAtual, String senhaNova) {
         Usuario usuario = getAutenticado();
@@ -169,6 +178,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 //        sendMailRecoveryLogin(usuario);
 //    }
 
+    @Transactional
     @Override
     public void recoverSenha(String email) {
         Usuario usuario = findByEmail(email);
@@ -179,6 +189,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         sendMailRecoverySenha(usuarioUpdated);
     }
 
+    @Transactional
     @Override
     public void loginFailed(String email) {
         try {
@@ -194,6 +205,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         }
     }
 
+    @Transactional
     @Override
     public void loginSucceded(String email) {
         Usuario usuario = findByEmail(email);
@@ -207,6 +219,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         super.update(usuario.getId(), usuario);
     }
 
+    @Transactional
     @Override
     public void switchBloqueado(Long id) {
         Usuario usuario = findById(id);
