@@ -100,6 +100,10 @@ public class Usuario extends AuditedBaseEntity {
         bloqueado = !bloqueado;
     }
 
+    public Boolean hasSenha() {
+        return senha != null && senha.getValor() != null && !senha.getValor().isBlank();
+    }
+
     public void updateSenha(String senha) {
         this.senha.setValor(senha);
         this.senha.clearResetToken();

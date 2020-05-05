@@ -29,10 +29,13 @@ import org.springframework.test.context.ActiveProfiles;
 import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties.OAuth2Properties;
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InformationNotFoundException;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Senha;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecificationFactory;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.util.BcryptUtils;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioResponseTO;
+import br.edu.ifpb.mestrado.openplanner.api.test.builder.UsuarioBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.test.util.ControllerTestUtils;
 import br.edu.ifpb.mestrado.openplanner.api.test.util.GrupoTestUtils;
 import br.edu.ifpb.mestrado.openplanner.api.test.util.UsuarioTestUtils;
@@ -68,15 +71,24 @@ public class UsuarioControllerTest extends BaseControllerTest {
     public void setUp() throws Exception {
         specificationFactoryMock = mock(SpecificationFactory.class);
 
-        grupoAdminMock = GrupoTestUtils.createGrupoAdminMock();
-        usuarioAdminMock = UsuarioTestUtils.createUsuarioAdminMock();
+        grupoAdminMock = GrupoTestUtils.createAdminMock();
+        usuarioAdminMock = UsuarioTestUtils.createAdminMock();
 
         usuarioListMock = new ArrayList<>();
         usuarioListMock.add(usuarioAdminMock);
 
         for (Long i = 2L; i <= 8; i++) {
-            usuarioListMock.add(UsuarioTestUtils.createUsuario(i, RandomStringUtils.random(10), LocalDate.now().minusYears(20),
-                    RandomStringUtils.random(10), true, Set.of(grupoAdminMock)));
+            usuarioListMock.add(new UsuarioBuilder()
+                .withId(i)
+                .withNome(RandomStringUtils.random(10))
+                .withDataNascimento(LocalDate.now().minusYears(20))
+                .withEmail(RandomStringUtils.random(10).toLowerCase() + "@email.com")
+                .withAtivo(true)
+                .withPendente(false)
+                .withBloqueado(false)
+                .withSenha(new Senha(BcryptUtils.encode(UsuarioTestUtils.MOCK_SENHA_PREFIX + i)))
+                .withGrupos(Set.of(grupoAdminMock))
+                .build());
         }
 
         usuarioPageMock = new PageImpl<>(usuarioListMock, PageRequest.of(0, 10), 8);
@@ -157,8 +169,17 @@ public class UsuarioControllerTest extends BaseControllerTest {
 
     @Test
     public void testUpdate() {
-        Usuario usuarioMock = UsuarioTestUtils.createUsuario(21L, "Test", LocalDate.now().minusYears(20), "user.test@email.com", true,
-                Set.of(grupoAdminMock));
+        Usuario usuarioMock = new UsuarioBuilder()
+                .withId(21L)
+                .withNome("Test")
+                .withDataNascimento(LocalDate.now().minusYears(20))
+                .withEmail("user.test@email.com")
+                .withAtivo(true)
+                .withPendente(false)
+                .withBloqueado(false)
+                .withSenha(new Senha(BcryptUtils.encode(UsuarioTestUtils.MOCK_SENHA_PREFIX + "user.test@email.com")))
+                .withGrupos(Set.of(grupoAdminMock))
+                .build();
         when(usuarioServiceMock.update(any(), any())).thenReturn(usuarioMock);
 
         String requestBody = "{\n" + 
@@ -184,8 +205,17 @@ public class UsuarioControllerTest extends BaseControllerTest {
 
     @Test
     public void testSwitchActive() {
-        Usuario usuarioMock = UsuarioTestUtils.createUsuario(21L, "Test", LocalDate.now().minusYears(20), "user.test@email.com", true,
-                Set.of(grupoAdminMock));
+        Usuario usuarioMock = new UsuarioBuilder()
+                .withId(21L)
+                .withNome("Test")
+                .withDataNascimento(LocalDate.now().minusYears(20))
+                .withEmail("user.test@email.com")
+                .withAtivo(true)
+                .withPendente(false)
+                .withBloqueado(false)
+                .withSenha(new Senha(BcryptUtils.encode(UsuarioTestUtils.MOCK_SENHA_PREFIX + "user.test@email.com")))
+                .withGrupos(Set.of(grupoAdminMock))
+                .build();
         when(usuarioServiceMock.switchActive(any())).thenReturn(usuarioMock);
 
         Response response = given()

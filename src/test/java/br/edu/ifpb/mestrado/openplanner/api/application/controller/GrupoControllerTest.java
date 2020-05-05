@@ -66,14 +66,14 @@ public class GrupoControllerTest extends BaseControllerTest {
     public void setUp() throws Exception {
         specificationFactoryMock = mock(SpecificationFactory.class);
 
-        permissaoAdminMock = PermissaoTestUtils.createPermissaoAdminMock();
-        grupoAdminMock = GrupoTestUtils.createGrupoAdminMock();
+        permissaoAdminMock = PermissaoTestUtils.createAdminMock();
+        grupoAdminMock = GrupoTestUtils.createAdminMock();
 
         grupoListMock = new ArrayList<>();
         grupoListMock.add(grupoAdminMock);
 
         for (Long i = 2L; i <= 8; i++) {
-            grupoListMock.add(GrupoTestUtils.createGrupo(i, RandomStringUtils.random(10), true, Set.of(permissaoAdminMock)));
+            grupoListMock.add(GrupoTestUtils.create(i, RandomStringUtils.random(10), true, Set.of(permissaoAdminMock)));
         }
 
         grupoPageMock = new PageImpl<>(grupoListMock, PageRequest.of(0, 10), 8);
@@ -151,7 +151,7 @@ public class GrupoControllerTest extends BaseControllerTest {
 
     @Test
     public void testSave() {
-        Grupo grupoMock = GrupoTestUtils.createGrupo(21L, "Test", true, Set.of(permissaoAdminMock));
+        Grupo grupoMock = GrupoTestUtils.create(21L, "Test", true, Set.of(permissaoAdminMock));
         when(grupoServiceMock.save(any())).thenReturn(grupoMock);
 
         String requestBody = "{\n" + 
@@ -173,7 +173,7 @@ public class GrupoControllerTest extends BaseControllerTest {
 
     @Test
     public void testUpdate() {
-        Grupo grupoMock = GrupoTestUtils.createGrupo(21L, "Test", true, Set.of(permissaoAdminMock));
+        Grupo grupoMock = GrupoTestUtils.create(21L, "Test", true, Set.of(permissaoAdminMock));
         when(grupoServiceMock.update(any(), any())).thenReturn(grupoMock);
 
         String requestBody = "{\n" + 
@@ -195,7 +195,7 @@ public class GrupoControllerTest extends BaseControllerTest {
 
     @Test
     public void testSwitchActive() {
-        Grupo grupoMock = GrupoTestUtils.createGrupo(21L, "Test", true, Set.of(permissaoAdminMock));
+        Grupo grupoMock = GrupoTestUtils.create(21L, "Test", true, Set.of(permissaoAdminMock));
         when(grupoServiceMock.switchActive(any())).thenReturn(grupoMock);
 
         Response response = given()

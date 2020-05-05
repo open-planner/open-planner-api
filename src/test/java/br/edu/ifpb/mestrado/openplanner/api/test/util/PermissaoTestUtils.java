@@ -16,14 +16,14 @@ public class PermissaoTestUtils {
         assertThat(permissaoResponseTO.getLinks()).isNullOrEmpty();
     }
 
-    public static Permissao createPermissao(Papel papel, String descricao) {
+    public static Permissao create(Papel papel, String descricao) {
         return new PermissaoBuilder()
                 .withPapel(papel)
                 .withDescricao(descricao)
                 .build();
     }
 
-    public static Permissao createPermissao(Long id, Papel papel, String descricao) {
+    public static Permissao create(Long id, Papel papel, String descricao) {
         return new PermissaoBuilder()
                 .withId(id)
                 .withPapel(papel)
@@ -31,8 +31,8 @@ public class PermissaoTestUtils {
                 .build();
     }
 
-    public static Permissao createPermissaoAdminMock() {
-        return createPermissao(1L, Papel.ROLE_ADMIN, "Administrador");
+    public static Permissao createAdminMock() {
+        return create(Permissao.ID_ADMIN, Papel.ROLE_ADMIN, "Administrador");
     }
 
 }

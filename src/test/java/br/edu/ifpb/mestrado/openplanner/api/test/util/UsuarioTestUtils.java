@@ -15,8 +15,8 @@ import br.edu.ifpb.mestrado.openplanner.api.test.builder.UsuarioBuilder;
 
 public class UsuarioTestUtils {
 
-    private static final String MOCK_SENHA_PREFIX = "Senha123#";
-    private static final String MOCK_TOKEN_PREFIX = "Token123#";
+    public static final String MOCK_SENHA_PREFIX = "Senha123#";
+    public static final String MOCK_TOKEN_PREFIX = "Token123#";
 
     public static void assertResponseTO(UsuarioResponseTO usuarioResponseTO, Usuario usuario) {
         assertThat(usuarioResponseTO.getId()).isEqualTo(usuario.getId());
@@ -37,62 +37,89 @@ public class UsuarioTestUtils {
                 });
     }
 
-    public static Usuario createUsuarioPendente(String nome, LocalDate dataNascimento, String email, Set<Grupo> grupos) {
-        return createUsuario(nome, dataNascimento, email, true, true, false, grupos);
-    }
-
-    public static Usuario createUsuarioAtivo(String nome, LocalDate dataNascimento, String email, Set<Grupo> grupos) {
-        return createUsuario(nome, dataNascimento, email, true, false, false, grupos);
-    }
-
-    public static Usuario createUsuarioAtivo(Long id, String nome, LocalDate dataNascimento, String email, Set<Grupo> grupos) {
-        return createUsuario(id, nome, dataNascimento, email, true, false, false, grupos);
-    }
-
-    public static Usuario createUsuarioInativo(String nome, LocalDate dataNascimento, String email, Set<Grupo> grupos) {
-        return createUsuario(nome, dataNascimento, email, false, false, false, grupos);
-    }
-
-    public static Usuario createUsuarioBloqueado(String nome, LocalDate dataNascimento, String email, Set<Grupo> grupos) {
-        return createUsuario(nome, dataNascimento, email, true, false, true, grupos);
-    }
-
-    public static Usuario createUsuario(Long id, String nome, LocalDate dataNascimento, String email, Boolean ativo, Boolean pendente,
-            Boolean bloqueado, Set<Grupo> grupos) {
-        String valorSenha = MOCK_SENHA_PREFIX + email;
-
-        if (valorSenha.length() > 30) {
-            valorSenha = valorSenha.substring(0, 30);
-        }
+    public static Usuario createForSaveService(String nome, String email, Set<Grupo> grupos) {
+        String valorSenha = MOCK_SENHA_PREFIX + (email.length() > 21 ? email.substring(0, 21) : email);
 
         return new UsuarioBuilder()
-                .withId(id)
                 .withNome(nome)
-                .withDataNascimento(dataNascimento)
+                .withDataNascimento(LocalDate.now().minusYears(20))
                 .withEmail(email)
-                .withAtivo(ativo)
-                .withPendente(pendente)
-                .withBloqueado(bloqueado)
-                .withSenha(new Senha(
-                        !bloqueado ? BcryptUtils.encode(valorSenha) : null,
-                        bloqueado ? MOCK_TOKEN_PREFIX + email : null))
+                .withSenha(new Senha(valorSenha, null))
                 .withGrupos(grupos)
-                .withAtivacaoToken(pendente ? MOCK_TOKEN_PREFIX + email : null)
                 .build();
     }
 
-    public static Usuario createUsuario(Long id, String nome, LocalDate dataNascimento, String email, Boolean ativo, Set<Grupo> grupos) {
-        return createUsuario(id, nome, dataNascimento, email, ativo, false, false, grupos);
+    public static Usuario createPendente(String nome, String email, Set<Grupo> grupos) {
+        String valorSenha = MOCK_SENHA_PREFIX + (email.length() > 21 ? email.substring(0, 21) : email);
+
+        return new UsuarioBuilder()
+                .withNome(nome)
+                .withDataNascimento(LocalDate.now().minusYears(20))
+                .withEmail(email)
+                .withAtivo(false)
+                .withPendente(true)
+                .withBloqueado(false)
+                .withSenha(new Senha(BcryptUtils.encode(valorSenha), null))
+                .withGrupos(grupos)
+                .withAtivacaoToken(MOCK_TOKEN_PREFIX + email)
+                .build();
     }
 
-    public static Usuario createUsuario(String nome, LocalDate dataNascimento, String email, Boolean ativo, Boolean pendente,
-            Boolean bloqueado, Set<Grupo> grupos) {
-        return createUsuario(null, nome, dataNascimento, email, ativo, pendente, bloqueado, grupos);
+    public static Usuario createAtivo(String nome, String email, Set<Grupo> grupos) {
+        String valorSenha = MOCK_SENHA_PREFIX + (email.length() > 21 ? email.substring(0, 21) : email);
+
+        return new UsuarioBuilder()
+                .withNome(nome)
+                .withDataNascimento(LocalDate.now().minusYears(20))
+                .withEmail(email)
+                .withAtivo(true)
+                .withPendente(false)
+                .withBloqueado(false)
+                .withSenha(new Senha(BcryptUtils.encode(valorSenha), null))
+                .withGrupos(grupos)
+                .build();
     }
 
-    public static Usuario createUsuarioAdminMock() {
-        return createUsuario(1L, "Administrador", LocalDate.now().minusYears(20), "admin@email.com", true, false, false,
-                Set.of(GrupoTestUtils.createGrupoAdminMock()));
+    public static Usuario createInativo(String nome, String email, Set<Grupo> grupos) {
+        String valorSenha = MOCK_SENHA_PREFIX + (email.length() > 21 ? email.substring(0, 21) : email);
+
+        return new UsuarioBuilder()
+                .withNome(nome)
+                .withDataNascimento(LocalDate.now().minusYears(20))
+                .withEmail(email)
+                .withAtivo(false)
+                .withPendente(false)
+                .withBloqueado(false)
+                .withSenha(new Senha(BcryptUtils.encode(valorSenha), null))
+                .withGrupos(grupos)
+                .build();
+    }
+
+    public static Usuario createBloqueado(String nome, String email, Set<Grupo> grupos) {
+        return new UsuarioBuilder()
+                .withNome(nome)
+                .withDataNascimento(LocalDate.now().minusYears(20))
+                .withEmail(email)
+                .withAtivo(true)
+                .withPendente(false)
+                .withBloqueado(true)
+                .withSenha(new Senha(null, MOCK_TOKEN_PREFIX + email))
+                .withGrupos(grupos)
+                .build();
+    }
+
+    public static Usuario createAdminMock() {
+        return new UsuarioBuilder()
+                .withId(Usuario.ID_ADMIN)
+                .withNome("Administrador")
+                .withDataNascimento(LocalDate.now().minusYears(20))
+                .withEmail("admin@email.com")
+                .withAtivo(true)
+                .withPendente(false)
+                .withBloqueado(false)
+                .withSenha(new Senha(MOCK_SENHA_PREFIX + "admin@email.com"))
+                .withGrupos(Set.of(GrupoTestUtils.createAdminMock()))
+                .build();
     }
 
 }

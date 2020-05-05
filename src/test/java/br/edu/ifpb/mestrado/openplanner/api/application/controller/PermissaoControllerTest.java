@@ -42,7 +42,7 @@ public class PermissaoControllerTest extends BaseControllerTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        permissaoAdminMock = PermissaoTestUtils.createPermissaoAdminMock();
+        permissaoAdminMock = PermissaoTestUtils.createAdminMock();
 
         permissaoListMock = new ArrayList<>();
         permissaoListMock.add(permissaoAdminMock);

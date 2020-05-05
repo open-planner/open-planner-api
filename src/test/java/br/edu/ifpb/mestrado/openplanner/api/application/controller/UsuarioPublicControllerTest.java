@@ -17,7 +17,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
-import br.edu.ifpb.mestrado.openplanner.api.test.util.UsuarioTestUtils;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
@@ -32,14 +31,13 @@ public class UsuarioPublicControllerTest extends BaseControllerTest {
 
     @Test
     public void testCreate() {
-        Usuario usuarioMock = UsuarioTestUtils.createUsuario(21L, "Test", LocalDate.now().minusYears(20), "user.test@email.com", true,
-                null);
-        when(usuarioServiceMock.save(any())).thenReturn(usuarioMock);
+        when(usuarioServiceMock.save(any())).thenReturn(new Usuario());
 
         String requestBody = "{\n" + 
                 "  \"nome\": \"Test\",\n" + 
                 "  \"dataNascimento\": \"" + LocalDate.now().minusYears(20) + "\",\n" + 
-                "  \"email\": \"user.test@email.com\"\n" + 
+                "  \"email\": \"user.test@email.com\",\n" + 
+                "  \"senha\": \"Pass@0987\"\n" + 
                 "}";
         Response response = given()
                 .contentType(ContentType.JSON)
@@ -51,9 +49,7 @@ public class UsuarioPublicControllerTest extends BaseControllerTest {
 
     @Test
     public void testActivate() {
-        Usuario usuarioMock = UsuarioTestUtils.createUsuario(21L, "Test", LocalDate.now().minusYears(20), "user.test@email.com", true,
-                null);
-        when(usuarioServiceMock.save(any())).thenReturn(usuarioMock);
+        when(usuarioServiceMock.save(any())).thenReturn(new Usuario());
         
         String requestBody = "{\n" + 
                 "  \"token\": \"1234-56-7890\"\n" + 
@@ -68,9 +64,7 @@ public class UsuarioPublicControllerTest extends BaseControllerTest {
 
     @Test
     public void testUpdateSenhaByResetToken() {
-        Usuario usuarioMock = UsuarioTestUtils.createUsuario(21L, "Test", LocalDate.now().minusYears(20), "user.test@email.com", true,
-                null);
-        when(usuarioServiceMock.updateSenhaByResetToken(any(), any())).thenReturn(usuarioMock);
+        when(usuarioServiceMock.updateSenhaByResetToken(any(), any())).thenReturn(new Usuario());
 
         String requestBody = "{\n" + 
                 "  \"token\": \"1234-56-7890\",\n" + 
@@ -98,22 +92,5 @@ public class UsuarioPublicControllerTest extends BaseControllerTest {
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
-
-    // TODO implementar método recoverLogin
-//    @Test
-//    public void testRecoverLogin() {
-//        doNothing().when(usuarioServiceMock).recoverLogin(any());
-//
-//        String requestBody = "{\n" + 
-//                "  \"email\": \"user.test@email.com\"\n" + 
-//                "}";
-//        Response response = given()
-//                .auth().oauth2(givenAccessTokenAsAdmin())
-//                .contentType(ContentType.JSON)
-//                .body(requestBody)
-//                .when().post(buildUrl(BASE_PATH, "recuperacao", "login"));
-//
-//        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
-//    }
 
 }

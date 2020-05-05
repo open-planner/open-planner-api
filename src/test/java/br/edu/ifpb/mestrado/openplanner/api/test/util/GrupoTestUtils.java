@@ -27,7 +27,7 @@ public class GrupoTestUtils {
                 });
     }
 
-    public static Grupo createGrupo(String nome, Boolean ativo, Set<Permissao> permissoes) {
+    public static Grupo create(String nome, Boolean ativo, Set<Permissao> permissoes) {
         return new GrupoBuilder()
                 .withNome(nome)
                 .withPermissoes(permissoes)
@@ -35,7 +35,7 @@ public class GrupoTestUtils {
                 .build();
     }
 
-    public static Grupo createGrupo(Long id, String nome, Boolean ativo, Set<Permissao> permissoes) {
+    public static Grupo create(Long id, String nome, Boolean ativo, Set<Permissao> permissoes) {
         return new GrupoBuilder()
                 .withId(id)
                 .withNome(nome)
@@ -44,16 +44,16 @@ public class GrupoTestUtils {
                 .build();
     }
 
-    public static Grupo createGrupo(String nome, Boolean ativo) {
-        return createGrupo(nome, ativo, null);
+    public static Grupo create(String nome, Boolean ativo) {
+        return create(nome, ativo, null);
     }
 
-    public static Grupo createGrupo(Long id, String nome, Boolean ativo) {
-        return createGrupo(id, nome, ativo, null);
+    public static Grupo create(Long id, String nome, Boolean ativo) {
+        return create(id, nome, ativo, null);
     }
 
-    public static Grupo createGrupoAdminMock() {
-        return createGrupo(1L, "Administrador", true, Set.of(PermissaoTestUtils.createPermissaoAdminMock()));
+    public static Grupo createAdminMock() {
+        return create(1L, "Administrador", true, Set.of(PermissaoTestUtils.createAdminMock()));
     }
 
 }

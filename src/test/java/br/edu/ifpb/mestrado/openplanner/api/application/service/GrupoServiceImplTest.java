@@ -58,10 +58,10 @@ public class GrupoServiceImplTest {
     public void setUp() throws Exception {
         mockAuthenticationForAuditing(MOCK_EMAIL_ADMIN);
 
-        grupoRepository.save(GrupoTestUtils.createGrupo("Gerência", true, findPermissoesByIds(1L)));
-        grupoRepository.save(GrupoTestUtils.createGrupo("Recepção", true, findPermissoesByIds(2L, 3L, 4L)));
-        grupoRepository.save(GrupoTestUtils.createGrupo("Recursos Humanos", true, findPermissoesByIds(2L, 3L, 4L, 5L)));
-        grupoRepository.save(GrupoTestUtils.createGrupo("Vendas", false));
+        grupoRepository.save(GrupoTestUtils.create("Gerência", true, findPermissoesByIds(1L)));
+        grupoRepository.save(GrupoTestUtils.create("Recepção", true, findPermissoesByIds(2L, 3L, 4L)));
+        grupoRepository.save(GrupoTestUtils.create("Recursos Humanos", true, findPermissoesByIds(2L, 3L, 4L, 5L)));
+        grupoRepository.save(GrupoTestUtils.create("Vendas", false));
     }
 
     @AfterEach
@@ -154,7 +154,7 @@ public class GrupoServiceImplTest {
 
     @Test
     public void testSave() {
-        Grupo grupo = GrupoTestUtils.createGrupo("Marketing", true, findPermissoesByIds(Permissao.ID_ADMIN));
+        Grupo grupo = GrupoTestUtils.create("Marketing", true, findPermissoesByIds(Permissao.ID_ADMIN));
         grupoService.save(grupo);
 
         assertThat(grupo.getId()).isGreaterThan(1L);
@@ -166,21 +166,21 @@ public class GrupoServiceImplTest {
 
     @Test
     public void testSave_whenHasPermissaoRoot() {
-        Grupo grupo = GrupoTestUtils.createGrupo("Marketing", true, findPermissoesByIds(Permissao.ID_ROOT));
+        Grupo grupo = GrupoTestUtils.create("Marketing", true, findPermissoesByIds(Permissao.ID_ROOT));
 
         assertThrows(BusinessException.class, () -> grupoService.save(grupo), "grupo.save.permissoes.root");
     }
 
     @Test
     public void testSave_whenHasPermissaoSystem() {
-        Grupo grupo = GrupoTestUtils.createGrupo("Marketing", true, findPermissoesByIds(Permissao.ID_SYSTEM));
+        Grupo grupo = GrupoTestUtils.create("Marketing", true, findPermissoesByIds(Permissao.ID_SYSTEM));
 
         assertThrows(BusinessException.class, () -> grupoService.save(grupo), "grupo.save.permissoes.system");
     }
 
     @Test
     public void testSave_whenHasPermissaoAdmin() {
-        Grupo grupo = grupoService.save(GrupoTestUtils.createGrupo("Marketing", true, findPermissoesByIds(Permissao.ID_ADMIN)));
+        Grupo grupo = grupoService.save(GrupoTestUtils.create("Marketing", true, findPermissoesByIds(Permissao.ID_ADMIN)));
 
         assertThat(grupo.getId()).isGreaterThan(1L);
         assertThat(grupo.getNome()).isEqualTo("Marketing");
@@ -193,16 +193,16 @@ public class GrupoServiceImplTest {
     public void testSave_whenHasPermissaoAdminAndAdminOrRootNotAuthenticated() {
         mockAuthenticationForAuditing("system");
 
-        Grupo grupo = GrupoTestUtils.createGrupo("Marketing", true, findPermissoesByIds(Permissao.ID_SYSTEM));
+        Grupo grupo = GrupoTestUtils.create("Marketing", true, findPermissoesByIds(Permissao.ID_SYSTEM));
 
         assertThrows(BusinessException.class, () -> grupoService.save(grupo), "grupo.save.permissoes.admin");
     }
 
     @Test
     public void testUpdate() {
-        Long idGrupo = grupoRepository.save(GrupoTestUtils.createGrupo("Marketing", false)).getId();
+        Long idGrupo = grupoRepository.save(GrupoTestUtils.create("Marketing", false)).getId();
 
-        Grupo grupo = grupoService.update(idGrupo, GrupoTestUtils.createGrupo("Marketing", true, findPermissoesByIds(Permissao.ID_ADMIN)));
+        Grupo grupo = grupoService.update(idGrupo, GrupoTestUtils.create("Marketing", true, findPermissoesByIds(Permissao.ID_ADMIN)));
 
         assertThat(grupo.getId()).isEqualTo(idGrupo);
         assertThat(grupo.getNome()).isEqualTo("Marketing");
@@ -213,35 +213,35 @@ public class GrupoServiceImplTest {
 
     @Test
     public void testUpdate_whenNotFound() {
-        Grupo grupo = GrupoTestUtils.createGrupo("Marketing", true, findPermissoesByIds(4L));
+        Grupo grupo = GrupoTestUtils.create("Marketing", true, findPermissoesByIds(4L));
 
         assertThrows(InformationNotFoundException.class, () -> grupoService.update(99L, grupo));
     }
 
     @Test
     public void testUpdate_whenRootPermissaoAlterada() {
-        Grupo grupo = GrupoTestUtils.createGrupo("Super User", true, findPermissoesByIds(1L));
+        Grupo grupo = GrupoTestUtils.create("Super User", true, findPermissoesByIds(1L));
 
         assertThrows(BusinessException.class, () -> grupoService.update(Grupo.ID_ROOT, grupo), "grupo.update.root.permissoes");
     }
 
     @Test
     public void testUpdate_whenSystemPermissaoAlterada() {
-        Grupo grupo = GrupoTestUtils.createGrupo("System User", true, findPermissoesByIds(1L));
+        Grupo grupo = GrupoTestUtils.create("System User", true, findPermissoesByIds(1L));
 
         assertThrows(BusinessException.class, () -> grupoService.update(Grupo.ID_SYSTEM, grupo), "grupo.update.system.permissoes");
     }
 
     @Test
     public void testUpdate_whenAdminPermissaoAlterada() {
-        Grupo grupo = GrupoTestUtils.createGrupo("Admin User", true, findPermissoesByIds(2L));
+        Grupo grupo = GrupoTestUtils.create("Admin User", true, findPermissoesByIds(2L));
 
         assertThrows(BusinessException.class, () -> grupoService.update(Grupo.ID_ADMIN, grupo), "grupo.update.admin.permissoes");
     }
 
     @Test
     public void testSwitchActive() {
-        Long idGrupo = grupoRepository.save(GrupoTestUtils.createGrupo("Marketing", false, findPermissoesByIds(Permissao.ID_ADMIN)))
+        Long idGrupo = grupoRepository.save(GrupoTestUtils.create("Marketing", false, findPermissoesByIds(Permissao.ID_ADMIN)))
                 .getId();
 
         Grupo grupo = grupoService.switchActive(idGrupo);

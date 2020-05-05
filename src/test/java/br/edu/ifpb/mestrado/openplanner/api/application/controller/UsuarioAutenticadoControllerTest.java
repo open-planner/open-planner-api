@@ -39,7 +39,7 @@ public class UsuarioAutenticadoControllerTest extends BaseControllerTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        usuarioAdminMock = UsuarioTestUtils.createUsuarioAdminMock();
+        usuarioAdminMock = UsuarioTestUtils.createAdminMock();
     }
 
     @Test
