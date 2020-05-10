@@ -22,7 +22,6 @@ import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.service.OAuth2UserDetailsService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.util.BcryptUtils;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.service.MailService;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.service.MessageService;
 
 @Service
 public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements UsuarioService {
@@ -33,17 +32,14 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 
     private MailFactory mailFactory;
 
-    private MessageService messageService;
-
     private SecurityProperties securityProperties;
 
     public UsuarioServiceImpl(OAuth2UserDetailsService userDetailsService, UsuarioRepository usuarioRepository, MailService mailService,
-            MailFactory mailFactory, MessageService messageService, SecurityProperties securityProperties) {
+            MailFactory mailFactory, SecurityProperties securityProperties) {
         super(userDetailsService);
         this.usuarioRepository = usuarioRepository;
         this.mailService = mailService;
         this.mailFactory = mailFactory;
-        this.messageService = messageService;
         this.securityProperties = securityProperties;
     }
 
@@ -51,14 +47,14 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
     @Override
     public Usuario findByEmail(String email) {
         return usuarioRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new InformationNotFoundException(messageService.getMessage("resource.information-not-found")));
+                .orElseThrow(() -> new InformationNotFoundException());
     }
 
     @Transactional(readOnly = true)
     @Override
     public Usuario findByAtivacaoToken(String token) {
         return usuarioRepository.findByAtivacaoToken(token)
-                .orElseThrow(() -> new InformationNotFoundException(messageService.getMessage("resource.information-not-found")));
+                .orElseThrow(() -> new InformationNotFoundException());
     }
 
     @Transactional(readOnly = true)
