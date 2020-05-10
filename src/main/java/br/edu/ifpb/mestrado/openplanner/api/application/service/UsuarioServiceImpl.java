@@ -133,7 +133,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
             sendMailRegistration(usuarioUpdated);
         }
 
-        return super.update(id, usuario);
+        return usuarioUpdated;
     }
 
     @Transactional

@@ -14,9 +14,6 @@ public interface UsuarioService extends BaseService<Usuario> {
 
     Usuario updateSenhaByResetToken(String resetToken, String senha);
 
-    // TODO implementar método recoverLogin
-//    void recoverLogin(String email);
-
     void recoverSenha(String email);
 
     Usuario getAutenticado();

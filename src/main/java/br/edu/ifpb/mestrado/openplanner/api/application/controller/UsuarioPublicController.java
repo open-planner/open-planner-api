@@ -56,11 +56,4 @@ public class UsuarioPublicController {
         usuarioService.recoverSenha(requestTO.getEmail());
     }
 
-    // TODO implementar método recoverLogin
-//    @PostMapping("/recuperacao/login")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void recoverLogin(@Valid @RequestBody UsuarioEmailRequestTO requestTO) {
-//        usuarioService.recoverLogin(requestTO.getEmail());
-//    }
-
 }
