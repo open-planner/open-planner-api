@@ -93,21 +93,15 @@ public class OAuth2UserDetailsService implements UserDetailsService {
 
     private void validateUsuario(Usuario usuario) {
         if (!usuario.getAtivo()) {
-            throw new AuthenticationException("usuario.inativo");
-        }
-
-        long countGruposAtivos = usuario.getGrupos().stream().filter(g -> g.getAtivo()).count();
-
-        if (countGruposAtivos == 0) {
-            throw new AuthenticationException("usuario.sem-grupo-ativo");
+            throw new AuthenticationException(messageService.getMessage("usuario.inativo"));
         }
 
         if (usuario.getPendente()) {
-            throw new AuthenticationException("usuario.pendente");
+            throw new AuthenticationException(messageService.getMessage("usuario.pendente"));
         }
 
         if (usuario.getBloqueado()) {
-            throw new AuthenticationException("usuario.bloqueado");
+            throw new AuthenticationException(messageService.getMessage("usuario.bloqueado"));
         }
     }
 
