@@ -17,7 +17,7 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioAutenticadoRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioAutenticadoResponseTO;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioSenhaRequestTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioAutenticadoSenhaRequestTO;
 
 @RestController
 @RequestMapping("/me")
@@ -55,7 +55,7 @@ public class UsuarioAutenticadoController {
 
     @PatchMapping("/senha")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateSenha(@RequestBody UsuarioSenhaRequestTO requestTO) {
+    public void updateSenha(@RequestBody UsuarioAutenticadoSenhaRequestTO requestTO) {
         usuarioService.updateSenhaAutenticado(requestTO.getSenhaAtual(), requestTO.getSenhaNova());
     }
 
