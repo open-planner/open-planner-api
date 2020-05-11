@@ -16,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties.OAuth2Properties;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioResponseTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioAutenticadoResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.test.util.UsuarioTestUtils;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -106,7 +106,7 @@ public class UsuarioAutenticadoControllerTest extends BaseControllerTest {
     }
 
     private void assertUsuarioResponseTO(Response response, Usuario usuario) {
-        UsuarioResponseTO usuarioResponseTO = response.then().extract().as(UsuarioResponseTO.class);
+        UsuarioAutenticadoResponseTO usuarioResponseTO = response.then().extract().as(UsuarioAutenticadoResponseTO.class);
 
         UsuarioTestUtils.assertResponseTO(usuarioResponseTO, usuario);
     }

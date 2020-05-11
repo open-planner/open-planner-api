@@ -10,6 +10,7 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Senha;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.util.BcryptUtils;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioAutenticadoResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.test.builder.UsuarioBuilder;
 
@@ -35,6 +36,14 @@ public class UsuarioTestUtils {
                             .findFirst();
                     GrupoTestUtils.assertResponseTO(grupoResponseTO, grupoOpt.get());
                 });
+    }
+
+    public static void assertResponseTO(UsuarioAutenticadoResponseTO usuarioResponseTO, Usuario usuario) {
+        assertThat(usuarioResponseTO.getId()).isEqualTo(usuario.getId());
+        assertThat(usuarioResponseTO.getNome()).isEqualTo(usuario.getNome());
+        assertThat(usuarioResponseTO.getDataNascimento()).isEqualTo(usuario.getDataNascimento());
+        assertThat(usuarioResponseTO.getEmail()).isEqualTo(usuario.getEmail());
+        assertThat(usuarioResponseTO.getLinks()).hasSize(3);
     }
 
     public static Usuario createForSaveService(String nome, String email, Set<Grupo> grupos) {
