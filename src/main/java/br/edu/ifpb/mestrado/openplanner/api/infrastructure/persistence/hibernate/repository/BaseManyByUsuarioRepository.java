@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
-public interface BaseManyByUserRepository<T> extends BaseRepository<T> {
+public interface BaseManyByUsuarioRepository<T> extends BaseRepository<T> {
 
     List<T> findByUsuarioId(Long id);
 

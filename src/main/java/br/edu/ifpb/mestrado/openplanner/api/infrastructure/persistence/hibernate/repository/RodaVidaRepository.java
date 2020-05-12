@@ -2,6 +2,6 @@ package br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernat
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.RodaVida;
 
-public interface RodaVidaRepository extends BaseOneByUserRepository<RodaVida> {
+public interface RodaVidaRepository extends BaseOneByUsuarioRepository<RodaVida> {
 
 }
