@@ -17,11 +17,6 @@ spring:
       connection-timeout: 60000
   jpa:
     properties:
-      org:
-        hibernate:
-          envers:
-            default_schema: audit
-            audit_table_suffix: _aud
       hibernate:
         temp:
           use_jdbc_metadata_defaults: false
