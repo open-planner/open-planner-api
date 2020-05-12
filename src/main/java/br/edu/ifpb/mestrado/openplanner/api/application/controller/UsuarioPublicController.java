@@ -24,17 +24,17 @@ public class UsuarioPublicController {
 
     private UsuarioService usuarioService;
 
-    private ModelMapperFacade converterService;
+    private ModelMapperFacade modelMapperFacade;
 
-    public UsuarioPublicController(UsuarioService usuarioService, ModelMapperFacade converterService) {
+    public UsuarioPublicController(UsuarioService usuarioService, ModelMapperFacade modelMapperFacade) {
         this.usuarioService = usuarioService;
-        this.converterService = converterService;
+        this.modelMapperFacade = modelMapperFacade;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@Valid @RequestBody UsuarioPublicRequestTO requestTO) {
-        Usuario usuario = converterService.map(requestTO, Usuario.class);
+        Usuario usuario = modelMapperFacade.map(requestTO, Usuario.class);
         usuarioService.save(usuario);
     }
 

@@ -25,17 +25,17 @@ public class UsuarioAutenticadoController {
 
     private UsuarioService usuarioService;
 
-    private ModelMapperFacade converterService;
+    private ModelMapperFacade modelMapperFacade;
 
-    public UsuarioAutenticadoController(UsuarioService usuarioService, ModelMapperFacade converterService) {
+    public UsuarioAutenticadoController(UsuarioService usuarioService, ModelMapperFacade modelMapperFacade) {
         this.usuarioService = usuarioService;
-        this.converterService = converterService;
+        this.modelMapperFacade = modelMapperFacade;
     }
 
     @GetMapping
     public ResponseEntity<UsuarioAutenticadoResponseTO> find() {
         Usuario usuario = usuarioService.getAutenticado();
-        UsuarioAutenticadoResponseTO responseTO = converterService.map(usuario, UsuarioAutenticadoResponseTO.class);
+        UsuarioAutenticadoResponseTO responseTO = modelMapperFacade.map(usuario, UsuarioAutenticadoResponseTO.class);
 
         addLinks(responseTO);
 
@@ -44,9 +44,9 @@ public class UsuarioAutenticadoController {
 
     @PutMapping
     public ResponseEntity<UsuarioAutenticadoResponseTO> update(@RequestBody UsuarioAutenticadoRequestTO requestTO) {
-        Usuario usuario = converterService.map(requestTO, Usuario.class);
+        Usuario usuario = modelMapperFacade.map(requestTO, Usuario.class);
         Usuario updatedUsuario = usuarioService.updateAutenticado(usuario);
-        UsuarioAutenticadoResponseTO responseTO = converterService.map(updatedUsuario, UsuarioAutenticadoResponseTO.class);
+        UsuarioAutenticadoResponseTO responseTO = modelMapperFacade.map(updatedUsuario, UsuarioAutenticadoResponseTO.class);
 
         addLinks(responseTO);
 

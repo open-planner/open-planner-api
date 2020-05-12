@@ -21,18 +21,18 @@ public class PermissaoController {
 
     private PermissaoService permissaoService;
 
-    private ModelMapperFacade converterService;
+    private ModelMapperFacade modelMapperFacade;
 
-    public PermissaoController(PermissaoService permissaoService, ModelMapperFacade converterService) {
+    public PermissaoController(PermissaoService permissaoService, ModelMapperFacade modelMapperFacade) {
         this.permissaoService = permissaoService;
-        this.converterService = converterService;
+        this.modelMapperFacade = modelMapperFacade;
     }
 
     @GetMapping("/ativos")
     @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('read')")
     public ResponseEntity<List<PermissaoResponseTO>> findAllActive() {
         List<Permissao> permissoes = permissaoService.findAllActive();
-        List<PermissaoResponseTO> responseTOList = converterService.map(permissoes, PermissaoResponseTO.class);
+        List<PermissaoResponseTO> responseTOList = modelMapperFacade.map(permissoes, PermissaoResponseTO.class);
 
         responseTOList.stream().forEach(responseTO -> responseTO.add(PermissaoLinkFactory.create(responseTO.getId())));
 

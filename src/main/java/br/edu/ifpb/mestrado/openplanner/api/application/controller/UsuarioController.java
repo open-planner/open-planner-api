@@ -36,11 +36,11 @@ public class UsuarioController {
 
     private UsuarioService usuarioService;
 
-    private ModelMapperFacade converterService;
+    private ModelMapperFacade modelMapperFacade;
 
-    public UsuarioController(UsuarioService usuarioService, ModelMapperFacade converterService) {
+    public UsuarioController(UsuarioService usuarioService, ModelMapperFacade modelMapperFacade) {
         this.usuarioService = usuarioService;
-        this.converterService = converterService;
+        this.modelMapperFacade = modelMapperFacade;
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('read')")
@@ -48,7 +48,7 @@ public class UsuarioController {
     public ResponseEntity<Page<UsuarioReducedResponseTO>> findAll(UsuarioFilterRequestTO filterRequestTO, Pageable pageable) {
         Specification<Usuario> specification = new SpecificationFactory<Usuario>().create(filterRequestTO, Usuario.class);
         Page<Usuario> page = usuarioService.findAll(specification, pageable);
-        Page<UsuarioReducedResponseTO> responseTOPage = converterService.map(page, UsuarioReducedResponseTO.class);
+        Page<UsuarioReducedResponseTO> responseTOPage = modelMapperFacade.map(page, UsuarioReducedResponseTO.class);
 
         responseTOPage.getContent().stream().forEach(responseTO -> responseTO.add(UsuarioLinkFactory.create(responseTO.getId())));
 
@@ -59,7 +59,7 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponseTO> findById(@PathVariable Long id) {
         Usuario usuario = usuarioService.findById(id);
-        UsuarioResponseTO responseTO = converterService.map(usuario, UsuarioResponseTO.class);
+        UsuarioResponseTO responseTO = modelMapperFacade.map(usuario, UsuarioResponseTO.class);
 
         addLinks(responseTO);
 
@@ -70,7 +70,7 @@ public class UsuarioController {
     @GetMapping("/ativos")
     public ResponseEntity<List<UsuarioMinResponseTO>> findAllActive() {
         List<Usuario> usuarios = usuarioService.findAllActive();
-        List<UsuarioMinResponseTO> responseTOList = converterService.map(usuarios, UsuarioMinResponseTO.class);
+        List<UsuarioMinResponseTO> responseTOList = modelMapperFacade.map(usuarios, UsuarioMinResponseTO.class);
 
         responseTOList.stream().forEach(responseTO -> responseTO.add(UsuarioLinkFactory.create(responseTO.getId())));
 
@@ -80,9 +80,9 @@ public class UsuarioController {
     @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('write')")
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseTO> update(@PathVariable Long id, @RequestBody UsuarioRequestTO requestTO) {
-        Usuario usuario = converterService.map(requestTO, Usuario.class);
+        Usuario usuario = modelMapperFacade.map(requestTO, Usuario.class);
         Usuario updatedUsuario = usuarioService.update(id, usuario);
-        UsuarioResponseTO responseTO = converterService.map(updatedUsuario, UsuarioResponseTO.class);
+        UsuarioResponseTO responseTO = modelMapperFacade.map(updatedUsuario, UsuarioResponseTO.class);
 
         addLinks(responseTO);
 
