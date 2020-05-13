@@ -10,11 +10,11 @@ public interface BaseService<T> {
 
     public T findById(Long id);
 
+    public List<T> findAll();
+
     public Page<T> findAll(Pageable pageable);
 
     public Page<T> findAll(Specification<T> specification, Pageable pageable);
-
-    public List<T> findAllActive();
 
     public T save(T entity);
 

@@ -65,7 +65,8 @@ public class UsuarioServiceImplTest {
     private MailService mailService;
 
     @Autowired
-    public UsuarioServiceImplTest(UsuarioService usuarioService, UsuarioRepository usuarioRepository, PermissaoRepository permissaoRepository) {
+    public UsuarioServiceImplTest(UsuarioService usuarioService, UsuarioRepository usuarioRepository,
+            PermissaoRepository permissaoRepository) {
         this.usuarioService = usuarioService;
         this.usuarioRepository = usuarioRepository;
         this.permissaoRepository = permissaoRepository;
@@ -76,7 +77,8 @@ public class UsuarioServiceImplTest {
         mockAuthenticationForAuditing(MOCK_EMAIL_ADMIN);
         doNothing().when(mailService).send(any(MailRequestTO.class));
 
-        usuarioRepository.save(UsuarioTestUtils.create("João Paulo de Lima", "joao.lima@email.com", findPermissoesByIds(Permissao.ID_ADMIN)));
+        usuarioRepository
+                .save(UsuarioTestUtils.create("João Paulo de Lima", "joao.lima@email.com", findPermissoesByIds(Permissao.ID_ADMIN)));
         usuarioRepository.save(UsuarioTestUtils.create("Maria da Silva", "maria.silva@email.com"));
         usuarioRepository.save(UsuarioTestUtils.createPendente("José de Souza", "jose.souza@email.com"));
         usuarioRepository.save(UsuarioTestUtils.createPendente("José de Paula", "jose.paula@email.com"));
@@ -187,17 +189,6 @@ public class UsuarioServiceImplTest {
     }
 
     @Test
-    public void testFindAllBySpecificationAndPageable_filterByAtivo() {
-        UsuarioFilterRequestTO filter = new UsuarioFilterRequestTOBuilder()
-                .withAtivo(true)
-                .build();
-
-        Page<Usuario> usuariosPage = usuarioService.findAll(createSpecification(filter, Usuario.class), PageRequest.of(0, 10));
-
-        assertPage(usuariosPage, 10, 0, 3, 1, 3);
-    }
-
-    @Test
     public void testFindAllBySpecificationAndPageable_notFound() {
         UsuarioFilterRequestTO filter = new UsuarioFilterRequestTOBuilder()
                 .withNome("alberto")
@@ -206,13 +197,6 @@ public class UsuarioServiceImplTest {
         Page<Usuario> usuariosPage = usuarioService.findAll(createSpecification(filter, Usuario.class), PageRequest.of(0, 10));
 
         assertPageNoContent(usuariosPage, 10, 0);
-    }
-
-    @Test
-    public void findAllActive() {
-        List<Usuario> usuarios = usuarioService.findAllActive();
-
-        assertThat(usuarios).hasSize(2);
     }
 
     @Test
@@ -270,21 +254,24 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testSave_whenHasPermissaoRoot() {
-        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com", findPermissoesByIds(Permissao.ID_ROOT));
+        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com",
+                findPermissoesByIds(Permissao.ID_ROOT));
 
         assertThrows(BusinessException.class, () -> usuarioService.save(usuario), "usuario.save.permissoes.root");
     }
 
     @Test
     public void testSave_whenHasPermissaoSystem() {
-        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com", findPermissoesByIds(Permissao.ID_SYSTEM));
+        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com",
+                findPermissoesByIds(Permissao.ID_SYSTEM));
 
         assertThrows(BusinessException.class, () -> usuarioService.save(usuario), "usuario.save.permissoes.system");
     }
 
     @Test
     public void testSave_whenHasPermissaoAdmin() {
-        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com", findPermissoesByIds(Permissao.ID_ADMIN));
+        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com",
+                findPermissoesByIds(Permissao.ID_ADMIN));
         usuarioService.save(usuario);
 
         verifySendMail(1);
@@ -295,7 +282,8 @@ public class UsuarioServiceImplTest {
     @Test
     public void testSave_whenHasPermissaoAdminAndAdminOrRootNotAuthenticated() {
         mockAuthenticationForAuditing("system@email.com");
-        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com", findPermissoesByIds(Permissao.ID_ADMIN));
+        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com",
+                findPermissoesByIds(Permissao.ID_ADMIN));
 
         assertThrows(BusinessException.class, () -> usuarioService.save(usuario), "usuario.save.permissoes.admin");
     }

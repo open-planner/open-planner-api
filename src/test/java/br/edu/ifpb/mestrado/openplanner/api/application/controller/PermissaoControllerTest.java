@@ -49,12 +49,13 @@ public class PermissaoControllerTest extends BaseControllerTest {
     }
 
     @Test
-    public void testFindAllActive() {
-        when(permissaoServiceMock.findAllActive()).thenReturn(permissaoListMock);
+    public void testFindAll() {
+        when(permissaoServiceMock.findAll()).thenReturn(permissaoListMock);
 
         Response response = given()
                 .auth().oauth2(givenAccessTokenAsAdmin())
-                .when().get(buildUrl(BASE_PATH, "ativos"));
+                .log().ifValidationFails()
+                .when().get(buildUrl(BASE_PATH));
 
         response.then()
                 .statusCode(HttpStatus.OK.value()).assertThat()
@@ -62,7 +63,7 @@ public class PermissaoControllerTest extends BaseControllerTest {
                 .body("[0].id", equalTo(permissaoAdminMock.getId().intValue()))
                 .body("[0].papel", equalTo(permissaoAdminMock.getPapel().name()))
                 .body("[0].descricao", equalTo(permissaoAdminMock.getDescricao()))
-                .body("[0].links.size()", equalTo(1));
+                .body("[0].links.size()", equalTo(0));
     }
 
 }

@@ -15,8 +15,8 @@ public class PermissaoLinkFactory {
     public static List<Link> create(Long id) {
         List<Link> links = new ArrayList<>();
         links.add(linkTo(methodOn(PermissaoController.class)
-                .findAllActive())
-                .withRel("ativos"));
+                .findAll())
+                .withSelfRel());
 
         return links;
     }

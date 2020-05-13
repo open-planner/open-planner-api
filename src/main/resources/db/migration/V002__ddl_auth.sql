@@ -25,7 +25,7 @@ CREATE TABLE auth.usuario (
   CONSTRAINT uk_usuario_email UNIQUE(email)
 );
 
-CREATE INDEX idx_usuario_excluido ON auth.usuario(excluido);
+CREATE INDEX idx_usuario_excluded ON auth.usuario(excluded);
 
 CREATE TABLE auth.permissao (
   id SERIAL,

@@ -23,3 +23,5 @@ CREATE TABLE planner.roda_vida (
     MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT uk_roda_vida_id_usuario UNIQUE(id_usuario)
 );
+
+CREATE INDEX idx_roda_vida_excluded ON planner.roda_vida(excluded);

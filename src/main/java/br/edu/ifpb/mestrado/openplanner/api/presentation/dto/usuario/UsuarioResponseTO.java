@@ -24,8 +24,6 @@ public class UsuarioResponseTO extends RepresentationModel<UsuarioResponseTO> im
 
     private Boolean bloqueado;
 
-    private Boolean ativo;
-
     private Set<PermissaoResponseTO> permissoes;
 
     public UsuarioResponseTO() {
@@ -80,14 +78,6 @@ public class UsuarioResponseTO extends RepresentationModel<UsuarioResponseTO> im
         this.bloqueado = bloqueado;
     }
 
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
-    }
-
     public Set<PermissaoResponseTO> getPermissoes() {
         return permissoes;
     }
@@ -98,9 +88,8 @@ public class UsuarioResponseTO extends RepresentationModel<UsuarioResponseTO> im
 
     @Override
     public String toString() {
-        return String.format(
-                "UsuarioResponseTO [id=%s, nome=%s, dataNascimento=%s, email=%s, pendente=%s, bloqueado=%s, ativo=%s, permissoes=%s]", id,
-                nome, dataNascimento, email, pendente, bloqueado, ativo, permissoes);
+        return String.format("UsuarioResponseTO [id=%s, nome=%s, dataNascimento=%s, email=%s, pendente=%s, bloqueado=%s, permissoes=%s]",
+                id, nome, dataNascimento, email, pendente, bloqueado, permissoes);
     }
 
 }

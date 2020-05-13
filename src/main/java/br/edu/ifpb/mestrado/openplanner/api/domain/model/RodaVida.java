@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.AuditedBaseEntity;
@@ -20,31 +21,39 @@ public class RodaVida extends AuditedBaseEntity implements Serializable {
     private static final long serialVersionUID = -1723760582908883735L;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id", unique = true)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id", unique = true, nullable = false)
     private Usuario usuario;
 
-    @Column(name = "espiritualidade", precision = 3, scale = 2)
+    @NotNull
+    @Column(name = "espiritualidade", precision = 3, scale = 2, nullable = false)
     private BigDecimal espiritualidade;
 
-    @Column(name = "entretenimento", precision = 3, scale = 2)
+    @NotNull
+    @Column(name = "entretenimento", precision = 3, scale = 2, nullable = false)
     private BigDecimal entretenimento;
 
-    @Column(name = "dinheiro", precision = 3, scale = 2)
+    @NotNull
+    @Column(name = "dinheiro", precision = 3, scale = 2, nullable = false)
     private BigDecimal dinheiro;
 
-    @Column(name = "carreira", precision = 3, scale = 2)
+    @NotNull
+    @Column(name = "carreira", precision = 3, scale = 2, nullable = false)
     private BigDecimal carreira;
 
-    @Column(name = "desenvolvimentoPessoal", precision = 3, scale = 2)
+    @NotNull
+    @Column(name = "desenvolvimentoPessoal", precision = 3, scale = 2, nullable = false)
     private BigDecimal desenvolvimentoPessoal;
 
-    @Column(name = "relacionamento", precision = 3, scale = 2)
+    @NotNull
+    @Column(name = "relacionamento", precision = 3, scale = 2, nullable = false)
     private BigDecimal relacionamento;
 
-    @Column(name = "saude", precision = 3, scale = 2)
+    @NotNull
+    @Column(name = "saude", precision = 3, scale = 2, nullable = false)
     private BigDecimal saude;
 
-    @Column(name = "ambiente", precision = 3, scale = 2)
+    @NotNull
+    @Column(name = "ambiente", precision = 3, scale = 2, nullable = false)
     private BigDecimal ambiente;
 
     public Usuario getUsuario() {

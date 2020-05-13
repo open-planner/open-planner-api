@@ -25,8 +25,6 @@ public class UsuarioFilterRequestTO implements Serializable {
     @SpecificationField(operation = Operation.LIKE_IGNORE_CASE)
     private String email;
 
-    private Boolean ativo;
-
     public UsuarioFilterRequestTO() {
         super();
     }
@@ -71,18 +69,10 @@ public class UsuarioFilterRequestTO implements Serializable {
         this.email = email;
     }
 
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
-    }
-
     @Override
     public String toString() {
-        return String.format("UsuarioFilterRequestTO [id=%s, nome=%s, dataNascimento=%s, email=%s, ativo=%s]", id, nome, dataNascimento,
-                email, ativo);
+        return String.format("UsuarioFilterRequestTO [id=%s, nome=%s, dataNascimento=%s, email=%s]", id, nome, dataNascimento,
+                email);
     }
 
 }

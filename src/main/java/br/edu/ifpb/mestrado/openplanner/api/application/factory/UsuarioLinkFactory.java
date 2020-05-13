@@ -22,9 +22,6 @@ public class UsuarioLinkFactory {
         links.add(linkTo(methodOn(UsuarioController.class)
                 .findAll(new UsuarioFilterRequestTO(), PageRequest.of(0, 10)))
                 .withRel("usuarios"));
-        links.add(linkTo(methodOn(UsuarioController.class)
-                .findAllActive())
-                .withRel("ativos"));
 
         return links;
     }

@@ -34,11 +34,6 @@ public class UsuarioFilterRequestTOBuilder {
         return this;
     }
 
-    public UsuarioFilterRequestTOBuilder withAtivo(Boolean ativo) {
-        usuarioFilter.setAtivo(ativo);
-        return this;
-    }
-
     public UsuarioFilterRequestTO build() {
         return usuarioFilter;
     }

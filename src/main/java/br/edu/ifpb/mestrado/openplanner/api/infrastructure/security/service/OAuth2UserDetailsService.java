@@ -90,7 +90,7 @@ public class OAuth2UserDetailsService implements UserDetailsService {
     }
 
     private void validateUsuario(Usuario usuario) {
-        if (!usuario.getExcluded()) {
+        if (usuario.getExcluded()) {
             throw new AuthenticationException(messageService.getMessage("usuario.excluido"));
         }
 

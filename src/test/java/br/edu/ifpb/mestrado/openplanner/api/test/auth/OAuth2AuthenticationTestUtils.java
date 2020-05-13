@@ -18,6 +18,7 @@ public class OAuth2AuthenticationTestUtils {
                 .formParam("username", username)
                 .formParam("password", password)
                 .when()
+                .log().ifValidationFails()
                 .post(url)
                 .then().log().ifValidationFails()
                 .assertThat()

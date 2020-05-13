@@ -18,8 +18,6 @@ public class UsuarioReducedResponseTO extends RepresentationModel<UsuarioReduced
 
     private Boolean bloqueado;
 
-    private Boolean ativo;
-
     public UsuarioReducedResponseTO() {
         super();
     }
@@ -64,18 +62,10 @@ public class UsuarioReducedResponseTO extends RepresentationModel<UsuarioReduced
         this.bloqueado = bloqueado;
     }
 
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
-    }
-
     @Override
     public String toString() {
-        return String.format("UsuarioReducedResponseTO [id=%s, nome=%s, email=%s, pendente=%s, bloqueado=%s, ativo=%s]", id, nome, email,
-                pendente, bloqueado, ativo);
+        return String.format("UsuarioReducedResponseTO [id=%s, nome=%s, email=%s, pendente=%s, bloqueado=%s]", id, nome, email, pendente,
+                bloqueado);
     }
 
 }

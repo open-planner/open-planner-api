@@ -13,6 +13,6 @@ public interface UsuarioRepository extends BaseRepository<Usuario> {
 
     Optional<Usuario> findBySenhaResetToken(String resetToken);
 
-    List<Usuario> findByAtivoAndPendenteAndBloqueado(Boolean ativo, Boolean pendente, Boolean bloqueado);
+    List<Usuario> findByExcludedAndPendenteAndBloqueado(Boolean excluded, Boolean pendente, Boolean bloqueado);
 
 }

@@ -1,7 +1,5 @@
 package br.edu.ifpb.mestrado.openplanner.api.application.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +16,6 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.factory.MailFactory;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.repository.BaseRepository;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.repository.UsuarioRepository;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.UsuarioSpecification;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.service.OAuth2UserDetailsService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.util.BcryptUtils;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.service.MailService;
@@ -71,12 +68,6 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         } catch (Exception exception) {
             throw new NotAuthenticatedUserException();
         }
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<Usuario> findAllActive() {
-        return usuarioRepository.findAll(UsuarioSpecification.positiveIdAndNotExcludedAndNotPendenteAndNotBloqueado());
     }
 
     @Transactional
@@ -216,15 +207,15 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         }
 
         if (usuario.anyPermissaoMatch(Permissao::isRoot)) {
-            throw new BusinessException("usuario.save.grupos.root");
+            throw new BusinessException("usuario.save.permissoes.root");
         }
 
         if (usuario.anyPermissaoMatch(Permissao::isSystem)) {
-            throw new BusinessException("usuario.save.grupos.system");
+            throw new BusinessException("usuario.save.permissoes.system");
         }
 
         if (!getAutenticado().isAdmin() && !getAutenticado().isRoot() && usuario.anyPermissaoMatch(Permissao::isAdmin)) {
-            throw new BusinessException("usuario.save.grupos.admin");
+            throw new BusinessException("usuario.save.permissoes.admin");
         }
 
         checkUniqueFields(usuario);
@@ -253,19 +244,19 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 
     private void checkUpdateRoot(Usuario usuario) {
         if (!usuario.anyPermissaoMatch(Permissao::isRoot)) {
-            throw new BusinessException("usuario.update.grupos.root");
+            throw new BusinessException("usuario.update.permissoes.root");
         }
     }
 
     private void checkUpdateSystem(Usuario usuario) {
         if (!usuario.anyPermissaoMatch(Permissao::isSystem)) {
-            throw new BusinessException("usuario.update.grupos.system");
+            throw new BusinessException("usuario.update.permissoes.system");
         }
     }
 
     private void checkUpdateAdmin(Usuario usuario) {
         if (!usuario.anyPermissaoMatch(Permissao::isAdmin)) {
-            throw new BusinessException("usuario.update.grupos.admin");
+            throw new BusinessException("usuario.update.permissoes.admin");
         }
     }
 

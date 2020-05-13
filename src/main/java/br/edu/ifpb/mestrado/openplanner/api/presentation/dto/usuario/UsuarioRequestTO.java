@@ -17,7 +17,7 @@ public class UsuarioRequestTO implements Serializable {
 
     private String email;
 
-    @IdReference(target = Permissao.class, property = "grupos")
+    @IdReference(target = Permissao.class, property = "permissoes")
     private Set<Long> permissoes;
 
     public UsuarioRequestTO() {

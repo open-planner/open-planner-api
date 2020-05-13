@@ -36,6 +36,16 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
 
     @Transactional(readOnly = true)
     @Override
+    public List<T> findAll() {
+        if (getUsuarioAutenticado().isRoot()) {
+            return getRepository().findAll();
+        }
+
+        return getRepository().findAll(BaseEntitySpecification.positiveId());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public Page<T> findAll(Pageable pageable) {
         if (getUsuarioAutenticado().isRoot()) {
             return getRepository().findAll(pageable);
@@ -54,12 +64,6 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
         }
 
         return getRepository().findAll(specification, pageable);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<T> findAllActive() {
-        return getRepository().findAll(BaseEntitySpecification.positiveIdAndNotExcluded());
     }
 
     @Transactional
