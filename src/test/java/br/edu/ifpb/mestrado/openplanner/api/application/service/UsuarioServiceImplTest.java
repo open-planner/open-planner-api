@@ -326,7 +326,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testUpdate_whenAdminPermissaoAlterada() {
-        Usuario usuario = UsuarioTestUtils.create("Super User", "root@email.com", findPermissoesByIds(Permissao.ID_SYSTEM));
+        Usuario usuario = UsuarioTestUtils.create("Super User", "admin@email.com", findPermissoesByIds(Permissao.ID_SYSTEM));
 
         assertThrows(BusinessException.class, () -> usuarioService.update(Usuario.ID_ADMIN, usuario), "usuario.update.permissoes.admin");
     }

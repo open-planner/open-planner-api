@@ -105,7 +105,7 @@ public class UsuarioControllerTest extends BaseControllerTest {
                 .body("content[0].email", equalTo(usuarioAdminMock.getEmail()))
                 .body("content[0].pendente", equalTo(usuarioAdminMock.getPendente()))
                 .body("content[0].bloqueado", equalTo(usuarioAdminMock.getBloqueado()))
-                .body("content[0].links.size()", equalTo(3));
+                .body("content[0].links.size()", equalTo(2));
     }
 
     @Test

@@ -202,9 +202,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
     }
 
     private void checkSave(Usuario usuario) {
-        if (usuario.getPermissoes() == null || usuario.getPermissoes().isEmpty()) {
-            return;
-        }
+        checkUniqueFields(usuario);
 
         if (usuario.anyPermissaoMatch(Permissao::isRoot)) {
             throw new BusinessException("usuario.save.permissoes.root");
@@ -217,8 +215,6 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         if (!getAutenticado().isAdmin() && !getAutenticado().isRoot() && usuario.anyPermissaoMatch(Permissao::isAdmin)) {
             throw new BusinessException("usuario.save.permissoes.admin");
         }
-
-        checkUniqueFields(usuario);
     }
 
     private void checkUpdate(Long id, Usuario usuario, Usuario usuarioSaved) {
@@ -229,12 +225,10 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 
         if (id == Usuario.ID_ROOT) {
             checkUpdateRoot(usuario);
-            return;
         }
 
         if (id == Usuario.ID_SYSTEM) {
             checkUpdateSystem(usuario);
-            return;
         }
 
         if (id == Usuario.ID_ADMIN) {

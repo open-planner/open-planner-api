@@ -63,7 +63,7 @@ public class PermissaoControllerTest extends BaseControllerTest {
                 .body("[0].id", equalTo(permissaoAdminMock.getId().intValue()))
                 .body("[0].papel", equalTo(permissaoAdminMock.getPapel().name()))
                 .body("[0].descricao", equalTo(permissaoAdminMock.getDescricao()))
-                .body("[0].links.size()", equalTo(0));
+                .body("[0].links.size()", equalTo(1));
     }
 
 }

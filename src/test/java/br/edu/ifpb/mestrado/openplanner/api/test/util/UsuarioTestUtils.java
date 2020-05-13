@@ -26,7 +26,7 @@ public class UsuarioTestUtils {
         assertThat(usuarioResponseTO.getEmail()).isEqualTo(usuario.getEmail());
         assertThat(usuarioResponseTO.getPendente()).isEqualTo(usuario.getPendente());
         assertThat(usuarioResponseTO.getBloqueado()).isEqualTo(usuario.getBloqueado());
-        assertThat(usuarioResponseTO.getLinks()).hasSize(3);
+        assertThat(usuarioResponseTO.getLinks()).hasSize(2);
 
         usuarioResponseTO.getPermissoes().stream()
                 .forEach(permissaoResponseTO -> {
@@ -42,7 +42,7 @@ public class UsuarioTestUtils {
         assertThat(usuarioResponseTO.getNome()).isEqualTo(usuario.getNome());
         assertThat(usuarioResponseTO.getDataNascimento()).isEqualTo(usuario.getDataNascimento());
         assertThat(usuarioResponseTO.getEmail()).isEqualTo(usuario.getEmail());
-        assertThat(usuarioResponseTO.getLinks()).hasSize(3);
+        assertThat(usuarioResponseTO.getLinks()).hasSize(2);
     }
 
     public static Usuario create(String nome, String email, Permissao... permissoes) {
