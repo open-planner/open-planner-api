@@ -9,11 +9,14 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 
 public class UsuarioBuilder {
 
-    private Usuario usuario = new Usuario();
+    private Usuario usuario;
 
-    public UsuarioBuilder with(Usuario usuario) {
+    public UsuarioBuilder() {
+        usuario = new Usuario();
+    }
+
+    public UsuarioBuilder(Usuario usuario) {
         this.usuario = usuario;
-        return this;
     }
 
     public UsuarioBuilder withId(Long id) {

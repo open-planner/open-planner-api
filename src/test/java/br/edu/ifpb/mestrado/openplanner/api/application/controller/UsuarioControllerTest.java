@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +26,9 @@ import org.springframework.test.context.ActiveProfiles;
 
 import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties.OAuth2Properties;
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InformationNotFoundException;
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Senha;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecificationFactory;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.util.BcryptUtils;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.test.builder.UsuarioBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.test.util.ControllerTestUtils;
@@ -72,14 +69,10 @@ public class UsuarioControllerTest extends BaseControllerTest {
         usuarioListMock.add(usuarioAdminMock);
 
         for (Long i = 2L; i <= 8; i++) {
-            usuarioListMock.add(new UsuarioBuilder()
+            String nome = "User Test " + i;
+            String email = String.format("user.test%d@email.com", i);
+            usuarioListMock.add(new UsuarioBuilder(UsuarioTestUtils.create(nome, email))
                 .withId(i)
-                .withNome(RandomStringUtils.random(10))
-                .withDataNascimento(LocalDate.now().minusYears(20))
-                .withEmail(RandomStringUtils.random(10).toLowerCase() + "@email.com")
-                .withPendente(false)
-                .withBloqueado(false)
-                .withSenha(new Senha(BcryptUtils.encode(UsuarioTestUtils.MOCK_SENHA_PREFIX + i)))
                 .build());
         }
 
@@ -143,14 +136,8 @@ public class UsuarioControllerTest extends BaseControllerTest {
 
     @Test
     public void testUpdate() {
-        Usuario usuarioMock = new UsuarioBuilder()
+        Usuario usuarioMock = new UsuarioBuilder(UsuarioTestUtils.create("User Test", "user.test@email.com"))
                 .withId(21L)
-                .withNome("Test")
-                .withDataNascimento(LocalDate.now().minusYears(20))
-                .withEmail("user.test@email.com")
-                .withPendente(false)
-                .withBloqueado(false)
-                .withSenha(new Senha(BcryptUtils.encode(UsuarioTestUtils.MOCK_SENHA_PREFIX + "user.test@email.com")))
                 .build();
         when(usuarioServiceMock.update(any(), any())).thenReturn(usuarioMock);
 

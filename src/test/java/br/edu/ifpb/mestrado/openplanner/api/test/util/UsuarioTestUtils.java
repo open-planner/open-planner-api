@@ -3,8 +3,9 @@ package br.edu.ifpb.mestrado.openplanner.api.test.util;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.permissao.Permissao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Senha;
@@ -55,7 +56,7 @@ public class UsuarioTestUtils {
                 .withPendente(false)
                 .withBloqueado(false)
                 .withSenha(new Senha(BcryptUtils.encode(valorSenha), null))
-                .withPermissoes(Set.of(permissoes))
+                .withPermissoes(new HashSet<>(Arrays.asList(permissoes)))
                 .build();
     }
 
@@ -67,7 +68,7 @@ public class UsuarioTestUtils {
                 .withDataNascimento(LocalDate.now().minusYears(20))
                 .withEmail(email)
                 .withSenha(new Senha(valorSenha, null))
-                .withPermissoes(Set.of(permissoes))
+                .withPermissoes(new HashSet<>(Arrays.asList(permissoes)))
                 .build();
     }
 
@@ -81,7 +82,7 @@ public class UsuarioTestUtils {
                 .withPendente(true)
                 .withBloqueado(false)
                 .withSenha(new Senha(BcryptUtils.encode(valorSenha), null))
-                .withPermissoes(Set.of(permissoes))
+                .withPermissoes(new HashSet<>(Arrays.asList(permissoes)))
                 .withAtivacaoToken(MOCK_TOKEN_PREFIX + email)
                 .build();
     }
@@ -94,7 +95,7 @@ public class UsuarioTestUtils {
                 .withPendente(false)
                 .withBloqueado(true)
                 .withSenha(new Senha(null, MOCK_TOKEN_PREFIX + email))
-                .withPermissoes(Set.of(permissoes))
+                .withPermissoes(new HashSet<>(Arrays.asList(permissoes)))
                 .build();
     }
 
@@ -107,7 +108,7 @@ public class UsuarioTestUtils {
                 .withPendente(false)
                 .withBloqueado(false)
                 .withSenha(new Senha(MOCK_SENHA_PREFIX + "admin@email.com"))
-                .withPermissoes(Set.of(PermissaoTestUtils.createAdminMock()))
+                .withPermissoes(new HashSet<>(Arrays.asList(PermissaoTestUtils.createAdminMock())))
                 .build();
     }
 
