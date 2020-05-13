@@ -1,9 +1,9 @@
 package br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -19,13 +19,11 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.envers.Audited;
 
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.permissao.Permissao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.AuditedBaseEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.bean.Nullable;
 
-@Audited
 @Entity
 @Table(name = "usuario", schema = "auth")
 public class Usuario extends AuditedBaseEntity {
@@ -55,6 +53,10 @@ public class Usuario extends AuditedBaseEntity {
     @Embedded
     private Senha senha;
 
+    @Nullable
+    @Column(name = "ativacao_token")
+    private String ativacaoToken;
+
     @NotNull
     @Column(name = "pendente", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean pendente;
@@ -65,12 +67,12 @@ public class Usuario extends AuditedBaseEntity {
 
     @ManyToMany
     @Fetch(FetchMode.JOIN)
-    @JoinTable(name = "usuario_grupo", schema = "auth", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_grupo"))
-    private Set<Grupo> grupos;
-
-    @Nullable
-    @Column(name = "ativacao_token")
-    private String ativacaoToken;
+    @JoinTable(
+            name = "usuario_permissao",
+            schema = "auth",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_permissao"))
+    private Set<Permissao> permissoes;
 
     public Usuario() {
         super();
@@ -92,22 +94,16 @@ public class Usuario extends AuditedBaseEntity {
         ativacaoToken = UUID.randomUUID().toString();
     }
 
-    public void bloquear() {
-        setBloqueado(true);
-    }
-
-    public void switchBloqueado() {
-        bloqueado = !bloqueado;
-    }
-
     public Boolean hasSenha() {
         return senha != null && senha.getValor() != null && !senha.getValor().isBlank();
     }
 
-    public void updateSenha(String senha) {
-        this.senha.setValor(senha);
-        this.senha.clearResetToken();
-        this.senha.setDataAtualizacao(LocalDateTime.now());
+    public void updateSenha(String valorSenha) {
+        senha = new Senha(valorSenha);
+    }
+
+    public Boolean anyPermissaoMatch(Predicate<Permissao> predicate) {
+        return permissoes != null && !permissoes.isEmpty() && permissoes.stream().anyMatch(predicate);
     }
 
     public String getNome() {
@@ -142,6 +138,14 @@ public class Usuario extends AuditedBaseEntity {
         this.senha = senha;
     }
 
+    public String getAtivacaoToken() {
+        return ativacaoToken;
+    }
+
+    public void setAtivacaoToken(String ativacaoToken) {
+        this.ativacaoToken = ativacaoToken;
+    }
+
     public Boolean getPendente() {
         return pendente;
     }
@@ -158,25 +162,12 @@ public class Usuario extends AuditedBaseEntity {
         this.bloqueado = bloqueado;
     }
 
-    public Set<Grupo> getGrupos() {
-        return grupos;
+    public Set<Permissao> getPermissoes() {
+        return permissoes;
     }
 
-    public void setGrupos(Set<Grupo> grupos) {
-        this.grupos = grupos;
+    public void setPermissoes(Set<Permissao> permissoes) {
+        this.permissoes = permissoes;
     }
 
-    public String getAtivacaoToken() {
-        return ativacaoToken;
-    }
-
-    public void setAtivacaoToken(String ativacaoToken) {
-        this.ativacaoToken = ativacaoToken;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Usuario [id=%s, nome=%s, dataNascimento=%s, email=%s, ativo=%s, pendente=%s, bloqueado=%s, grupos=%s]", id,
-                nome, dataNascimento, email, ativo, pendente, bloqueado, grupos);
-    }
 }

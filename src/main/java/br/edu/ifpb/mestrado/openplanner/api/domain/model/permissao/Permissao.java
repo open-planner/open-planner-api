@@ -8,12 +8,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
-
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.BaseEntity;
 
-@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
 @Table(name = "permissao", schema = "auth")
 public class Permissao extends BaseEntity {
@@ -25,9 +21,9 @@ public class Permissao extends BaseEntity {
     public static final Long ID_ADMIN = 1L;
 
     @NotNull
-    @Size(min = 3, max = 128)
+    @Size(min = 3, max = 64)
     @Enumerated(EnumType.STRING)
-    @Column(name = "papel", length = 128, nullable = false)
+    @Column(name = "papel", length = 64, nullable = false)
     private Papel papel;
 
     @NotNull
