@@ -13,9 +13,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,11 +33,11 @@ import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.Invali
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InvalidPasswordException;
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InvalidTokenException;
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.NotAuthenticatedUserException;
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.permissao.Permissao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Senha;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.repository.GrupoRepository;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.repository.PermissaoRepository;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.repository.UsuarioRepository;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.BaseEntitySpecification;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.util.BcryptUtils;
@@ -61,16 +59,16 @@ public class UsuarioServiceImplTest {
 
     private UsuarioRepository usuarioRepository;
 
-    private GrupoRepository grupoRepository;
+    private PermissaoRepository permissaoRepository;
 
     @MockBean
     private MailService mailService;
 
     @Autowired
-    public UsuarioServiceImplTest(UsuarioService usuarioService, UsuarioRepository usuarioRepository, GrupoRepository grupoRepository) {
+    public UsuarioServiceImplTest(UsuarioService usuarioService, UsuarioRepository usuarioRepository, PermissaoRepository permissaoRepository) {
         this.usuarioService = usuarioService;
         this.usuarioRepository = usuarioRepository;
-        this.grupoRepository = grupoRepository;
+        this.permissaoRepository = permissaoRepository;
     }
 
     @BeforeEach
@@ -78,11 +76,11 @@ public class UsuarioServiceImplTest {
         mockAuthenticationForAuditing(MOCK_EMAIL_ADMIN);
         doNothing().when(mailService).send(any(MailRequestTO.class));
 
-        usuarioRepository.save(UsuarioTestUtils.createAtivo("João Paulo de Lima", "joao.lima@email.com", findGruposByIds(Grupo.ID_ADMIN)));
-        usuarioRepository.save(UsuarioTestUtils.createPendente("José de Souza", "jose.souza@email.com", null));
-        usuarioRepository.save(UsuarioTestUtils.createPendente("José de Paula", "jose.paula@email.com", null));
-        usuarioRepository.save(UsuarioTestUtils.createInativo("Maria da Silva", "maria.silva@email.com", null));
-        usuarioRepository.save(UsuarioTestUtils.createBloqueado("Isabel dos Santos", "isabel.santos@email.com", null));
+        usuarioRepository.save(UsuarioTestUtils.create("João Paulo de Lima", "joao.lima@email.com", findPermissoesByIds(Permissao.ID_ADMIN)));
+        usuarioRepository.save(UsuarioTestUtils.create("Maria da Silva", "maria.silva@email.com"));
+        usuarioRepository.save(UsuarioTestUtils.createPendente("José de Souza", "jose.souza@email.com"));
+        usuarioRepository.save(UsuarioTestUtils.createPendente("José de Paula", "jose.paula@email.com"));
+        usuarioRepository.save(UsuarioTestUtils.createBloqueado("Isabel dos Santos", "isabel.santos@email.com"));
     }
 
     @AfterEach
@@ -248,7 +246,6 @@ public class UsuarioServiceImplTest {
         assertThat(usuario.getEmail()).isEqualTo("miguel.lima@email.com");
         assertThat(usuario.getPendente()).isTrue();
         assertThat(usuario.getBloqueado()).isFalse();
-        assertThat(usuario.getAtivo()).isFalse();
         assertThat(usuario.getSenha().getValor()).isNotNull();
         assertThat(usuario.getSenha().getResetToken()).isNull();
         assertThat(usuario.getAtivacaoToken()).isNotNull();
@@ -265,7 +262,6 @@ public class UsuarioServiceImplTest {
         assertThat(usuario.getEmail()).isEqualTo("jose.souza@email.com");
         assertThat(usuario.getPendente()).isFalse();
         assertThat(usuario.getBloqueado()).isFalse();
-        assertThat(usuario.getAtivo()).isTrue();
         assertThat(usuario.getSenha().getValor()).isNotNull();
         assertThat(usuario.getSenha().getResetToken()).isNull();
         assertThat(usuario.getAtivacaoToken()).isNull();
@@ -273,54 +269,53 @@ public class UsuarioServiceImplTest {
     }
 
     @Test
-    public void testSave_whenHasGrupoRoot() {
-        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com", findGruposByIds(Grupo.ID_ROOT));
+    public void testSave_whenHasPermissaoRoot() {
+        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com", findPermissoesByIds(Permissao.ID_ROOT));
 
-        assertThrows(BusinessException.class, () -> usuarioService.save(usuario), "usuario.save.grupos.root");
+        assertThrows(BusinessException.class, () -> usuarioService.save(usuario), "usuario.save.permissoes.root");
     }
 
     @Test
-    public void testSave_whenHasGrupoSystem() {
-        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com", findGruposByIds(Grupo.ID_SYSTEM));
+    public void testSave_whenHasPermissaoSystem() {
+        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com", findPermissoesByIds(Permissao.ID_SYSTEM));
 
-        assertThrows(BusinessException.class, () -> usuarioService.save(usuario), "usuario.save.grupos.system");
+        assertThrows(BusinessException.class, () -> usuarioService.save(usuario), "usuario.save.permissoes.system");
     }
 
     @Test
-    public void testSave_whenHasGrupoAdmin() {
-        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com", findGruposByIds(Grupo.ID_ADMIN));
+    public void testSave_whenHasPermissaoAdmin() {
+        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com", findPermissoesByIds(Permissao.ID_ADMIN));
         usuarioService.save(usuario);
 
         verifySendMail(1);
         assertThat(usuario.getId()).isNotNull();
-        assertThat(usuario.getGrupos().stream().anyMatch(g -> g.getId().equals(Grupo.ID_ADMIN))).isTrue();
+        assertThat(usuario.anyPermissaoMatch(Permissao::isAdmin)).isTrue();
     }
 
     @Test
-    public void testSave_whenHasGrupoAdminAndAdminOrRootNotAuthenticated() {
+    public void testSave_whenHasPermissaoAdminAndAdminOrRootNotAuthenticated() {
         mockAuthenticationForAuditing("system@email.com");
-        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com", findGruposByIds(Grupo.ID_ADMIN));
+        Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com", findPermissoesByIds(Permissao.ID_ADMIN));
 
-        assertThrows(BusinessException.class, () -> usuarioService.save(usuario), "usuario.save.grupos.admin");
+        assertThrows(BusinessException.class, () -> usuarioService.save(usuario), "usuario.save.permissoes.admin");
     }
 
     @Test
     public void testSave_whenEmailNotUnique() {
-        Usuario usuario1 = UsuarioTestUtils.createAtivo("Miguel Lima", "miguel.lima@email.com", findGruposByIds(Grupo.ID_ADMIN));
+        Usuario usuario1 = UsuarioTestUtils.create("Miguel Lima", "miguel.lima@email.com");
         usuarioRepository.save(usuario1);
 
-        Usuario usuario2 = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com", findGruposByIds(Grupo.ID_ADMIN));
+        Usuario usuario2 = UsuarioTestUtils.createForSaveService("Miguel Araújo Lima", "miguel.lima@email.com");
 
         assertThrows(DuplicateKeyException.class, () -> usuarioService.save(usuario2), "usuario.duplicate-key.email");
     }
 
     @Test
     public void testUpdate() {
-        Usuario usuario = UsuarioTestUtils.createAtivo("Miguel Lima", "miguel.lima@email.com", findGruposByIds(Grupo.ID_ADMIN));
+        Usuario usuario = UsuarioTestUtils.create("Miguel Lima", "miguel.lima@email.com");
         usuarioRepository.save(usuario);
 
-        Usuario usuarioModificado = UsuarioTestUtils.createForSaveService("Miguel Borba Lima", "miguel.lima@email.com",
-                findGruposByIds(Grupo.ID_ADMIN));
+        Usuario usuarioModificado = UsuarioTestUtils.createForSaveService("Miguel Borba Lima", "miguel.lima@email.com");
         Usuario usuarioAtualizado = usuarioService.update(usuario.getId(), usuarioModificado);
 
         assertThat(usuarioAtualizado.getId()).isEqualTo(usuario.getId());
@@ -328,30 +323,29 @@ public class UsuarioServiceImplTest {
     }
 
     @Test
-    public void testUpdate_whenRootGrupoAlterado() {
-        Usuario usuario = UsuarioTestUtils.createAtivo("Super User", "root@email.com", findGruposByIds(Grupo.ID_ADMIN));
+    public void testUpdate_whenRootPermissaoAlterada() {
+        Usuario usuario = UsuarioTestUtils.create("Super User", "root@email.com", findPermissoesByIds(Permissao.ID_ADMIN));
 
-        assertThrows(BusinessException.class, () -> usuarioService.update(Usuario.ID_ROOT, usuario), "usuario.update.grupos.root");
+        assertThrows(BusinessException.class, () -> usuarioService.update(Usuario.ID_ROOT, usuario), "usuario.update.permissoes.root");
     }
 
     @Test
-    public void testUpdate_whenSystemGrupoAlterado() {
-        Usuario usuario = UsuarioTestUtils.createAtivo("System User", "system@email.com", findGruposByIds(Grupo.ID_ADMIN));
+    public void testUpdate_whenSystemPermissaoAlterada() {
+        Usuario usuario = UsuarioTestUtils.create("System User", "system@email.com", findPermissoesByIds(Permissao.ID_ADMIN));
 
-        assertThrows(BusinessException.class, () -> usuarioService.update(Usuario.ID_SYSTEM, usuario), "usuario.update.grupos.system");
+        assertThrows(BusinessException.class, () -> usuarioService.update(Usuario.ID_SYSTEM, usuario), "usuario.update.permissoes.system");
     }
 
     @Test
-    public void testUpdate_whenAdminGrupoAlterado() {
-        Usuario usuario = UsuarioTestUtils.createAtivo("Super User", "root@email.com", findGruposByIds(Grupo.ID_SYSTEM));
+    public void testUpdate_whenAdminPermissaoAlterada() {
+        Usuario usuario = UsuarioTestUtils.create("Super User", "root@email.com", findPermissoesByIds(Permissao.ID_SYSTEM));
 
-        assertThrows(BusinessException.class, () -> usuarioService.update(Usuario.ID_ADMIN, usuario), "usuario.update.grupos.admin");
+        assertThrows(BusinessException.class, () -> usuarioService.update(Usuario.ID_ADMIN, usuario), "usuario.update.permissoes.admin");
     }
 
     @Test
     public void testUpdateAutenticado() {
-        Usuario usuario = usuarioRepository
-                .save(UsuarioTestUtils.createAtivo("Miguel Lima", "miguel.lima@email.com", findGruposByIds(Grupo.ID_ADMIN)));
+        Usuario usuario = usuarioRepository.save(UsuarioTestUtils.create("Miguel Lima", "miguel.lima@email.com"));
         mockAuthenticationForAuditing("miguel.lima@email.com");
 
         Usuario usuarioAtualizado = usuarioService.updateAutenticado(new UsuarioBuilder()
@@ -366,8 +360,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testUpdateSenhaByResetToken() {
-        Usuario usuario = usuarioRepository
-                .save(UsuarioTestUtils.createBloqueado("Manoel Alves", "manoel.alves@email.com", findGruposByIds(Grupo.ID_ADMIN)));
+        Usuario usuario = usuarioRepository.save(UsuarioTestUtils.createBloqueado("Manoel Alves", "manoel.alves@email.com"));
 
         String valorSenha = (UsuarioTestUtils.MOCK_SENHA_PREFIX + "manoel.alves@email.com").substring(0, 30);
         Usuario usuarioAtualizado = usuarioService.updateSenhaByResetToken(usuario.getSenha().getResetToken(), valorSenha);
@@ -378,8 +371,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testUpdateSenhaByResetToken_whenSenhaIsNotValid() {
-        Usuario usuario = usuarioRepository
-                .save(UsuarioTestUtils.createBloqueado("Manoel Alves", "manoel.alves@email.com", findGruposByIds(Grupo.ID_ADMIN)));
+        Usuario usuario = usuarioRepository.save(UsuarioTestUtils.createBloqueado("Manoel Alves", "manoel.alves@email.com"));
         
         assertThrows(InvalidPasswordException.class,
                 () -> usuarioService.updateSenhaByResetToken(usuario.getSenha().getResetToken(), "manoel.alves"));
@@ -387,7 +379,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testUpdateSenhaAutenticado() {
-        usuarioRepository.save(UsuarioTestUtils.createAtivo("Alice Lima", "alice.lima@email.com", findGruposByIds(Grupo.ID_ADMIN)));
+        usuarioRepository.save(UsuarioTestUtils.create("Alice Lima", "alice.lima@email.com"));
         mockAuthenticationForAuditing("alice.lima@email.com");
 
         Usuario usuarioAtualizado = usuarioService.updateSenhaAutenticado(UsuarioTestUtils.MOCK_SENHA_PREFIX + "alice.lima@email.com",
@@ -398,7 +390,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testUpdateSenhaAutenticado_whenInvalidActualPassword() {
-        usuarioRepository.save(UsuarioTestUtils.createAtivo("Alice Lima", "alice.lima@email.com", findGruposByIds(Grupo.ID_ADMIN)));
+        usuarioRepository.save(UsuarioTestUtils.create("Alice Lima", "alice.lima@email.com"));
         mockAuthenticationForAuditing("alice.lima@email.com");
 
         assertThrows(InvalidActualPasswordException.class,
@@ -407,7 +399,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testUpdateSenhaAutenticado_whenInvalidPassword() {
-        usuarioRepository.save(UsuarioTestUtils.createAtivo("Alice Lima", "alice.lima@email.com", findGruposByIds(Grupo.ID_ADMIN)));
+        usuarioRepository.save(UsuarioTestUtils.create("Alice Lima", "alice.lima@email.com"));
         mockAuthenticationForAuditing("alice.lima@email.com");
         
         assertThrows(InvalidPasswordException.class,
@@ -416,7 +408,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testRecoverSenha() {
-        usuarioRepository.save(UsuarioTestUtils.createAtivo("Alice Lima", "alice.lima@email.com", findGruposByIds(Grupo.ID_ADMIN)));
+        usuarioRepository.save(UsuarioTestUtils.create("Alice Lima", "alice.lima@email.com"));
 
         String email = "alice.lima@email.com";
         usuarioService.recoverSenha(email);
@@ -434,8 +426,8 @@ public class UsuarioServiceImplTest {
         verify(mailService, times(times)).send(any(MailRequestTO.class));
     }
 
-    private Set<Grupo> findGruposByIds(Long... ids) {
-        return new HashSet<>(grupoRepository.findAllById(List.of(ids)));
+    private Permissao[] findPermissoesByIds(Long... ids) {
+        return permissaoRepository.findAllById(List.of(ids)).toArray(Permissao[]::new);
     }
 
 }

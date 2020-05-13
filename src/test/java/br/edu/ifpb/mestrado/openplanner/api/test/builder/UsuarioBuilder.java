@@ -3,13 +3,18 @@ package br.edu.ifpb.mestrado.openplanner.api.test.builder;
 import java.time.LocalDate;
 import java.util.Set;
 
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.permissao.Permissao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Senha;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 
 public class UsuarioBuilder {
 
     private Usuario usuario = new Usuario();
+
+    public UsuarioBuilder with(Usuario usuario) {
+        this.usuario = usuario;
+        return this;
+    }
 
     public UsuarioBuilder withId(Long id) {
         usuario.setId(id);
@@ -46,18 +51,18 @@ public class UsuarioBuilder {
         return this;
     }
 
-    public UsuarioBuilder withAtivo(Boolean ativo) {
-        usuario.setAtivo(ativo);
-        return this;
-    }
-
-    public UsuarioBuilder withGrupos(Set<Grupo> grupos) {
-        usuario.setGrupos(grupos);
+    public UsuarioBuilder withPermissoes(Set<Permissao> permissoes) {
+        usuario.setPermissoes(permissoes);
         return this;
     }
 
     public UsuarioBuilder withAtivacaoToken(String ativacaoToken) {
         usuario.setAtivacaoToken(ativacaoToken);
+        return this;
+    }
+
+    public UsuarioBuilder withExcluded(Boolean excluded) {
+        usuario.setExcluded(excluded);
         return this;
     }
 

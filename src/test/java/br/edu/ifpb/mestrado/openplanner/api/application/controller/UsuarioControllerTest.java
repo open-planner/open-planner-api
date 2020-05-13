@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +27,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties.OAuth2Properties;
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InformationNotFoundException;
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Senha;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
@@ -37,7 +35,6 @@ import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.util.BcryptU
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.test.builder.UsuarioBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.test.util.ControllerTestUtils;
-import br.edu.ifpb.mestrado.openplanner.api.test.util.GrupoTestUtils;
 import br.edu.ifpb.mestrado.openplanner.api.test.util.UsuarioTestUtils;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -59,8 +56,6 @@ public class UsuarioControllerTest extends BaseControllerTest {
 
     private Usuario usuarioAdminMock;
 
-    private Grupo grupoAdminMock;
-
     @Autowired
     public UsuarioControllerTest(OAuth2Properties oauth2Properties) {
         super(oauth2Properties);
@@ -71,7 +66,6 @@ public class UsuarioControllerTest extends BaseControllerTest {
     public void setUp() throws Exception {
         specificationFactoryMock = mock(SpecificationFactory.class);
 
-        grupoAdminMock = GrupoTestUtils.createAdminMock();
         usuarioAdminMock = UsuarioTestUtils.createAdminMock();
 
         usuarioListMock = new ArrayList<>();
@@ -83,11 +77,9 @@ public class UsuarioControllerTest extends BaseControllerTest {
                 .withNome(RandomStringUtils.random(10))
                 .withDataNascimento(LocalDate.now().minusYears(20))
                 .withEmail(RandomStringUtils.random(10).toLowerCase() + "@email.com")
-                .withAtivo(true)
                 .withPendente(false)
                 .withBloqueado(false)
                 .withSenha(new Senha(BcryptUtils.encode(UsuarioTestUtils.MOCK_SENHA_PREFIX + i)))
-                .withGrupos(Set.of(grupoAdminMock))
                 .build());
         }
 
@@ -113,7 +105,6 @@ public class UsuarioControllerTest extends BaseControllerTest {
                 .body("content[0].email", equalTo(usuarioAdminMock.getEmail()))
                 .body("content[0].pendente", equalTo(usuarioAdminMock.getPendente()))
                 .body("content[0].bloqueado", equalTo(usuarioAdminMock.getBloqueado()))
-                .body("content[0].ativo", equalTo(usuarioAdminMock.getAtivo()))
                 .body("content[0].links.size()", equalTo(3));
     }
 
@@ -151,45 +142,22 @@ public class UsuarioControllerTest extends BaseControllerTest {
     }
 
     @Test
-    public void testFindAllActive() {
-        when(usuarioServiceMock.findAllActive()).thenReturn(usuarioListMock);
-
-        Response response = given()
-                .auth().oauth2(givenAccessTokenAsAdmin())
-                .when().get(buildUrl(BASE_PATH, "ativos"));
-
-        response.then()
-                .statusCode(HttpStatus.OK.value()).assertThat()
-                .body("size()", equalTo(usuarioListMock.size()))
-                .body("[0].id", equalTo(usuarioAdminMock.getId().intValue()))
-                .body("[0].nome", equalTo(usuarioAdminMock.getNome()))
-                .body("[0].email", equalTo(usuarioAdminMock.getEmail()))
-                .body("[0].links.size()", equalTo(3));
-    }
-
-    @Test
     public void testUpdate() {
         Usuario usuarioMock = new UsuarioBuilder()
                 .withId(21L)
                 .withNome("Test")
                 .withDataNascimento(LocalDate.now().minusYears(20))
                 .withEmail("user.test@email.com")
-                .withAtivo(true)
                 .withPendente(false)
                 .withBloqueado(false)
                 .withSenha(new Senha(BcryptUtils.encode(UsuarioTestUtils.MOCK_SENHA_PREFIX + "user.test@email.com")))
-                .withGrupos(Set.of(grupoAdminMock))
                 .build();
         when(usuarioServiceMock.update(any(), any())).thenReturn(usuarioMock);
 
         String requestBody = "{\n" + 
                 "  \"nome\": \"Test\",\n" + 
                 "  \"dataNascimento\": \"" + LocalDate.now().minusYears(20) + "\",\n" + 
-                "  \"email\": \"user.test@email.com\",\n" + 
-                "  \"grupos\": [\n" + 
-                "    1\n" + 
-                "  ],\n" + 
-                "  \"ativo\": true\n" + 
+                "  \"email\": \"user.test@email.com\"\n" + 
                 "}";
         Response response = given()
                 .auth().oauth2(givenAccessTokenAsAdmin())
@@ -201,28 +169,6 @@ public class UsuarioControllerTest extends BaseControllerTest {
                 .statusCode(HttpStatus.OK.value()).assertThat();
 
         assertUsuarioResponseTO(response, usuarioMock);
-    }
-
-    @Test
-    public void testSwitchActive() {
-        Usuario usuarioMock = new UsuarioBuilder()
-                .withId(21L)
-                .withNome("Test")
-                .withDataNascimento(LocalDate.now().minusYears(20))
-                .withEmail("user.test@email.com")
-                .withAtivo(true)
-                .withPendente(false)
-                .withBloqueado(false)
-                .withSenha(new Senha(BcryptUtils.encode(UsuarioTestUtils.MOCK_SENHA_PREFIX + "user.test@email.com")))
-                .withGrupos(Set.of(grupoAdminMock))
-                .build();
-        when(usuarioServiceMock.switchActive(any())).thenReturn(usuarioMock);
-
-        Response response = given()
-                .auth().oauth2(givenAccessTokenAsAdmin())
-                .when().patch(buildUrl(BASE_PATH, usuarioMock.getId().intValue(), "ativo"));
-
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
     private void assertUsuarioResponseTO(Response response, Usuario usuario) {

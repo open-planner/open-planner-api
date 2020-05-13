@@ -32,7 +32,7 @@ public class PermissaoTestUtils {
     }
 
     public static Permissao createAdminMock() {
-        return create(Permissao.ID_ADMIN, Papel.ROLE_ADMIN, "Administrador");
+        return create(Permissao.ID_ADMIN, Papel.ADMIN, "Administrador");
     }
 
 }

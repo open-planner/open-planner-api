@@ -6,12 +6,12 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.permissao.Permissao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Senha;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.util.BcryptUtils;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioAutenticadoResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioResponseTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuarioautenticado.UsuarioAutenticadoResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.test.builder.UsuarioBuilder;
 
 public class UsuarioTestUtils {
@@ -26,15 +26,14 @@ public class UsuarioTestUtils {
         assertThat(usuarioResponseTO.getEmail()).isEqualTo(usuario.getEmail());
         assertThat(usuarioResponseTO.getPendente()).isEqualTo(usuario.getPendente());
         assertThat(usuarioResponseTO.getBloqueado()).isEqualTo(usuario.getBloqueado());
-        assertThat(usuarioResponseTO.getAtivo()).isEqualTo(usuario.getAtivo());
         assertThat(usuarioResponseTO.getLinks()).hasSize(3);
 
-        usuarioResponseTO.getGrupos().stream()
-                .forEach(grupoResponseTO -> {
-                    Optional<Grupo> grupoOpt = usuario.getGrupos().stream()
-                            .filter(permissao -> permissao.getId().equals(grupoResponseTO.getId()))
+        usuarioResponseTO.getPermissoes().stream()
+                .forEach(permissaoResponseTO -> {
+                    Optional<Permissao> permissaoOpt = usuario.getPermissoes().stream()
+                            .filter(permissao -> permissao.getId().equals(permissaoResponseTO.getId()))
                             .findFirst();
-                    GrupoTestUtils.assertResponseTO(grupoResponseTO, grupoOpt.get());
+                    PermissaoTestUtils.assertResponseTO(permissaoResponseTO, permissaoOpt.get());
                 });
     }
 
@@ -46,7 +45,21 @@ public class UsuarioTestUtils {
         assertThat(usuarioResponseTO.getLinks()).hasSize(3);
     }
 
-    public static Usuario createForSaveService(String nome, String email, Set<Grupo> grupos) {
+    public static Usuario create(String nome, String email, Permissao... permissoes) {
+        String valorSenha = MOCK_SENHA_PREFIX + (email.length() > 21 ? email.substring(0, 21) : email);
+
+        return new UsuarioBuilder()
+                .withNome(nome)
+                .withDataNascimento(LocalDate.now().minusYears(20))
+                .withEmail(email)
+                .withPendente(false)
+                .withBloqueado(false)
+                .withSenha(new Senha(BcryptUtils.encode(valorSenha), null))
+                .withPermissoes(Set.of(permissoes))
+                .build();
+    }
+
+    public static Usuario createForSaveService(String nome, String email, Permissao... permissoes) {
         String valorSenha = MOCK_SENHA_PREFIX + (email.length() > 21 ? email.substring(0, 21) : email);
 
         return new UsuarioBuilder()
@@ -54,66 +67,34 @@ public class UsuarioTestUtils {
                 .withDataNascimento(LocalDate.now().minusYears(20))
                 .withEmail(email)
                 .withSenha(new Senha(valorSenha, null))
-                .withGrupos(grupos)
+                .withPermissoes(Set.of(permissoes))
                 .build();
     }
 
-    public static Usuario createPendente(String nome, String email, Set<Grupo> grupos) {
+    public static Usuario createPendente(String nome, String email, Permissao... permissoes) {
         String valorSenha = MOCK_SENHA_PREFIX + (email.length() > 21 ? email.substring(0, 21) : email);
 
         return new UsuarioBuilder()
                 .withNome(nome)
                 .withDataNascimento(LocalDate.now().minusYears(20))
                 .withEmail(email)
-                .withAtivo(false)
                 .withPendente(true)
                 .withBloqueado(false)
                 .withSenha(new Senha(BcryptUtils.encode(valorSenha), null))
-                .withGrupos(grupos)
+                .withPermissoes(Set.of(permissoes))
                 .withAtivacaoToken(MOCK_TOKEN_PREFIX + email)
                 .build();
     }
 
-    public static Usuario createAtivo(String nome, String email, Set<Grupo> grupos) {
-        String valorSenha = MOCK_SENHA_PREFIX + (email.length() > 21 ? email.substring(0, 21) : email);
-
+    public static Usuario createBloqueado(String nome, String email, Permissao... permissoes) {
         return new UsuarioBuilder()
                 .withNome(nome)
                 .withDataNascimento(LocalDate.now().minusYears(20))
                 .withEmail(email)
-                .withAtivo(true)
-                .withPendente(false)
-                .withBloqueado(false)
-                .withSenha(new Senha(BcryptUtils.encode(valorSenha), null))
-                .withGrupos(grupos)
-                .build();
-    }
-
-    public static Usuario createInativo(String nome, String email, Set<Grupo> grupos) {
-        String valorSenha = MOCK_SENHA_PREFIX + (email.length() > 21 ? email.substring(0, 21) : email);
-
-        return new UsuarioBuilder()
-                .withNome(nome)
-                .withDataNascimento(LocalDate.now().minusYears(20))
-                .withEmail(email)
-                .withAtivo(false)
-                .withPendente(false)
-                .withBloqueado(false)
-                .withSenha(new Senha(BcryptUtils.encode(valorSenha), null))
-                .withGrupos(grupos)
-                .build();
-    }
-
-    public static Usuario createBloqueado(String nome, String email, Set<Grupo> grupos) {
-        return new UsuarioBuilder()
-                .withNome(nome)
-                .withDataNascimento(LocalDate.now().minusYears(20))
-                .withEmail(email)
-                .withAtivo(true)
                 .withPendente(false)
                 .withBloqueado(true)
                 .withSenha(new Senha(null, MOCK_TOKEN_PREFIX + email))
-                .withGrupos(grupos)
+                .withPermissoes(Set.of(permissoes))
                 .build();
     }
 
@@ -123,11 +104,10 @@ public class UsuarioTestUtils {
                 .withNome("Administrador")
                 .withDataNascimento(LocalDate.now().minusYears(20))
                 .withEmail("admin@email.com")
-                .withAtivo(true)
                 .withPendente(false)
                 .withBloqueado(false)
                 .withSenha(new Senha(MOCK_SENHA_PREFIX + "admin@email.com"))
-                .withGrupos(Set.of(GrupoTestUtils.createAdminMock()))
+                .withPermissoes(Set.of(PermissaoTestUtils.createAdminMock()))
                 .build();
     }
 

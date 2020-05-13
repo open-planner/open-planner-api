@@ -16,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties.OAuth2Properties;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioAutenticadoResponseTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuarioautenticado.UsuarioAutenticadoResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.test.util.UsuarioTestUtils;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -53,7 +53,7 @@ public class UsuarioAutenticadoControllerTest extends BaseControllerTest {
         response.then()
                 .statusCode(HttpStatus.OK.value()).assertThat();
 
-        assertUsuarioResponseTO(response, usuarioAdminMock);
+        assertUsuarioAutenticadoResponseTO(response, usuarioAdminMock);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class UsuarioAutenticadoControllerTest extends BaseControllerTest {
         response.then()
                 .statusCode(HttpStatus.OK.value()).assertThat();
 
-        assertUsuarioResponseTO(response, usuarioAdminMock);
+        assertUsuarioAutenticadoResponseTO(response, usuarioAdminMock);
     }
 
     @Test
@@ -105,7 +105,7 @@ public class UsuarioAutenticadoControllerTest extends BaseControllerTest {
                 .statusCode(HttpStatus.NO_CONTENT.value()).assertThat();
     }
 
-    private void assertUsuarioResponseTO(Response response, Usuario usuario) {
+    private void assertUsuarioAutenticadoResponseTO(Response response, Usuario usuario) {
         UsuarioAutenticadoResponseTO usuarioResponseTO = response.then().extract().as(UsuarioAutenticadoResponseTO.class);
 
         UsuarioTestUtils.assertResponseTO(usuarioResponseTO, usuario);
