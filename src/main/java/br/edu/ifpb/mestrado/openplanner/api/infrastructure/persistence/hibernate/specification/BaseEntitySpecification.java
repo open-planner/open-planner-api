@@ -15,15 +15,19 @@ public class BaseEntitySpecification {
         return idGreaterThan(0L);
     }
 
-    public static <T extends BaseEntity> Specification<T> active() {
-        return new SpecificationFactory<T>().create(BaseEntity_.ATIVO, true);
+    public static <T extends BaseEntity> Specification<T> excluded() {
+        return new SpecificationFactory<T>().create(BaseEntity_.EXCLUDED, true);
+    }
+
+    public static <T extends BaseEntity> Specification<T> notExcluded() {
+        return new SpecificationFactory<T>().create(BaseEntity_.EXCLUDED, false);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends BaseEntity> Specification<T> positiveIdAndActive() {
+    public static <T extends BaseEntity> Specification<T> positiveIdAndNotExcluded() {
         return (Specification<T>) Specification
                 .where(positiveId())
-                .and(active());
+                .and(notExcluded());
     }
 
 }

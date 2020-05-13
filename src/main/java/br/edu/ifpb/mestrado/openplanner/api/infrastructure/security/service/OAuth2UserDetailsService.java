@@ -83,17 +83,15 @@ public class OAuth2UserDetailsService implements UserDetailsService {
 
     private Collection<? extends GrantedAuthority> getAuthorities(Usuario usuario) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        usuario.getGrupos().stream()
-                .filter(g -> g.getAtivo())
-                .forEach(g -> g.getPermissoes()
-                        .forEach(p -> authorities.add(new SimpleGrantedAuthority(p.getPapel().name()))));
+        usuario.getPermissoes().stream()
+                .forEach(p -> authorities.add(new SimpleGrantedAuthority(p.getPapel().name())));
 
         return authorities;
     }
 
     private void validateUsuario(Usuario usuario) {
-        if (!usuario.getAtivo()) {
-            throw new AuthenticationException(messageService.getMessage("usuario.inativo"));
+        if (!usuario.getExcluded()) {
+            throw new AuthenticationException(messageService.getMessage("usuario.excluido"));
         }
 
         if (usuario.getPendente()) {

@@ -1,6 +1,7 @@
 package br.edu.ifpb.mestrado.openplanner.api.domain.shared;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -20,8 +21,11 @@ public abstract class BaseEntity implements Serializable {
     protected Long id;
 
     @NotNull
-    @Column(name = "ativo", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
-    protected Boolean ativo;
+    @Column(name = "excluded", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    protected Boolean excluded;
+
+    @Column(name = "excluded_at", nullable = true)
+    protected LocalDate excludedAt;
 
     @Version
     @Column(name = "version", nullable = false, columnDefinition = "INTEGER DEFAULT 0")
@@ -29,19 +33,7 @@ public abstract class BaseEntity implements Serializable {
 
     public BaseEntity() {
         super();
-        ativo = true;
-    }
-
-    public void ativar() {
-        setAtivo(true);
-    }
-
-    public void inativar() {
-        setAtivo(false);
-    }
-
-    public void switchAtivo() {
-        setAtivo(!ativo);
+        excluded = false;
     }
 
     public Long getId() {
@@ -52,12 +44,20 @@ public abstract class BaseEntity implements Serializable {
         this.id = id;
     }
 
-    public Boolean getAtivo() {
-        return ativo;
+    public Boolean getExcluded() {
+        return excluded;
     }
 
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
+    public void setExcluded(Boolean excluded) {
+        this.excluded = excluded;
+    }
+
+    public LocalDate getExcludedAt() {
+        return excludedAt;
+    }
+
+    public void setExcludedAt(LocalDate excludedAt) {
+        this.excludedAt = excludedAt;
     }
 
     @Override

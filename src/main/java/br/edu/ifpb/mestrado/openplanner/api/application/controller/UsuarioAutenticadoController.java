@@ -15,9 +15,9 @@ import br.edu.ifpb.mestrado.openplanner.api.application.factory.UsuarioLinkFacto
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioAutenticadoRequestTO;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioAutenticadoResponseTO;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioAutenticadoSenhaRequestTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuarioautenticado.UsuarioAutenticadoRequestTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuarioautenticado.UsuarioAutenticadoResponseTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuarioautenticado.UsuarioAutenticadoSenhaRequestTO;
 
 @RestController
 @RequestMapping("/me")

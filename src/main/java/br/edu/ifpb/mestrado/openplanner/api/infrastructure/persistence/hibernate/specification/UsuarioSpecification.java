@@ -7,9 +7,9 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario_;
 
 public class UsuarioSpecification {
 
-    public static Specification<Usuario> positiveIdAndActiveAndNotPendenteAndNotBloqueado() {
+    public static Specification<Usuario> positiveIdAndNotExcludedAndNotPendenteAndNotBloqueado() {
         return Specification
-                .where(BaseEntitySpecification.<Usuario>positiveIdAndActive())
+                .where(BaseEntitySpecification.<Usuario>positiveIdAndNotExcluded())
                 .and(notPendente())
                 .and(notBloqueado());
     }

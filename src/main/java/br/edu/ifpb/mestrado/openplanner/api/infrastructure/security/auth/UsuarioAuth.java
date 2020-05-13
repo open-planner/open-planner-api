@@ -14,7 +14,7 @@ public class UsuarioAuth extends User {
     private Usuario usuario;
 
     public UsuarioAuth(Usuario usuario, Collection<? extends GrantedAuthority> authorities) {
-        super(usuario.getEmail(), usuario.getSenha().getValor(), usuario.getAtivo(), true, true, !usuario.getBloqueado(), authorities);
+        super(usuario.getEmail(), usuario.getSenha().getValor(), !usuario.getExcluded(), true, true, !usuario.getBloqueado(), authorities);
         this.usuario = usuario;
     }
 

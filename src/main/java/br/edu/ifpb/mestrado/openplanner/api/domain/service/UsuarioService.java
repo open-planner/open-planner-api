@@ -26,6 +26,4 @@ public interface UsuarioService extends BaseService<Usuario> {
 
     void loginSucceded(String login);
 
-    void switchBloqueado(Long id);
-
 }

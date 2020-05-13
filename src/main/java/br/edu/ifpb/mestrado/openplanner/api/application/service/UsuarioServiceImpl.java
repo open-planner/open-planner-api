@@ -12,7 +12,7 @@ import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.Inform
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InvalidActualPasswordException;
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InvalidTokenException;
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.NotAuthenticatedUserException;
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.permissao.Permissao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.factory.MailFactory;
@@ -76,7 +76,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
     @Transactional(readOnly = true)
     @Override
     public List<Usuario> findAllActive() {
-        return usuarioRepository.findAll(UsuarioSpecification.positiveIdAndActiveAndNotPendenteAndNotBloqueado());
+        return usuarioRepository.findAll(UsuarioSpecification.positiveIdAndNotExcludedAndNotPendenteAndNotBloqueado());
     }
 
     @Transactional
@@ -89,7 +89,6 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         usuario.setPendente(true);
         usuario.setBloqueado(false);
         usuario.generateAtivacaoToken();
-        usuario.setAtivo(false);
 
         Usuario usuarioSaved = super.save(usuario);
 
@@ -104,7 +103,6 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         Usuario usuario = findByAtivacaoToken(token);
         usuario.setAtivacaoToken(null);
         usuario.setPendente(false);
-        usuario.setAtivo(true);
 
         return super.save(usuario);
     }
@@ -136,7 +134,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
     @Override
     public Usuario updateAutenticado(Usuario usuario) {
         Usuario usuarioAutenticado = getUserDetailsService().getUsuarioAuth().getUsuario();
-        usuario.setGrupos(usuarioAutenticado.getGrupos());
+        usuario.setPermissoes(usuarioAutenticado.getPermissoes());
 
         return update(usuarioAutenticado.getId(), usuario);
     }
@@ -166,14 +164,6 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         return super.update(usuario.getId(), usuario);
     }
 
-    // TODO implementar método recoverLogin
-//    @Override
-//    public void recoverLogin(String email) {
-//        Usuario usuario = findByEmail(email);
-//
-//        sendMailRecoveryLogin(usuario);
-//    }
-
     @Transactional
     @Override
     public void recoverSenha(String email) {
@@ -193,7 +183,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
             usuario.getSenha().addTentativaErro();
 
             if (usuario.getSenha().getTentativasErro() >= securityProperties.getMaximumAttemptsLogin()) {
-                usuario.bloquear();
+                usuario.setBloqueado(true);
             }
 
             super.update(usuario.getId(), usuario);
@@ -215,34 +205,25 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         super.update(usuario.getId(), usuario);
     }
 
-    @Transactional
-    @Override
-    public void switchBloqueado(Long id) {
-        Usuario usuario = findById(id);
-        usuario.switchBloqueado();
-
-        super.update(usuario.getId(), usuario);
-    }
-
     @Override
     protected BaseRepository<Usuario> getRepository() {
         return usuarioRepository;
     }
 
     private void checkSave(Usuario usuario) {
-        if (usuario.getGrupos() == null || usuario.getGrupos().isEmpty()) {
+        if (usuario.getPermissoes() == null || usuario.getPermissoes().isEmpty()) {
             return;
         }
 
-        if (usuario.getGrupos().stream().anyMatch(Grupo::isRoot)) {
+        if (usuario.anyPermissaoMatch(Permissao::isRoot)) {
             throw new BusinessException("usuario.save.grupos.root");
         }
 
-        if (usuario.getGrupos().stream().anyMatch(Grupo::isSystem)) {
+        if (usuario.anyPermissaoMatch(Permissao::isSystem)) {
             throw new BusinessException("usuario.save.grupos.system");
         }
 
-        if ((!getAutenticado().isAdmin() && !getAutenticado().isRoot()) && usuario.getGrupos().stream().anyMatch(Grupo::isAdmin)) {
+        if (!getAutenticado().isAdmin() && !getAutenticado().isRoot() && usuario.anyPermissaoMatch(Permissao::isAdmin)) {
             throw new BusinessException("usuario.save.grupos.admin");
         }
 
@@ -250,41 +231,40 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
     }
 
     private void checkUpdate(Long id, Usuario usuario, Usuario usuarioSaved) {
+        if (!usuario.getEmail().equalsIgnoreCase(usuarioSaved.getEmail())) {
+            checkUniqueEmail(usuario);
+            usuario.setEmail(usuario.getEmail().toLowerCase());
+        }
+
         if (id == Usuario.ID_ROOT) {
             checkUpdateRoot(usuario);
+            return;
         }
 
         if (id == Usuario.ID_SYSTEM) {
             checkUpdateSystem(usuario);
+            return;
         }
 
         if (id == Usuario.ID_ADMIN) {
             checkUpdateAdmin(usuario);
         }
-
-        if (!usuario.getEmail().equalsIgnoreCase(usuarioSaved.getEmail())) {
-            checkUniqueEmail(usuario);
-            usuario.setEmail(usuario.getEmail().toLowerCase());
-        }
     }
 
     private void checkUpdateRoot(Usuario usuario) {
-        if (usuario.getGrupos() == null || usuario.getGrupos().size() != 1
-                || !usuario.getGrupos().stream().anyMatch(Grupo::isRoot)) {
+        if (!usuario.anyPermissaoMatch(Permissao::isRoot)) {
             throw new BusinessException("usuario.update.grupos.root");
         }
     }
 
     private void checkUpdateSystem(Usuario usuario) {
-        if (usuario.getGrupos() == null || usuario.getGrupos().size() != 1
-                || !usuario.getGrupos().stream().anyMatch(Grupo::isSystem)) {
+        if (!usuario.anyPermissaoMatch(Permissao::isSystem)) {
             throw new BusinessException("usuario.update.grupos.system");
         }
     }
 
     private void checkUpdateAdmin(Usuario usuario) {
-        if (usuario.getGrupos() == null || usuario.getGrupos().size() != 1
-                || !usuario.getGrupos().stream().anyMatch(Grupo::isAdmin)) {
+        if (!usuario.anyPermissaoMatch(Permissao::isAdmin)) {
             throw new BusinessException("usuario.update.grupos.admin");
         }
     }
@@ -303,11 +283,6 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
     private void sendMailRegistration(Usuario usuario) {
         mailService.send(mailFactory.createRegistrationUsuario(usuario));
     }
-
-    // TODO implementar método recoverLogin
-//    private void sendMailRecoveryLogin(Usuario usuario) {
-//        mailService.send(mailFactory.createRecoveryUsuarioLogin(usuario));
-//    }
 
     private void sendMailRecoverySenha(Usuario usuario) {
         mailService.send(mailFactory.createRecoveryUsuarioSenha(usuario));

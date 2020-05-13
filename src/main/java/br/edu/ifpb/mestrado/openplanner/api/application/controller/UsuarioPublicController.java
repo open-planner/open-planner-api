@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioPublicAtivacaoRequestTO;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioPublicEmailRequestTO;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioPublicRequestTO;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioPublicSenhaTokenRequestTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuariopublic.UsuarioPublicAtivacaoRequestTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuariopublic.UsuarioPublicEmailRequestTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuariopublic.UsuarioPublicRequestTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuariopublic.UsuarioPublicSenhaTokenRequestTO;
 
 @RestController
 @RequestMapping("/public/usuarios")

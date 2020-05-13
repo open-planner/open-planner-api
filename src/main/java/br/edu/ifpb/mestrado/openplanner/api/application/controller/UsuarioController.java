@@ -5,20 +5,16 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ifpb.mestrado.openplanner.api.application.facade.ResponseEntityFacade;
-import br.edu.ifpb.mestrado.openplanner.api.application.factory.GrupoLinkFactory;
 import br.edu.ifpb.mestrado.openplanner.api.application.factory.UsuarioLinkFactory;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
@@ -89,16 +85,8 @@ public class UsuarioController {
         return ResponseEntityFacade.ok(responseTO);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ROOT', 'ROLE_ADMIN') and #oauth2.hasScope('write')")
-    @PatchMapping("/{id}/ativo")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void switchActive(@PathVariable Long id) {
-        usuarioService.switchActive(id);
-    }
-
     private void addLinks(UsuarioResponseTO responseTO) {
         responseTO.add(UsuarioLinkFactory.create(responseTO.getId()));
-        responseTO.getGrupos().stream().forEach(grupo -> grupo.add(GrupoLinkFactory.create(grupo.getId())));
     }
 
 }

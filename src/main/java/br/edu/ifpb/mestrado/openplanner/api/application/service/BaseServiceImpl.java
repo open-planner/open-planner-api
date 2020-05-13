@@ -59,7 +59,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
     @Transactional(readOnly = true)
     @Override
     public List<T> findAllActive() {
-        return getRepository().findAll(BaseEntitySpecification.positiveIdAndActive());
+        return getRepository().findAll(BaseEntitySpecification.positiveIdAndNotExcluded());
     }
 
     @Transactional
@@ -75,15 +75,6 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
         BeanUtils.copyProperties(entity, savedEntity);
 
         return getRepository().save(savedEntity);
-    }
-
-    @Transactional
-    @Override
-    public T switchActive(Long id) {
-        T entity = findById(id);
-        entity.switchAtivo();
-
-        return update(id, entity);
     }
 
     protected Usuario getUsuarioAutenticado() {
