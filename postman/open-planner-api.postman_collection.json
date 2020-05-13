@@ -230,7 +230,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"token\": \"3271fbed-485e-4bee-8f1c-2d594de56bc1\"\n}"
+									"raw": "{\n  \"token\": \"ad24232d-0836-4b76-b3c2-62a9bb64f537\"\n}"
 								},
 								"url": {
 									"raw": "{{base_url}}/public/usuarios/ativacao",
@@ -276,6 +276,58 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "/public/usuarios/senha",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"token\": \"6db24cff-5c94-4048-ac5b-9b52305755fa\",\n  \"senha\": \"Fagner@123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/public/usuarios/senha",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"public",
+										"usuarios",
+										"senha"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5f4a676c-bdd8-4e64-8915-0191051320a8",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "f6dc87fe-c28e-4f60-8b06-4c71ae489cfe",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -422,237 +474,20 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "grupos",
+			"name": "permissoes",
 			"item": [
 				{
-					"name": "/grupos",
+					"name": "/permissoes",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/grupos?page=0&size=10",
+							"raw": "{{base_url}}/permissoes",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"grupos"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "size",
-									"value": "10"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/grupos/{id}",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{access_token}}"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/grupos/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"grupos",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/grupos/ativos",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{access_token}}"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/grupos/ativos",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"grupos",
-								"ativos"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/grupos",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"nome\": \"Gerente\",\n\t\"permissoes\": [\n\t\t\n\t],\n\t\"ativo\": true\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/grupos",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"grupos"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/grupos/{id}",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{access_token}}"
-							},
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"nome\": \"Super User\",\n\t\"permissoes\": [\n\t\t-1\n\t],\n\t\"ativo\": true\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/grupos/-1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"grupos",
-								"-1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/grupos/{id}/ativo",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{access_token}}"
-							},
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{base_url}}/grupos/2/ativo",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"grupos",
-								"2",
-								"ativo"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "{{access_token}}",
-						"type": "string"
-					}
-				]
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "1269dffa-0330-445a-816b-85039de1e674",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "7bc34759-27bd-4127-8264-3041c66dcf14",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "permissoes",
-			"item": [
-				{
-					"name": "/permissoes/ativos",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{access_token}}"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/permissoes/ativos",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"permissoes",
-								"ativos"
+								"permissoes"
 							]
 						}
 					},
@@ -705,21 +540,15 @@
 					"name": "/usuarios/{id}",
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{access_token}}"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{base_url}}/usuarios/2",
+							"raw": "{{base_url}}/usuarios/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"usuarios",
-								"2"
+								"1"
 							]
 						}
 					},
