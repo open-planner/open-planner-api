@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.grupo.Grupo;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.permissao.Permissao;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.converter.IdReference;
 
 public class UsuarioRequestTO implements Serializable {
@@ -17,10 +17,8 @@ public class UsuarioRequestTO implements Serializable {
 
     private String email;
 
-    @IdReference(target = Grupo.class, property = "grupos")
-    private Set<Long> grupos;
-
-    private Boolean ativo;
+    @IdReference(target = Permissao.class, property = "grupos")
+    private Set<Long> permissoes;
 
     public UsuarioRequestTO() {
         super();
@@ -50,26 +48,18 @@ public class UsuarioRequestTO implements Serializable {
         this.email = email;
     }
 
-    public Set<Long> getGrupos() {
-        return grupos;
+    public Set<Long> getPermissoes() {
+        return permissoes;
     }
 
-    public void setGrupos(Set<Long> grupos) {
-        this.grupos = grupos;
-    }
-
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
+    public void setPermissoes(Set<Long> permissoes) {
+        this.permissoes = permissoes;
     }
 
     @Override
     public String toString() {
-        return String.format("UsuarioRequestTO [nome=%s, dataNascimento=%s, email=%s, grupos=%s, ativo=%s]", nome, dataNascimento, email,
-                grupos, ativo);
+        return String.format("UsuarioRequestTO [nome=%s, dataNascimento=%s, email=%s, permissoes=%s]", nome, dataNascimento, email,
+                permissoes);
     }
 
 }

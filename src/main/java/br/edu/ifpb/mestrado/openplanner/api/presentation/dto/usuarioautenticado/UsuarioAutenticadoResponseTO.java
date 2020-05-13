@@ -1,11 +1,15 @@
-package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario;
+package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuarioautenticado;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class UsuarioAutenticadoRequestTO implements Serializable {
+import org.springframework.hateoas.RepresentationModel;
 
-    private static final long serialVersionUID = -4976627326375118702L;
+public class UsuarioAutenticadoResponseTO extends RepresentationModel<UsuarioAutenticadoResponseTO> implements Serializable {
+
+    private static final long serialVersionUID = -2629152547405312072L;
+
+    private Long id;
 
     private String nome;
 
@@ -13,8 +17,16 @@ public class UsuarioAutenticadoRequestTO implements Serializable {
 
     private String email;
 
-    public UsuarioAutenticadoRequestTO() {
+    public UsuarioAutenticadoResponseTO() {
         super();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -43,7 +55,6 @@ public class UsuarioAutenticadoRequestTO implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("UsuarioRequestTO [nome=%s, email=%s]", nome, email);
+        return String.format("UsuarioAutenticadoResponseTO [id=%s, nome=%s, dataNascimento=%s, email=%s]", id, nome, dataNascimento, email);
     }
-
 }

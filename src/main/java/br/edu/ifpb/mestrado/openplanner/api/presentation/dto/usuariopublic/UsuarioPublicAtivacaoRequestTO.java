@@ -1,4 +1,4 @@
-package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario;
+package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuariopublic;
 
 import java.io.Serializable;
 

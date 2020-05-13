@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.grupo.GrupoResponseTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.permissao.PermissaoResponseTO;
 
 public class UsuarioResponseTO extends RepresentationModel<UsuarioResponseTO> implements Serializable {
 
@@ -26,7 +26,7 @@ public class UsuarioResponseTO extends RepresentationModel<UsuarioResponseTO> im
 
     private Boolean ativo;
 
-    private Set<GrupoResponseTO> grupos;
+    private Set<PermissaoResponseTO> permissoes;
 
     public UsuarioResponseTO() {
         super();
@@ -88,19 +88,19 @@ public class UsuarioResponseTO extends RepresentationModel<UsuarioResponseTO> im
         this.ativo = ativo;
     }
 
-    public Set<GrupoResponseTO> getGrupos() {
-        return grupos;
+    public Set<PermissaoResponseTO> getPermissoes() {
+        return permissoes;
     }
 
-    public void setGrupos(Set<GrupoResponseTO> grupos) {
-        this.grupos = grupos;
+    public void setPermissoes(Set<PermissaoResponseTO> permissoes) {
+        this.permissoes = permissoes;
     }
 
     @Override
     public String toString() {
         return String.format(
-                "UsuarioResponseTO [id=%s, nome=%s, dataNascimento=%s, email=%s, pendente=%s, bloqueado=%s, ativo=%s, grupos=%s]", id, nome,
-                dataNascimento, email, pendente, bloqueado, ativo, grupos);
+                "UsuarioResponseTO [id=%s, nome=%s, dataNascimento=%s, email=%s, pendente=%s, bloqueado=%s, ativo=%s, permissoes=%s]", id,
+                nome, dataNascimento, email, pendente, bloqueado, ativo, permissoes);
     }
 
 }
