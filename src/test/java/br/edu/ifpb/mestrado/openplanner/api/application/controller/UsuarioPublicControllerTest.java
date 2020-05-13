@@ -44,7 +44,7 @@ public class UsuarioPublicControllerTest extends BaseControllerTest {
                 .body(requestBody)
                 .when().post(buildUrl(BASE_PATH));
 
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
     @Test

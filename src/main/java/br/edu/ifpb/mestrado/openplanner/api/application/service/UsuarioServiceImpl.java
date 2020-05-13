@@ -204,6 +204,10 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
     private void checkSave(Usuario usuario) {
         checkUniqueFields(usuario);
 
+        if (usuario.getPermissoes() == null || usuario.getPermissoes().isEmpty()) {
+            return;
+        }
+
         if (usuario.anyPermissaoMatch(Permissao::isRoot)) {
             throw new BusinessException("usuario.save.permissoes.root");
         }

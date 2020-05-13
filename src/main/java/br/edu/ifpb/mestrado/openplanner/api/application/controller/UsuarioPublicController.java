@@ -32,7 +32,7 @@ public class UsuarioPublicController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void create(@Valid @RequestBody UsuarioPublicRequestTO requestTO) {
         Usuario usuario = modelMapperFacade.map(requestTO, Usuario.class);
         usuarioService.save(usuario);
@@ -44,16 +44,16 @@ public class UsuarioPublicController {
         usuarioService.activate(requestTO.getToken());
     }
 
-    @PatchMapping("/senha")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateSenhaByResetToken(@RequestBody UsuarioPublicSenhaTokenRequestTO requestTO) {
-        usuarioService.updateSenhaByResetToken(requestTO.getToken(), requestTO.getSenha());
-    }
-
     @PostMapping("/recuperacao/senha")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void recoverSenha(@Valid @RequestBody UsuarioPublicEmailRequestTO requestTO) {
         usuarioService.recoverSenha(requestTO.getEmail());
+    }
+
+    @PatchMapping("/senha")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateSenhaByResetToken(@RequestBody UsuarioPublicSenhaTokenRequestTO requestTO) {
+        usuarioService.updateSenhaByResetToken(requestTO.getToken(), requestTO.getSenha());
     }
 
 }
