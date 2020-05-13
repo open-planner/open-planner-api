@@ -151,7 +151,7 @@ public class UsuarioServiceImplTest {
         mockAuthenticationForAuditing(MOCK_EMAIL_ROOT);
         Page<Usuario> usuariosPage = usuarioService.findAll(PageRequest.of(0, 10));
 
-        assertPage(usuariosPage, 10, 0, 8, 1, 8);
+        assertPage(usuariosPage, 10, 0, 9, 1, 9);
     }
 
     @Test
