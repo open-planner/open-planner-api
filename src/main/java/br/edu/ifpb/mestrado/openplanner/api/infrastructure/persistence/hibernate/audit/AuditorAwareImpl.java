@@ -18,7 +18,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
     public Optional<String> getCurrentAuditor() {
         return Optional.of(userDetailsService.isAuthenticated()
                 ? userDetailsService.getUsernameAuth()
-                : userDetailsService.getUsernameSystem());
+                : userDetailsService.getAnonymousUsername());
     }
 
 }

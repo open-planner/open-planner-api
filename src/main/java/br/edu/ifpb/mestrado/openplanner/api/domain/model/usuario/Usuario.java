@@ -32,6 +32,7 @@ public class Usuario extends AuditedBaseEntity {
 
     public static final Long ID_ROOT = -1L;
     public static final Long ID_SYSTEM = -2L;
+    public static final Long ID_ANONYMOUS = -3L;
     public static final Long ID_ADMIN = 1L;
 
     @NotNull

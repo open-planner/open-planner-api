@@ -69,8 +69,8 @@ public class OAuth2UserDetailsService implements UserDetailsService {
         return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-    public String getUsernameSystem() {
-        return loadUserById(Usuario.ID_SYSTEM).getUsername();
+    public String getAnonymousUsername() {
+        return loadUserById(Usuario.ID_ANONYMOUS).getUsername();
     }
 
     public UsuarioAuth getUsuarioAuth() {
