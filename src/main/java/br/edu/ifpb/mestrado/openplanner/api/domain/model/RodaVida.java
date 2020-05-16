@@ -1,28 +1,19 @@
 package br.edu.ifpb.mestrado.openplanner.api.domain.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
-import br.edu.ifpb.mestrado.openplanner.api.domain.shared.AuditedBaseEntity;
+import br.edu.ifpb.mestrado.openplanner.api.domain.shared.AuditedBaseUsuarioEntity;
 
 @Entity
 @Table(name = "roda_vida", schema = "planner")
-public class RodaVida extends AuditedBaseEntity implements Serializable {
+public class RodaVida extends AuditedBaseUsuarioEntity {
 
     private static final long serialVersionUID = -1723760582908883735L;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id", unique = true, nullable = false)
-    private Usuario usuario;
 
     @NotNull
     @Column(name = "espiritualidade", precision = 3, scale = 2, nullable = false)
@@ -55,14 +46,6 @@ public class RodaVida extends AuditedBaseEntity implements Serializable {
     @NotNull
     @Column(name = "ambiente", precision = 3, scale = 2, nullable = false)
     private BigDecimal ambiente;
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
 
     public BigDecimal getEspiritualidade() {
         return espiritualidade;
