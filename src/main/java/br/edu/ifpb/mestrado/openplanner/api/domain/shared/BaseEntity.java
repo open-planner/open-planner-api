@@ -11,7 +11,10 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Where;
+
 @MappedSuperclass
+@Where(clause = "excluded = FALSE")
 public abstract class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -1064151572841012966L;
