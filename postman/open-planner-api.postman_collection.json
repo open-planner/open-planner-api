@@ -54,13 +54,13 @@
 							"urlencoded": [
 								{
 									"key": "username",
-									"value": "admin@email.com",
+									"value": "fagnerlima91@gmail.com",
 									"description": "admin@email.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "Admin@123",
+									"value": "Fagner@123",
 									"description": "Admin@123",
 									"type": "text"
 								},
@@ -230,7 +230,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"token\": \"ad24232d-0836-4b76-b3c2-62a9bb64f537\"\n}"
+									"raw": "{\n  \"token\": \"6570bc17-c4d5-43b9-86f1-bf1984af6fec\"\n}"
 								},
 								"url": {
 									"raw": "{{base_url}}/public/usuarios/ativacao",
@@ -744,6 +744,173 @@
 								"usuarios",
 								"recuperacao",
 								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "roda-vida",
+			"item": [
+				{
+					"name": "/roda-vida",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/roda-vida",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"roda-vida"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/roda-vida",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"espiritualidade\": 0.90,\n    \"entretenimento\": 0.00,\n    \"dinheiro\": 0.40,\n    \"carreira\": 0.00,\n    \"desenvolvimentoPessoal\": 0.00,\n    \"relacionamento\": 1.00,\n    \"saude\": 0.00,\n    \"ambiente\": 0.00\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/roda-vida",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"roda-vida"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "tags",
+			"item": [
+				{
+					"name": "/tags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tags?sort=descricao,asc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tags"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "descricao,asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/tags/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tags/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tags",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/tags",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"descricao\": \"Tag 2\",\n\t\"cor\": \"FF0\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/tags",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/tags/{id}",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"descricao\": \"Dev\",\n\t\"cor\": \"F0F\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/tags/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tags",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/tags/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tags/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tags",
+								"2"
 							]
 						}
 					},
