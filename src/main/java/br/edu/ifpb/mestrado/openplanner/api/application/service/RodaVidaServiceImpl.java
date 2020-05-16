@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InformationNotFoundException;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.rodavida.RodaVida;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.RodaVidaService;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.repository.BaseOneByUsuarioRepository;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.repository.RodaVidaRepository;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.service.OAuth2UserDetailsService;
 
@@ -35,7 +34,7 @@ public class RodaVidaServiceImpl extends BaseOneByUsuarioServiceImpl<RodaVida> i
     }
 
     @Override
-    protected BaseOneByUsuarioRepository<RodaVida> getRepository() {
+    protected RodaVidaRepository getRepository() {
         return rodaVidaRepository;
     }
 
