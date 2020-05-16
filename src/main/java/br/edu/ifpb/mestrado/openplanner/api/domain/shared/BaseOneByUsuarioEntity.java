@@ -4,12 +4,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.Where;
-
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 
 @MappedSuperclass
-@Where(clause = "excluded = FALSE")
 public abstract class BaseOneByUsuarioEntity extends BaseEntity {
 
     private static final long serialVersionUID = -239743726004732147L;

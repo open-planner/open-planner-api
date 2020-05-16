@@ -6,10 +6,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Where;
+
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.AuditedBaseManyByUsuarioEntity;
 
 @Entity
 @Table(name = "tag", schema = "planner")
+@Where(clause = "excluded = 'FALSE'")
 public class Tag extends AuditedBaseManyByUsuarioEntity {
 
     private static final long serialVersionUID = -8829963347764690919L;
