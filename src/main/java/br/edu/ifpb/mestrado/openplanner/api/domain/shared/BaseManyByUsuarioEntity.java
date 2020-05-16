@@ -1,6 +1,5 @@
 package br.edu.ifpb.mestrado.openplanner.api.domain.shared;
 
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
@@ -15,7 +14,7 @@ public abstract class BaseManyByUsuarioEntity extends BaseEntity {
 
     private static final long serialVersionUID = -239743726004732147L;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_usuario", referencedColumnName = "id", nullable = false)
     private Usuario usuario;
 

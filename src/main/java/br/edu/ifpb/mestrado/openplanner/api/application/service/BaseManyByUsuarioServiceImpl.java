@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InformationNotFoundException;
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.UnauthorizedUserException;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.BaseManyByUsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.BaseManyByUsuarioEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.repository.BaseManyByUsuarioRepository;
@@ -35,7 +36,7 @@ public abstract class BaseManyByUsuarioServiceImpl<T extends BaseManyByUsuarioEn
         Optional<T> entityOpt = getRepository().findById(id);
         T entity = entityOpt.orElseThrow(() -> new InformationNotFoundException());
 
-        checkUsuario(entity);
+        checkUsuario(entity.getUsuario());
 
         return entity;
     }
@@ -82,8 +83,8 @@ public abstract class BaseManyByUsuarioServiceImpl<T extends BaseManyByUsuarioEn
         super.deleteById(id);
     }
 
-    protected void checkUsuario(T entity) {
-        if (!entity.getUsuario().equals(getUsuarioAutenticado()) && !getUsuarioAutenticado().isRootOrAdmin()) {
+    protected void checkUsuario(Usuario usuario) {
+        if (!usuario.equals(getUsuarioAutenticado()) && !getUsuarioAutenticado().isRootOrAdmin()) {
             throw new UnauthorizedUserException();
         }
     }

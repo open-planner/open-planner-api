@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +43,14 @@ public class TagController {
         Page<TagResponseTO> responseTOPage = modelMapperFacade.map(page, TagResponseTO.class);
 
         return ResponseEntityFacade.ok(responseTOPage);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TagResponseTO> findById(@PathVariable Long id) {
+        Tag tag = tagService.findById(id);
+        TagResponseTO responseTO = modelMapperFacade.map(tag, TagResponseTO.class);
+
+        return ResponseEntityFacade.ok(responseTO);
     }
 
     @PostMapping
