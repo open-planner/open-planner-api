@@ -91,6 +91,10 @@ public class Usuario extends AuditedBaseEntity {
         return id != null && id.equals(ID_ADMIN);
     }
 
+    public Boolean isRootOrAdmin() {
+        return isRoot() || isAdmin();
+    }
+
     public void generateAtivacaoToken() {
         ativacaoToken = UUID.randomUUID().toString();
     }
