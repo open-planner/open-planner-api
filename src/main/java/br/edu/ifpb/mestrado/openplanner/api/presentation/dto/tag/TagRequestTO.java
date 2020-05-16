@@ -1,26 +1,19 @@
-package br.edu.ifpb.mestrado.openplanner.api.domain.model.tag;
+package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.tag;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.io.Serializable;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import br.edu.ifpb.mestrado.openplanner.api.domain.shared.AuditedBaseManyByUsuarioEntity;
+public class TagRequestTO implements Serializable {
 
-@Entity
-@Table(name = "tag", schema = "planner")
-public class Tag extends AuditedBaseManyByUsuarioEntity {
-
-    private static final long serialVersionUID = -8829963347764690919L;
+    private static final long serialVersionUID = -8258221579687565611L;
 
     @NotBlank
     @Size(min = 3, max = 64)
-    @Column(name = "descricao")
     private String descricao;
 
     @Size(min = 3, max = 6)
-    @Column(name = "cor")
     private String cor;
 
     public String getDescricao() {
@@ -37,6 +30,11 @@ public class Tag extends AuditedBaseManyByUsuarioEntity {
 
     public void setCor(String cor) {
         this.cor = cor;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("TagRequestTO [descricao=%s, cor=%s]", descricao, cor);
     }
 
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ifpb.mestrado.openplanner.api.application.facade.ResponseEntityFacade;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.rodavida.RodaVida;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.RodaVidaService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
@@ -33,7 +34,7 @@ public class RodaVidaController {
         RodaVida rodaVida = rodaVidaService.findByUsuarioAutenticado();
         RodaVidaResponseTO rodaVidaResponseTO = modelMapperFacade.map(rodaVida, RodaVidaResponseTO.class);
 
-        return ResponseEntity.ok(rodaVidaResponseTO);
+        return ResponseEntityFacade.ok(rodaVidaResponseTO);
     }
 
     @PutMapping
@@ -42,7 +43,7 @@ public class RodaVidaController {
         RodaVida updatedRodaVida = rodaVidaService.updateByUsuarioAutenticado(rodaVida);
         RodaVidaResponseTO rodaVidaResponseTO = modelMapperFacade.map(updatedRodaVida, RodaVidaResponseTO.class);
 
-        return ResponseEntity.ok(rodaVidaResponseTO);
+        return ResponseEntityFacade.ok(rodaVidaResponseTO);
     }
 
 }
