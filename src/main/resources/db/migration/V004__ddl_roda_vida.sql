@@ -14,9 +14,9 @@ CREATE TABLE planner.roda_vida (
   excluded BOOLEAN NOT NULL DEFAULT FALSE,
   excluded_at DATE,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  created_by VARCHAR(32) NOT NULL,
+  created_by VARCHAR(128) NOT NULL,
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_by VARCHAR(32) NOT NULL,
+  updated_by VARCHAR(128) NOT NULL,
   version INTEGER NOT NULL DEFAULT 0,
   CONSTRAINT pk_roda_vida PRIMARY KEY(id),
   CONSTRAINT fk_roda_vida_id_usuario FOREIGN KEY (id_usuario) REFERENCES auth.usuario(id)
@@ -24,4 +24,5 @@ CREATE TABLE planner.roda_vida (
   CONSTRAINT uk_roda_vida_id_usuario UNIQUE(id_usuario)
 );
 
+CREATE INDEX idx_roda_vida_id_usuario ON planner.roda_vida(id_usuario);
 CREATE INDEX idx_roda_vida_excluded ON planner.roda_vida(excluded);

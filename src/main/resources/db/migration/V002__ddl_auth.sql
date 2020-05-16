@@ -17,9 +17,9 @@ CREATE TABLE auth.usuario (
   excluded BOOLEAN NOT NULL DEFAULT FALSE,
   excluded_at DATE,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  created_by VARCHAR(32) NOT NULL,
+  created_by VARCHAR(128) NOT NULL,
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_by VARCHAR(32) NOT NULL,
+  updated_by VARCHAR(128) NOT NULL,
   version INTEGER NOT NULL DEFAULT 0,
   CONSTRAINT pk_usuario PRIMARY KEY(id),
   CONSTRAINT uk_usuario_email UNIQUE(email)
