@@ -7,45 +7,45 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import br.edu.ifpb.mestrado.openplanner.api.domain.shared.AuditedBaseUsuarioEntity;
+import br.edu.ifpb.mestrado.openplanner.api.domain.shared.AuditedBaseOneByUsuarioEntity;
 
 @Entity
 @Table(name = "roda_vida", schema = "planner")
-public class RodaVida extends AuditedBaseUsuarioEntity {
+public class RodaVida extends AuditedBaseOneByUsuarioEntity {
 
     private static final long serialVersionUID = -1723760582908883735L;
 
     @NotNull
     @Column(name = "espiritualidade", precision = 3, scale = 2, nullable = false)
-    private BigDecimal espiritualidade;
+    private BigDecimal espiritualidade = BigDecimal.ZERO;
 
     @NotNull
     @Column(name = "entretenimento", precision = 3, scale = 2, nullable = false)
-    private BigDecimal entretenimento;
+    private BigDecimal entretenimento = BigDecimal.ZERO;
 
     @NotNull
     @Column(name = "dinheiro", precision = 3, scale = 2, nullable = false)
-    private BigDecimal dinheiro;
+    private BigDecimal dinheiro = BigDecimal.ZERO;
 
     @NotNull
     @Column(name = "carreira", precision = 3, scale = 2, nullable = false)
-    private BigDecimal carreira;
+    private BigDecimal carreira = BigDecimal.ZERO;
 
     @NotNull
     @Column(name = "desenvolvimentoPessoal", precision = 3, scale = 2, nullable = false)
-    private BigDecimal desenvolvimentoPessoal;
+    private BigDecimal desenvolvimentoPessoal = BigDecimal.ZERO;
 
     @NotNull
     @Column(name = "relacionamento", precision = 3, scale = 2, nullable = false)
-    private BigDecimal relacionamento;
+    private BigDecimal relacionamento = BigDecimal.ZERO;
 
     @NotNull
     @Column(name = "saude", precision = 3, scale = 2, nullable = false)
-    private BigDecimal saude;
+    private BigDecimal saude = BigDecimal.ZERO;
 
     @NotNull
     @Column(name = "ambiente", precision = 3, scale = 2, nullable = false)
-    private BigDecimal ambiente;
+    private BigDecimal ambiente = BigDecimal.ZERO;
 
     public BigDecimal getEspiritualidade() {
         return espiritualidade;
