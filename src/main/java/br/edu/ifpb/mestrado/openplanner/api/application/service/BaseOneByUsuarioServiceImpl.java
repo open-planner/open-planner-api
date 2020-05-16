@@ -69,6 +69,13 @@ public abstract class BaseOneByUsuarioServiceImpl<T extends BaseOneByUsuarioEnti
         return super.save(entity);
     }
 
+    @Override
+    public T updateByUsuarioAutenticado(T entity) {
+        T savedEntity = findByUsuarioAutenticado();
+
+        return super.update(savedEntity.getId(), entity);
+    }
+
     @Transactional
     @Override
     public T update(Long id, T entity) {

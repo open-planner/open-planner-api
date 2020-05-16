@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.AuditedBaseOneByUsuarioEntity;
@@ -40,6 +42,8 @@ public class RodaVida extends AuditedBaseOneByUsuarioEntity {
     private BigDecimal relacionamento = BigDecimal.ZERO;
 
     @NotNull
+    @Min(0)
+    @Max(1)
     @Column(name = "saude", precision = 3, scale = 2, nullable = false)
     private BigDecimal saude = BigDecimal.ZERO;
 
