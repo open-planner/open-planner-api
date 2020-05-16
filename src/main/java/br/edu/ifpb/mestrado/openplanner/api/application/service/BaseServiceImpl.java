@@ -1,5 +1,6 @@
 package br.edu.ifpb.mestrado.openplanner.api.application.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,7 +86,8 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
     @Override
     public void deleteById(Long id) {
         T entity = findById(id);
-        getRepository().delete(entity);
+        entity.setExcluded(true);
+        entity.setExcludedAt(LocalDate.now());
     }
 
     protected Usuario getUsuarioAutenticado() {
