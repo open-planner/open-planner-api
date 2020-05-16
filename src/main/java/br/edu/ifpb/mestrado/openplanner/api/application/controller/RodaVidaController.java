@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.RodaVida;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.rodavida.RodaVida;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.RodaVidaService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.rodavida.RodaVidaRequesTO;

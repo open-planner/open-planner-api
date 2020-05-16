@@ -1,4 +1,4 @@
-package br.edu.ifpb.mestrado.openplanner.api.domain.model;
+package br.edu.ifpb.mestrado.openplanner.api.domain.model.rodavida;
 
 import java.math.BigDecimal;
 
