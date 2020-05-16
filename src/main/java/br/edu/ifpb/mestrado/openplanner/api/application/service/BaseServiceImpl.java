@@ -81,6 +81,13 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
         return getRepository().save(savedEntity);
     }
 
+    @Transactional
+    @Override
+    public void deleteById(Long id) {
+        T entity = findById(id);
+        getRepository().delete(entity);
+    }
+
     protected Usuario getUsuarioAutenticado() {
         return userDetailsService.getUsuarioAuth().getUsuario();
     }

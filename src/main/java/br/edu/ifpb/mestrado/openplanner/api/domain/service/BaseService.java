@@ -20,4 +20,6 @@ public interface BaseService<T> {
 
     public T update(Long id, T entity);
 
+    public void deleteById(Long id);
+
 }
