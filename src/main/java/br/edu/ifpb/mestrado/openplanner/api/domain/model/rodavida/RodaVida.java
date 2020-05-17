@@ -18,26 +18,38 @@ public class RodaVida extends AuditedBaseOneByUsuarioEntity {
     private static final long serialVersionUID = -1723760582908883735L;
 
     @NotNull
+    @Min(0)
+    @Max(1)
     @Column(name = "espiritualidade", precision = 3, scale = 2, nullable = false)
     private BigDecimal espiritualidade = BigDecimal.ZERO;
 
     @NotNull
+    @Min(0)
+    @Max(1)
     @Column(name = "entretenimento", precision = 3, scale = 2, nullable = false)
     private BigDecimal entretenimento = BigDecimal.ZERO;
 
     @NotNull
+    @Min(0)
+    @Max(1)
     @Column(name = "dinheiro", precision = 3, scale = 2, nullable = false)
     private BigDecimal dinheiro = BigDecimal.ZERO;
 
     @NotNull
+    @Min(0)
+    @Max(1)
     @Column(name = "carreira", precision = 3, scale = 2, nullable = false)
     private BigDecimal carreira = BigDecimal.ZERO;
 
     @NotNull
+    @Min(0)
+    @Max(1)
     @Column(name = "desenvolvimentoPessoal", precision = 3, scale = 2, nullable = false)
     private BigDecimal desenvolvimentoPessoal = BigDecimal.ZERO;
 
     @NotNull
+    @Min(0)
+    @Max(1)
     @Column(name = "relacionamento", precision = 3, scale = 2, nullable = false)
     private BigDecimal relacionamento = BigDecimal.ZERO;
 
@@ -48,6 +60,8 @@ public class RodaVida extends AuditedBaseOneByUsuarioEntity {
     private BigDecimal saude = BigDecimal.ZERO;
 
     @NotNull
+    @Min(0)
+    @Max(1)
     @Column(name = "ambiente", precision = 3, scale = 2, nullable = false)
     private BigDecimal ambiente = BigDecimal.ZERO;
 
