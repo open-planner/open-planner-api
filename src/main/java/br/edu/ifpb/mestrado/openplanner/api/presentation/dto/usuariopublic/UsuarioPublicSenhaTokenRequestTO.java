@@ -2,12 +2,16 @@ package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuariopublic;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotBlank;
+
 public class UsuarioPublicSenhaTokenRequestTO implements Serializable {
 
     private static final long serialVersionUID = 1003205023105314425L;
 
+    @NotBlank
     private String token;
 
+    @NotBlank
     private String senha;
 
     public UsuarioPublicSenhaTokenRequestTO() {

@@ -3,14 +3,18 @@ package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuarioautenticado
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotBlank;
+
 public class UsuarioAutenticadoRequestTO implements Serializable {
 
     private static final long serialVersionUID = -4976627326375118702L;
 
+    @NotBlank
     private String nome;
 
     private LocalDate dataNascimento;
 
+    @NotBlank
     private String email;
 
     public UsuarioAutenticadoRequestTO() {

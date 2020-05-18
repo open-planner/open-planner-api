@@ -3,6 +3,7 @@ package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.rodavida;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
@@ -10,34 +11,42 @@ public class RodaVidaRequesTO implements Serializable {
 
     private static final long serialVersionUID = -2183449646109908518L;
 
+    @Digits(integer = 1, fraction = 2)
     @Min(0)
     @Max(1)
     private BigDecimal espiritualidade;
 
+    @Digits(integer = 1, fraction = 2)
     @Min(0)
     @Max(1)
     private BigDecimal entretenimento;
 
+    @Digits(integer = 1, fraction = 2)
     @Min(0)
     @Max(1)
     private BigDecimal dinheiro;
 
+    @Digits(integer = 1, fraction = 2)
     @Min(0)
     @Max(1)
     private BigDecimal carreira;
 
+    @Digits(integer = 1, fraction = 2)
     @Min(0)
     @Max(1)
     private BigDecimal desenvolvimentoPessoal;
 
+    @Digits(integer = 1, fraction = 2)
     @Min(0)
     @Max(1)
     private BigDecimal relacionamento;
 
+    @Digits(integer = 1, fraction = 2)
     @Min(0)
     @Max(1)
     private BigDecimal saude;
 
+    @Digits(integer = 1, fraction = 2)
     @Min(0)
     @Max(1)
     private BigDecimal ambiente;

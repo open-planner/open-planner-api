@@ -3,11 +3,13 @@ package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuariopublic;
 import java.io.Serializable;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 public class UsuarioPublicEmailRequestTO implements Serializable {
 
     private static final long serialVersionUID = 3538601138000055055L;
 
+    @NotBlank
     @Email
     private String email;
 

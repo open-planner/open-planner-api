@@ -2,7 +2,6 @@ package br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem;
 
 import java.time.LocalDate;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -24,24 +23,19 @@ public class Viagem extends AuditedBaseManyByUsuarioEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column
     private Tipo tipo;
 
     @NotNull
-    @Column
     private LocalDate data;
 
     @NotBlank
     @Size(min = 3, max = 100)
-    @Column
     private String destino;
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column
     private Status status;
 
-    @Column
     private String anotacoes;
 
     public Tipo getTipo() {

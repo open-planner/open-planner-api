@@ -1,6 +1,5 @@
 package br.edu.ifpb.mestrado.openplanner.api.domain.model.tag;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -19,11 +18,9 @@ public class Tag extends AuditedBaseManyByUsuarioEntity {
 
     @NotBlank
     @Size(min = 3, max = 64)
-    @Column(name = "descricao")
     private String descricao;
 
     @Size(min = 3, max = 6)
-    @Column(name = "cor")
     private String cor;
 
     public String getDescricao() {
