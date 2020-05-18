@@ -6,8 +6,8 @@ import org.springframework.validation.annotation.Validated;
 
 @Component
 @Validated
-@ConfigurationProperties("open-planner-api.api-info")
-public class ApiInfoProperties {
+@ConfigurationProperties("open-planner-api.api-doc")
+public class ApiDocProperties {
 
     private String title;
 

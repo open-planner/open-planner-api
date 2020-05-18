@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties.ApiInfoProperties;
+import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties.ApiDocProperties;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -29,17 +29,17 @@ public class SwaggerConfiguration {
     private final String SCOPE = "global";
     private final String DEFAULT_INCLUDE_PATTERN = "/.*";
 
-    private ApiInfoProperties apiInfoProperties;
+    private ApiDocProperties apiDocProperties;
 
-    public SwaggerConfiguration(ApiInfoProperties apiInfoProperties) {
-        this.apiInfoProperties = apiInfoProperties;
+    public SwaggerConfiguration(ApiDocProperties apiDocProperties) {
+        this.apiDocProperties = apiDocProperties;
     }
 
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage(apiInfoProperties.getBasePackage()))
+                .apis(RequestHandlerSelectors.basePackage(apiDocProperties.getBasePackage()))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo())
@@ -49,9 +49,9 @@ public class SwaggerConfiguration {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title(apiInfoProperties.getTitle())
-                .description(apiInfoProperties.getDescription())
-                .version(apiInfoProperties.getVersion())
+                .title(apiDocProperties.getTitle())
+                .description(apiDocProperties.getDescription())
+                .version(apiDocProperties.getVersion())
                 .build();
     }
 

@@ -14,16 +14,16 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties.CorsProperties;
+import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties.AccessControlHeadersProperties;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter {
 
-    private CorsProperties corsProperties;
+    private AccessControlHeadersProperties accessControlHeadersProperties;
 
-    public CorsFilter(CorsProperties corsProperties) {
-        this.corsProperties = corsProperties;
+    public CorsFilter(AccessControlHeadersProperties accessControlHeadersProperties) {
+        this.accessControlHeadersProperties = accessControlHeadersProperties;
     }
 
     @Override
@@ -31,11 +31,14 @@ public class CorsFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        httpServletResponse.setHeader("Access-Control-Allow-Origin", corsProperties.getAllowedOrigin());
-        httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
+        String allowOrigin = accessControlHeadersProperties.getAllowOrigin();
+        Boolean allowCredentials = accessControlHeadersProperties.getAllowCredentials();
+
+        httpServletResponse.setHeader("Access-Control-Allow-Origin", allowOrigin);
+        httpServletResponse.setHeader("Access-Control-Allow-Credentials", allowCredentials.toString());
 
         if ("OPTIONS".equals(httpServletRequest.getMethod())
-                && corsProperties.getAllowedOrigin().equals(httpServletRequest.getHeader("Origin"))) {
+                && (allowOrigin.equals("*") || allowOrigin.equals(httpServletRequest.getHeader("Origin")))) {
             httpServletResponse.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
             httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
             httpServletResponse.setHeader("Access-Control-Max-Age", "3600");
