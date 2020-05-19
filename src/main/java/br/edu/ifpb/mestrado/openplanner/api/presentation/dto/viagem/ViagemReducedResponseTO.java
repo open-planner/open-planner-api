@@ -1,9 +1,10 @@
 package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.viagem;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.PeriodoResponseTO;
 
 public class ViagemReducedResponseTO implements Serializable {
 
@@ -14,7 +15,7 @@ public class ViagemReducedResponseTO implements Serializable {
     @JsonProperty("tipo")
     private String tipoLabel;
 
-    private LocalDate data;
+    private PeriodoResponseTO periodo;
 
     private String destino;
 
@@ -37,12 +38,12 @@ public class ViagemReducedResponseTO implements Serializable {
         this.tipoLabel = tipoLabel;
     }
 
-    public LocalDate getData() {
-        return data;
+    public PeriodoResponseTO getPeriodo() {
+        return periodo;
     }
 
-    public void setData(LocalDate data) {
-        this.data = data;
+    public void setPeriodo(PeriodoResponseTO periodo) {
+        this.periodo = periodo;
     }
 
     public String getDestino() {

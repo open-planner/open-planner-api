@@ -1,11 +1,11 @@
 package br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem;
 
-import java.time.LocalDate;
-
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Where;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.AuditedBaseManyByUsuarioEntity;
+import br.edu.ifpb.mestrado.openplanner.api.domain.shared.Periodo;
 
 @Entity
 @Table(name = "viagem", schema = "planner")
@@ -25,8 +26,9 @@ public class Viagem extends AuditedBaseManyByUsuarioEntity {
     @Enumerated(EnumType.STRING)
     private Tipo tipo;
 
-    @NotNull
-    private LocalDate data;
+    @Valid
+    @Embedded
+    private Periodo periodo;
 
     @NotBlank
     @Size(min = 3, max = 100)
@@ -46,12 +48,12 @@ public class Viagem extends AuditedBaseManyByUsuarioEntity {
         this.tipo = tipo;
     }
 
-    public LocalDate getData() {
-        return data;
+    public Periodo getPeriodo() {
+        return periodo;
     }
 
-    public void setData(LocalDate data) {
-        this.data = data;
+    public void setPeriodo(Periodo periodo) {
+        this.periodo = periodo;
     }
 
     public String getDestino() {

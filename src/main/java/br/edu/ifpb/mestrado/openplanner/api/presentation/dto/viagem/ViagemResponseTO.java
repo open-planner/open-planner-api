@@ -1,7 +1,8 @@
 package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.viagem;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.PeriodoResponseTO;
 
 public class ViagemResponseTO implements Serializable {
 
@@ -11,7 +12,7 @@ public class ViagemResponseTO implements Serializable {
 
     private String tipo;
 
-    private LocalDate data;
+    private PeriodoResponseTO periodo;
 
     private String destino;
 
@@ -35,12 +36,12 @@ public class ViagemResponseTO implements Serializable {
         this.tipo = tipo;
     }
 
-    public LocalDate getData() {
-        return data;
+    public PeriodoResponseTO getPeriodo() {
+        return periodo;
     }
 
-    public void setData(LocalDate data) {
-        this.data = data;
+    public void setPeriodo(PeriodoResponseTO periodo) {
+        this.periodo = periodo;
     }
 
     public String getDestino() {

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -21,7 +22,7 @@ public class PlanoFerias extends AuditedBaseManyByUsuarioEntity {
 
     private static final long serialVersionUID = 5498731772113637451L;
 
-    @NotNull
+    @Valid
     @Embedded
     private Periodo periodo;
 
