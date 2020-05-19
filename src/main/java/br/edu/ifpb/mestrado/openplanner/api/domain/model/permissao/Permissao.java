@@ -1,10 +1,10 @@
 package br.edu.ifpb.mestrado.openplanner.api.domain.model.permissao;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -23,12 +23,10 @@ public class Permissao extends BaseEntity {
     @NotNull
     @Size(min = 3, max = 64)
     @Enumerated(EnumType.STRING)
-    @Column(name = "papel", length = 64, nullable = false)
     private Papel papel;
 
-    @NotNull
+    @NotBlank
     @Size(min = 3, max = 128)
-    @Column(name = "descricao", length = 128, nullable = false)
     private String descricao;
 
     public Boolean isRoot() {

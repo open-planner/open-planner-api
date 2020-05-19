@@ -2,12 +2,16 @@ package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuarioautenticado
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotBlank;
+
 public class UsuarioAutenticadoSenhaRequestTO implements Serializable {
 
     private static final long serialVersionUID = -2750268280690970610L;
 
+    @NotBlank
     private String senhaAtual;
 
+    @NotBlank
     private String senhaNova;
 
     public UsuarioAutenticadoSenhaRequestTO() {
