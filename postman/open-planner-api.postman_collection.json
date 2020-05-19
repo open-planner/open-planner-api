@@ -230,7 +230,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"token\": \"6570bc17-c4d5-43b9-86f1-bf1984af6fec\"\n}"
+									"raw": "{\n  \"token\": \"4835b216-e929-4fc0-8166-266dd7518718\"\n}"
 								},
 								"url": {
 									"raw": "{{base_url}}/public/usuarios/ativacao",
@@ -852,7 +852,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"descricao\": \"Tag 2\",\n\t\"cor\": \"FF0\"\n}",
+							"raw": "{\n\t\"descricao\": \"Estudos\",\n\t\"cor\": \"cyan\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -910,6 +910,244 @@
 							],
 							"path": [
 								"tags",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "viagens",
+			"item": [
+				{
+					"name": "/viagens",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/viagens",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"viagens"
+							],
+							"query": [
+								{
+									"key": "data",
+									"value": "2020-08-12",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/viagens/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/viagens/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"viagens",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/viagens",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tipo\": \"PROFISSIONAL\",\n\t\"status\": \"PLANEJADA\",\n\t\"data\": \"2020-08-30\",\n\t\"destino\": \"Belo Horizonte\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/viagens",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"viagens"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/viagens/{id}",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tipo\": \"PROFISSIONAL\",\n\t\"status\": \"PLANEJADA\",\n\t\"data\": \"2020-10-23\",\n\t\"destino\": \"Rio de Janeiro\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/viagens/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"viagens",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/viagens/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/viagens/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"viagens",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "planos-ferias",
+			"item": [
+				{
+					"name": "/planos-ferias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/planos-ferias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planos-ferias"
+							],
+							"query": [
+								{
+									"key": "data",
+									"value": "2020-08-12",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/planos-ferias/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/planos-ferias/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planos-ferias",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/planos-ferias",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"status\": \"PLANEJADO\",\n\t\"periodo\": {\n\t\t\"dataInicio\": \"2020-08-01\",\n\t\t\"dataFim\": \"2020-08-15\"\n\t},\n\t\"destino\": \"Natal-RN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planos-ferias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planos-ferias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/planos-ferias/{id}",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"status\": \"PLANEJADO\",\n\t\"periodo\": {\n\t\t\"dataInicio\": \"2020-08-02\",\n\t\t\"dataFim\": \"2020-08-16\"\n\t},\n\t\"destino\": \"Maragogi-AL\",\n\t\"anotacoes\": \"Férias com a esposa\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/planos-ferias/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planos-ferias",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/planos-ferias/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/planos-ferias/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planos-ferias",
 								"2"
 							]
 						}
