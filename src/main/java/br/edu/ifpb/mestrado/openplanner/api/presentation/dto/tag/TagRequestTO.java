@@ -13,7 +13,7 @@ public class TagRequestTO implements Serializable {
     @Size(min = 3, max = 64)
     private String descricao;
 
-    @Size(min = 3, max = 6)
+    @Size(min = 3, max = 32)
     private String cor;
 
     public String getDescricao() {
