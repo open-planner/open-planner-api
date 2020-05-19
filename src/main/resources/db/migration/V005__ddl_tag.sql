@@ -2,7 +2,7 @@ CREATE TABLE planner.tag (
   id SERIAL,
   id_usuario INT NOT NULL,
   descricao VARCHAR(64) NOT NULL,
-  cor VARCHAR(6),
+  cor VARCHAR(32),
   excluded BOOLEAN NOT NULL DEFAULT FALSE,
   excluded_at DATE,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
