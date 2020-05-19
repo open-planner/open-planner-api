@@ -25,7 +25,7 @@
       <span th:text="${#temporals.format(usuario.createdAt, 'dd/MM/yyyy')}"></span>
     </li>
     <li>
-      <a th:href="@{${webAppBaseUrl} + '/usuario/confirmacao-cadastro?token=' + ${usuario.ativacaoToken}}">Clique aqui para confirmar o cadastro</a>
+      <a th:href="@{${webAppBaseUrl} + '/mail-activation/' + ${usuario.ativacaoToken}}">Clique aqui para confirmar o cadastro</a>
     </li>
   </ul>
 
