@@ -64,7 +64,7 @@ public class ViagemController {
         Viagem viagemSaved = viagemService.save(viagem);
         ViagemResponseTO responseTO = modelMapperFacade.map(viagemSaved, ViagemResponseTO.class);
 
-        return ResponseEntityFacade.ok(responseTO);
+        return ResponseEntityFacade.created(responseTO);
     }
 
     @PutMapping("/{id}")
