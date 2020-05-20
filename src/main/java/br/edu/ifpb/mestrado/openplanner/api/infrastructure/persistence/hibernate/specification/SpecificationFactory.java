@@ -12,7 +12,6 @@ import javax.persistence.criteria.Expression;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.specification.SpecificationField;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.FieldUtils;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.StringUtils;
 
@@ -117,6 +116,10 @@ public class SpecificationFactory<T> {
     }
 
     public Specification<T> create(Object filter, Class<T> entityClass) {
+        return create(filter, entityClass, Operator.AND);
+    }
+
+    public Specification<T> create(Object filter, Class<T> entityClass, Operator operator) {
         List<Field> filterFields = FieldUtils.getAllFields(filter.getClass(), SERIAL_VERSION_FIELD);
         List<Field> entityFields = FieldUtils.getAllFields(entityClass, SERIAL_VERSION_FIELD);
         List<Specification<T>> specs = new ArrayList<>();
@@ -143,9 +146,10 @@ public class SpecificationFactory<T> {
 
         if (specs.size() > 1) {
             for (int i = 1; i < specs.size(); i++) {
-                result = Specification
-                        .where(result)
-                        .and(specs.get(i));
+                result = Specification.where(result);
+                result = operator.equals(Operator.AND)
+                        ? result.and(specs.get(i))
+                        : result.or(specs.get(i));
             }
         }
 
@@ -153,22 +157,55 @@ public class SpecificationFactory<T> {
     }
 
     private Boolean hasProperty(Field filterField, List<Field> entityFields) {
+        SpecField specField = filterField.getAnnotation(SpecField.class);
+        String value = specField != null && !StringUtils.isBlank(specField.value())
+                ? specField.value()
+                : filterField.getName();
+
+        return hasProperty(value, entityFields);
+    }
+
+    private Boolean hasProperty(String value, List<Field> entityFields) {
         return entityFields.stream().filter(ef -> {
-                SpecificationField specificationField = filterField.getAnnotation(SpecificationField.class);
+            if (isDeepProperty(value)) {
+                return hasDeepProperty(value, ef);
+            }
 
-                if (specificationField != null && !StringUtils.isBlank(specificationField.property())) {
-                    return ef.getName().equals(specificationField.property());
-                }
+            return ef.getName().equals(value);
+        }).findFirst().isPresent();
+    }
 
-                return ef.getName().equals(filterField.getName());
-            }).findFirst().isPresent();
+    private Boolean isDeepProperty(String value) {
+        return value.contains(".");
+    }
+
+    private Boolean hasDeepProperty(String value, Field entityField) {
+        String[] splittedValue = value.split("\\.");
+
+        if (!entityField.getName().equals(splittedValue[0])) {
+            return false;
+        }
+
+        Integer index = 1;
+
+        do {
+            List<Field> deepEntityFields = FieldUtils.getAllFields(entityField.getType(), SERIAL_VERSION_FIELD);
+
+            if (!hasProperty(splittedValue[index], deepEntityFields)) {
+                return false;
+            }
+
+            index++;
+        } while (index < splittedValue.length);
+
+        return true;
     }
 
     private Specification<T> create(Field field, Object value) {
-        SpecificationField specificationField = field.getAnnotation(SpecificationField.class);
-        String property = specificationField != null && !StringUtils.isBlank(specificationField.property())
-                ? specificationField.property() : field.getName();
-        Operation operation = specificationField != null ? specificationField.operation() : Operation.EQUAL;
+        SpecField specField = field.getAnnotation(SpecField.class);
+        String property = specField != null && !StringUtils.isBlank(specField.value())
+                ? specField.value() : field.getName();
+        Operation operation = specField != null ? specField.operation() : Operation.EQUAL;
 
         if (value instanceof Number) {
             return create(property, Long.valueOf(value.toString()), operation);
