@@ -11,7 +11,7 @@
   </parent>
   <groupId>br.edu.ifpb.mestrado.openplanner.api</groupId>
   <artifactId>open-planner-api</artifactId>
-  <version>1.0.0-beta</version>
+  <version>0.1.0-alpha</version>
   <name>open-planner-api</name>
   <description>OpenPlanner</description>
 
@@ -27,7 +27,7 @@
     <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
     <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
 
-    <jacoco.coverage>0.61</jacoco.coverage>
+    <jacoco.coverage>0.3</jacoco.coverage>
   </properties>
 
   <dependencies>
