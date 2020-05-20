@@ -2,8 +2,8 @@ package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.tag;
 
 import java.io.Serializable;
 
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.specification.SpecificationField;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
 
 public class TagFilterRequestTO implements Serializable {
 
@@ -11,7 +11,7 @@ public class TagFilterRequestTO implements Serializable {
 
     private Long id;
 
-    @SpecificationField(operation = Operation.LIKE_IGNORE_CASE_UNACCENT)
+    @SpecField(operation = Operation.LIKE_IGNORE_CASE_UNACCENT)
     private String descricao;
 
     public Long getId() {

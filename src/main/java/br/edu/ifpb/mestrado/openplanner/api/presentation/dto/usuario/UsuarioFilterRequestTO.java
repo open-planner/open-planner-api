@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.specification.SpecificationField;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
 
 public class UsuarioFilterRequestTO implements Serializable {
 
@@ -13,16 +13,16 @@ public class UsuarioFilterRequestTO implements Serializable {
 
     private Long id;
 
-    @SpecificationField(property = "id")
+    @SpecField(value = "id")
     private Set<Long> ids;
 
-    @SpecificationField(operation = Operation.LIKE_IGNORE_CASE_UNACCENT)
+    @SpecField(operation = Operation.LIKE_IGNORE_CASE_UNACCENT)
     private String nome;
 
-    @SpecificationField
+    @SpecField
     private LocalDate dataNascimento;
 
-    @SpecificationField(operation = Operation.LIKE_IGNORE_CASE)
+    @SpecField(operation = Operation.LIKE_IGNORE_CASE)
     private String email;
 
     public UsuarioFilterRequestTO() {
