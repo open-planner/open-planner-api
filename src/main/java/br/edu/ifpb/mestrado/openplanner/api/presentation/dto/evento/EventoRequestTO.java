@@ -1,29 +1,30 @@
 package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.PeriodoRequestTO;
 
 public class EventoRequestTO implements Serializable {
 
     private static final long serialVersionUID = 5177952186914054795L;
 
-    @NotNull
-    private LocalDate data;
+    @Valid
+    private PeriodoRequestTO periodo;
 
     @NotBlank
     @Size(min = 3, max = 64)
     private String descricao;
 
-    public LocalDate getData() {
-        return data;
+    public PeriodoRequestTO getPeriodo() {
+        return periodo;
     }
 
-    public void setData(LocalDate data) {
-        this.data = data;
+    public void setPeriodo(PeriodoRequestTO periodo) {
+        this.periodo = periodo;
     }
 
     public String getDescricao() {

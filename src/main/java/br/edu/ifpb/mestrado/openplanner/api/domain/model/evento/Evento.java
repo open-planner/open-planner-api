@@ -1,6 +1,5 @@
 package br.edu.ifpb.mestrado.openplanner.api.domain.model.evento;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -8,14 +7,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Where;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.Notificacao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.AuditedBaseManyByUsuarioEntity;
+import br.edu.ifpb.mestrado.openplanner.api.domain.shared.Periodo;
 
 @Entity
 @Table(name = "evento", schema = "planner")
@@ -24,8 +24,8 @@ public class Evento extends AuditedBaseManyByUsuarioEntity {
 
     private static final long serialVersionUID = 533505806464092917L;
 
-    @NotNull
-    private LocalDate data;
+    @Valid
+    private Periodo periodo;
 
     @NotBlank
     @Size(min = 3, max = 64)
@@ -41,12 +41,12 @@ public class Evento extends AuditedBaseManyByUsuarioEntity {
 
     private Evento relacao;
 
-    public LocalDate getData() {
-        return data;
+    public Periodo getPeriodo() {
+        return periodo;
     }
 
-    public void setData(LocalDate data) {
-        this.data = data;
+    public void setPeriodo(Periodo periodo) {
+        this.periodo = periodo;
     }
 
     public String getDescricao() {

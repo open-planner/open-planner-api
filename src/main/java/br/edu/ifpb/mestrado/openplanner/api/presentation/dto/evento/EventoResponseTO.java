@@ -1,7 +1,8 @@
 package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.PeriodoResponseTO;
 
 public class EventoResponseTO implements Serializable {
 
@@ -9,7 +10,7 @@ public class EventoResponseTO implements Serializable {
 
     private Long id;
 
-    private LocalDate data;
+    private PeriodoResponseTO periodo;
 
     private String descricao;
 
@@ -21,12 +22,12 @@ public class EventoResponseTO implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getData() {
-        return data;
+    public PeriodoResponseTO getPeriodo() {
+        return periodo;
     }
 
-    public void setData(LocalDate data) {
-        this.data = data;
+    public void setPeriodo(PeriodoResponseTO periodo) {
+        this.periodo = periodo;
     }
 
     public String getDescricao() {
