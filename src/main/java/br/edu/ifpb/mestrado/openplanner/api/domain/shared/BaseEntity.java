@@ -3,7 +3,6 @@ package br.edu.ifpb.mestrado.openplanner.api.domain.shared;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,14 +20,12 @@ public abstract class BaseEntity implements Serializable {
     protected Long id;
 
     @NotNull
-    @Column(name = "excluded", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     protected Boolean excluded;
 
-    @Column(name = "excluded_at", nullable = true)
     protected LocalDate excludedAt;
 
+    @NotNull
     @Version
-    @Column(name = "version", nullable = false, columnDefinition = "INTEGER DEFAULT 0")
     protected Integer version;
 
     public BaseEntity() {
