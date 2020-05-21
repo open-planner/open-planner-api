@@ -4,6 +4,7 @@ CREATE TABLE planner.evento (
   data_inicio DATE NOT NULL,
   data_fim DATE NOT NULL,
   descricao VARCHAR(64) NOT NULL,
+  id_relacao BIGINT,
   excluded BOOLEAN NOT NULL DEFAULT FALSE,
   excluded_at DATE,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
@@ -11,8 +12,10 @@ CREATE TABLE planner.evento (
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   updated_by VARCHAR(128) NOT NULL,
   version INTEGER NOT NULL DEFAULT 0,
-  CONSTRAINT pk_evento PRIMARY KEY(id),
+  CONSTRAINT pk_evento PRIMARY KEY (id),
   CONSTRAINT fk_evento_id_usuario FOREIGN KEY (id_usuario) REFERENCES auth.usuario(id)
+    MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_evento_id_relacao FOREIGN KEY (id_relacao) REFERENCES planner.evento(id)
     MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
 );
 
