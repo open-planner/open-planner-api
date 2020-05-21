@@ -1,6 +1,7 @@
 # OpenPlanner API
 
-[![Build Status](https://travis-ci.org/open-planner/open-planner-api.svg?branch=master)](https://travis-ci.org/open-planner/open-planner-api)
+stable: [![Build Status](https://travis-ci.org/open-planner/open-planner-api.svg?branch=master)](https://travis-ci.org/open-planner/open-planner-api)
+develop: [![Build Status](https://travis-ci.org/open-planner/open-planner-api.svg?branch=develop)](https://travis-ci.org/open-planner/open-planner-api)
 
 ## Requisitos
 
