@@ -1,7 +1,8 @@
 CREATE TABLE planner.evento (
   id SERIAL,
   id_usuario INT NOT NULL,
-  data DATE NOT NULL,
+  data_inicio DATE NOT NULL,
+  data_fim DATE NOT NULL,
   descricao VARCHAR(64) NOT NULL,
   excluded BOOLEAN NOT NULL DEFAULT FALSE,
   excluded_at DATE,
@@ -17,3 +18,13 @@ CREATE TABLE planner.evento (
 
 CREATE INDEX idx_evento_id_usuario ON planner.evento(id_usuario);
 CREATE INDEX idx_evento_excluded ON planner.evento(excluded);
+
+CREATE TABLE planner.notificacao_evento (
+  id_notificacao BIGINT NOT NULL,
+  id_evento BIGINT NOT NULL,
+  CONSTRAINT pk_notificacao_evento PRIMARY KEY(id_notificacao),
+  CONSTRAINT fk_notificacao_evento_id_not FOREIGN KEY(id_notificacao) REFERENCES planner.notificacao(id)
+    MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_notificacao_evento_id_eve FOREIGN KEY(id_evento) REFERENCES planner.evento(id)
+    MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
+);
