@@ -1,8 +1,9 @@
 package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.PeriodoFilterRequestTO;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class EventoFilterRequestTO implements Serializable {
 
@@ -10,7 +11,8 @@ public class EventoFilterRequestTO implements Serializable {
 
     private Long id;
 
-    private PeriodoFilterRequestTO periodo;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate dataInicio;
 
     private String descricao;
 
@@ -22,12 +24,12 @@ public class EventoFilterRequestTO implements Serializable {
         this.id = id;
     }
 
-    public PeriodoFilterRequestTO getPeriodo() {
-        return periodo;
+    public LocalDate getDataInicio() {
+        return dataInicio;
     }
 
-    public void setPeriodo(PeriodoFilterRequestTO periodo) {
-        this.periodo = periodo;
+    public void setDataInicio(LocalDate dataInicio) {
+        this.dataInicio = dataInicio;
     }
 
     public String getDescricao() {

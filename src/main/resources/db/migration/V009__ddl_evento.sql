@@ -1,8 +1,7 @@
 CREATE TABLE planner.evento (
   id SERIAL,
   id_usuario INT NOT NULL,
-  data_inicio DATE NOT NULL,
-  data_fim DATE NOT NULL,
+  data DATE NOT NULL,
   descricao VARCHAR(64) NOT NULL,
   id_relacao BIGINT,
   excluded BOOLEAN NOT NULL DEFAULT FALSE,
