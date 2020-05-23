@@ -54,13 +54,13 @@
 							"urlencoded": [
 								{
 									"key": "username",
-									"value": "fagnerlima91@gmail.com",
+									"value": "admin@email.com",
 									"description": "admin@email.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "Fagner@123",
+									"value": "Admin@123",
 									"description": "Admin@123",
 									"type": "text"
 								},
@@ -230,7 +230,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"token\": \"4835b216-e929-4fc0-8166-266dd7518718\"\n}"
+									"raw": "{\n  \"token\": \"414a4520-92a6-41ec-9549-0885da1aecd9\"\n}"
 								},
 								"url": {
 									"raw": "{{base_url}}/public/usuarios/ativacao",
@@ -802,6 +802,54 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "notificacoes",
+			"item": [
+				{
+					"name": "/notificacoes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/notificacoes?sort=dataHora,desc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notificacoes"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "dataHora,desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/notificacoes/{id}/lida",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/notificacoes/2/lida",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notificacoes",
+								"2",
+								"lida"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "tags",
 			"item": [
 				{
@@ -928,7 +976,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/viagens",
+							"raw": "{{base_url}}/viagens?sort=periodo.dataInicio,asc",
 							"host": [
 								"{{base_url}}"
 							],
@@ -937,8 +985,22 @@
 							],
 							"query": [
 								{
-									"key": "data",
-									"value": "2020-08-12",
+									"key": "sort",
+									"value": "periodo.dataInicio,asc"
+								},
+								{
+									"key": "periodo.dataInicio",
+									"value": "2020-09-01",
+									"disabled": true
+								},
+								{
+									"key": "dataInicio",
+									"value": "2020-09-15",
+									"disabled": true
+								},
+								{
+									"key": "tipo",
+									"value": "PROFISSIONAL",
 									"disabled": true
 								}
 							]
@@ -971,7 +1033,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"tipo\": \"PROFISSIONAL\",\n\t\"status\": \"PLANEJADA\",\n\t\"data\": \"2020-08-30\",\n\t\"destino\": \"Belo Horizonte\"\n}",
+							"raw": "{\n\t\"tipo\": \"PESSOAL\",\n\t\"status\": \"PLANEJADA\",\n\t\"periodo\": {\n\t\t\"dataInicio\": \"2020-10-15\",\n\t\t\"dataFim\": \"2020-10-18\"\n\t},\n\t\"destino\": \"São Paulo\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -997,7 +1059,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"tipo\": \"PROFISSIONAL\",\n\t\"status\": \"PLANEJADA\",\n\t\"data\": \"2020-10-23\",\n\t\"destino\": \"Rio de Janeiro\"\n}",
+							"raw": "{\n\t\"tipo\": \"PROFISSIONAL\",\n\t\"status\": \"PLANEJADA\",\n\t\"periodo\": {\n\t\t\"dataInicio\": \"2020-08-30\",\n\t\t\"dataFim\": \"2020-09-05\"\n\t},\n\t\"destino\": \"Rio de Janeiro\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1005,13 +1067,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/viagens/2",
+							"raw": "{{base_url}}/viagens/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"viagens",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -1030,6 +1092,42 @@
 							"path": [
 								"viagens",
 								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/viagens/tipos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/viagens/tipos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"viagens",
+								"tipos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/viagens/status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/viagens/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"viagens",
+								"status"
 							]
 						}
 					},
@@ -1149,6 +1247,161 @@
 							"path": [
 								"planos-ferias",
 								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/planos-ferias/status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/planos-ferias/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"planos-ferias",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "eventos",
+			"item": [
+				{
+					"name": "/eventos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/eventos?sort=dataHora,asc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eventos"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "dataHora,asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/eventos/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/eventos/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eventos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/eventos",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"dataHora\": \"2020-08-08 00:00\",\n\t\"descricao\": \"Aniversário da Esposa\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-07-30 00:00\"\n\t\t},\n\t\t{\n\t\t\t\"dataHora\": \"2020-08-08 00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t],\n\t\"recorrencia\": {\n\t\t\"unidade\": \"YEAR\",\n\t\t\"dataLimite\": \"2022-08-08\"\n\t}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/eventos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eventos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/eventos/{id}",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"dataHora\": \"2021-08-08 00:00\",\n\t\"descricao\": \"Aniversário da Esposa\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2021-07-30 00:00\"\n\t\t},\n\t\t{\n\t\t\t\"dataHora\": \"2021-08-08 00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t],\n\t\"recorrencia\": {\n\t\t\"unidade\": \"YEAR\",\n\t\t\"dataLimite\": \"2022-08-08\"\n\t}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/eventos/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eventos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/eventos/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/eventos/7",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eventos",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/eventos/recorrencias/time-units",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/eventos/recorrencias/time-units",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eventos",
+								"recorrencias",
+								"time-units"
 							]
 						}
 					},
