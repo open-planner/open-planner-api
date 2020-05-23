@@ -1,5 +1,7 @@
 package br.edu.ifpb.mestrado.openplanner.api.application.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -20,12 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.ifpb.mestrado.openplanner.api.application.facade.ResponseEntityFacade;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.evento.Evento;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.EventoService;
+import br.edu.ifpb.mestrado.openplanner.api.domain.shared.RecorrenciaTimeUnit;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecificationFactory;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento.EventoFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento.EventoReducedResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento.EventoRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento.EventoResponseTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.EnumOptionTO;
 
 @RestController
 @RequestMapping("/eventos")
@@ -80,6 +84,11 @@ public class EventoController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable Long id) {
         eventoService.deleteById(id);
+    }
+
+    @GetMapping("/recorrencias/time-units")
+    public ResponseEntity<List<EnumOptionTO<RecorrenciaTimeUnit>>> getRecorrenciaTimeUnitList() {
+        return ResponseEntityFacade.ok(modelMapperFacade.map(RecorrenciaTimeUnit.values()));
     }
 
 }

@@ -1,6 +1,7 @@
 package br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,7 @@ import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.converter.
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.factory.RepositoryFactory;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.service.exception.IdReferenceException;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.FieldUtils;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.EnumOptionTO;
 
 @Component
 public class ModelMapperFacade {
@@ -42,6 +44,12 @@ public class ModelMapperFacade {
 
     public <T> List<T> map(List<?> dataList, Class<T> destinationType) {
         return dataList.stream().map(data -> map(data, destinationType)).collect(Collectors.toList());
+    }
+
+    public <T extends Enum<?>> List<EnumOptionTO<T>> map(T[] dataArray) {
+        List<T> dataList = Arrays.asList(dataArray);
+
+        return dataList.stream().map(data -> new EnumOptionTO<T>(data, data.toString())).collect(Collectors.toList());
     }
 
     private <T> T refreshReferences(Object data, T target) {

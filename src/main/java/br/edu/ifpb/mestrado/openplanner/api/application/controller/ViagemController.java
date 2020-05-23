@@ -1,5 +1,7 @@
 package br.edu.ifpb.mestrado.openplanner.api.application.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -18,10 +20,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ifpb.mestrado.openplanner.api.application.facade.ResponseEntityFacade;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Status;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Tipo;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Viagem;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.ViagemService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecificationFactory;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.EnumOptionTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.viagem.ViagemFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.viagem.ViagemReducedResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.viagem.ViagemRequestTO;
@@ -80,6 +85,16 @@ public class ViagemController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable Long id) {
         viagemService.deleteById(id);
+    }
+
+    @GetMapping("/tipos")
+    public ResponseEntity<List<EnumOptionTO<Tipo>>> getTipos() {
+        return ResponseEntityFacade.ok(modelMapperFacade.map(Tipo.values()));
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<List<EnumOptionTO<Status>>> getStatus() {
+        return ResponseEntityFacade.ok(modelMapperFacade.map(Status.values()));
     }
 
 }

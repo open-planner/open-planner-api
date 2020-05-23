@@ -1,5 +1,7 @@
 package br.edu.ifpb.mestrado.openplanner.api.application.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -18,11 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ifpb.mestrado.openplanner.api.application.facade.ResponseEntityFacade;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.planoferias.PlanoFerias;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.planoferias.Status;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.PlanoFeriasService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.planoferias.PlanoFeriasReducedResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.planoferias.PlanoFeriasRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.planoferias.PlanoFeriasResponseTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.EnumOptionTO;
 
 @RestController
 @RequestMapping("/planos-ferias")
@@ -77,6 +81,11 @@ public class PlanoFeriasController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable Long id) {
         planoFeriasService.deleteById(id);
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<List<EnumOptionTO<Status>>> getStatus() {
+        return ResponseEntityFacade.ok(modelMapperFacade.map(Status.values()));
     }
 
 }
