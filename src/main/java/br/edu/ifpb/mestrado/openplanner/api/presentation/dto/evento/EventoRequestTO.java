@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,6 +23,7 @@ public class EventoRequestTO implements Serializable {
     @Size(min = 3, max = 64)
     private String descricao;
 
+    @Valid
     private Set<NotificacaoRequestTO> notificacoes;
 
     private RecorrenciaRequestTO recorrencia;

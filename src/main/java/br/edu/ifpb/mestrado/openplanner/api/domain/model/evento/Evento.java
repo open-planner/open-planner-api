@@ -1,8 +1,9 @@
 package br.edu.ifpb.mestrado.openplanner.api.domain.model.evento;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -32,13 +33,13 @@ public class Evento extends AuditedBaseManyByUsuarioEntity {
     @Size(min = 3, max = 64)
     private String descricao;
 
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinTable(
             name = "notificacao_evento",
             schema = "planner",
             joinColumns = @JoinColumn(name = "id_evento"),
             inverseJoinColumns = @JoinColumn(name = "id_notificacao"))
-    private Set<Notificacao> notificacoes;
+    private List<Notificacao> notificacoes;
 
     @ManyToOne
     @JoinColumn(name = "id_relacao")
@@ -60,11 +61,11 @@ public class Evento extends AuditedBaseManyByUsuarioEntity {
         this.descricao = descricao;
     }
 
-    public Set<Notificacao> getNotificacoes() {
+    public List<Notificacao> getNotificacoes() {
         return notificacoes;
     }
 
-    public void setNotificacoes(Set<Notificacao> notificacoes) {
+    public void setNotificacoes(List<Notificacao> notificacoes) {
         this.notificacoes = notificacoes;
     }
 

@@ -1,36 +1,28 @@
 package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.notificacao;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class NotificacaoRequestTO implements Serializable {
 
     private static final long serialVersionUID = -8691528433237011818L;
 
     @NotNull
-    private Integer tempo;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime dataHora;
 
-    @NotNull
-    private NotificacaoTimeUnit unidade;
-
-    @NotNull
     private Boolean email;
 
-    public Integer getTempo() {
-        return tempo;
+    public LocalDateTime getDataHora() {
+        return dataHora;
     }
 
-    public void setTempo(Integer tempo) {
-        this.tempo = tempo;
-    }
-
-    public NotificacaoTimeUnit getUnidade() {
-        return unidade;
-    }
-
-    public void setUnidade(NotificacaoTimeUnit unidade) {
-        this.unidade = unidade;
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
     }
 
     public Boolean getEmail() {
@@ -45,8 +37,7 @@ public class NotificacaoRequestTO implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((tempo == null) ? 0 : tempo.hashCode());
-        result = prime * result + ((unidade == null) ? 0 : unidade.hashCode());
+        result = prime * result + ((dataHora == null) ? 0 : dataHora.hashCode());
         return result;
     }
 
@@ -59,12 +50,10 @@ public class NotificacaoRequestTO implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         NotificacaoRequestTO other = (NotificacaoRequestTO) obj;
-        if (tempo == null) {
-            if (other.tempo != null)
+        if (dataHora == null) {
+            if (other.dataHora != null)
                 return false;
-        } else if (!tempo.equals(other.tempo))
-            return false;
-        if (unidade != other.unidade)
+        } else if (!dataHora.equals(other.dataHora))
             return false;
         return true;
     }
