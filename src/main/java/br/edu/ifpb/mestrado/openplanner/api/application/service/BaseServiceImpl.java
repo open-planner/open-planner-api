@@ -90,6 +90,12 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
         entity.setExcludedAt(LocalDate.now());
     }
 
+    @Transactional
+    @Override
+    public void deleteAll(Iterable<T> entities) {
+        entities.forEach(e -> deleteById(e.getId()));
+    }
+
     protected Usuario getUsuarioAutenticado() {
         return userDetailsService.getUsuarioAuth().getUsuario();
     }

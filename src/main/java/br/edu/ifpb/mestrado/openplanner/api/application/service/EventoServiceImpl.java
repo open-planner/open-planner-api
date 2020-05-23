@@ -10,11 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.evento.Evento;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.Notificacao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.EventoService;
+import br.edu.ifpb.mestrado.openplanner.api.domain.shared.Recorrencia;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.repository.EventoRepository;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.service.OAuth2UserDetailsService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.BeanUtils;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.DateUtils;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.RecorrenciaRequestTO;
 
 @Service
 public class EventoServiceImpl extends BaseManyByUsuarioServiceImpl<Evento> implements EventoService {
@@ -26,19 +26,55 @@ public class EventoServiceImpl extends BaseManyByUsuarioServiceImpl<Evento> impl
         this.eventoRepository = eventoRepository;
     }
 
+    @Override
     @Transactional
-    public Evento save(Evento evento, RecorrenciaRequestTO recorrencia) {
+    public Evento save(Evento evento) {
         if (evento.getNotificacoes() != null) {
             evento.getNotificacoes().stream().forEach(n -> n.setUsuario(getUsuarioAutenticado()));
         }
 
         Evento eventoSaved = super.save(evento);
 
-        if (recorrencia != null) {
-            saveRecorrencias(eventoSaved, recorrencia);
+        if (eventoSaved.isRecorrente()) {
+            saveRecorrencias(eventoSaved);
         }
 
         return eventoSaved;
+    }
+
+    @Override
+    @Transactional
+    public Evento update(Long id, Evento evento) {
+        Evento eventoSaved = findById(id);
+
+        if (eventoSaved.getRelacao() != null) {
+            evento.setRecorrencia(null);
+            evento.setRelacao(eventoSaved.getRelacao());
+        }
+
+        if (evento.getNotificacoes() != null) {
+            evento.getNotificacoes().stream().forEach(n -> n.setUsuario(getUsuarioAutenticado()));
+        }
+
+        Evento eventoUpdated = super.update(id, evento);
+
+        if (eventoUpdated.getRelacao() != null) {
+            return eventoUpdated;
+        }
+
+        deleteByRelacaoId(id);
+
+        if (eventoUpdated.isRecorrente()) {
+            saveRecorrencias(eventoUpdated);
+        }
+
+        return eventoUpdated;
+    }
+
+    @Override
+    @Transactional
+    public void deleteByRelacaoId(Long id) {
+        eventoRepository.deleteByRelacaoId(id);
     }
 
     @Override
@@ -46,33 +82,48 @@ public class EventoServiceImpl extends BaseManyByUsuarioServiceImpl<Evento> impl
         return eventoRepository;
     }
 
-    private void saveRecorrencias(Evento evento, RecorrenciaRequestTO recorrencia) {
-        if (!recorrencia.getDataLimite().isAfter(evento.getDataHora().toLocalDate())) {
+    private void saveRecorrencias(Evento evento) {
+        Recorrencia recorrencia = evento.getRecorrencia();
+        LocalDateTime dataHora = evento.getDataHora();
+
+        if (!recorrencia.getDataLimite().isAfter(dataHora.toLocalDate())) {
             return;
         }
 
-        LocalDateTime dataHora = DateUtils.plus(evento.getDataHora(), recorrencia.getUnidade());
+        dataHora = DateUtils.plusOne(dataHora, recorrencia.getUnidade());
 
-        do {
+        List<Notificacao> notificacoes = null;
+
+        if (evento.getNotificacoes() != null) {
+            notificacoes = plusOneDataNewNotificacoes(evento.getNotificacoes(), recorrencia);
+        }
+
+        while (!dataHora.toLocalDate().isAfter(recorrencia.getDataLimite())) {
             Evento eventoCopy = new Evento();
-            BeanUtils.copyProperties(evento, eventoCopy, "id");
+            BeanUtils.copyProperties(evento, eventoCopy, "id", "recorrencia", "notificacoes");
             eventoCopy.setRelacao(evento);
             eventoCopy.setDataHora(dataHora);
+            eventoCopy.setNotificacoes(notificacoes);
 
-            if (eventoCopy.getNotificacoes() != null) {
-                List<Notificacao> notificacoes = eventoCopy.getNotificacoes().stream().map(n -> {
+            super.save(eventoCopy);
+
+            dataHora = DateUtils.plusOne(dataHora, recorrencia.getUnidade());
+
+            if (notificacoes != null) {
+                notificacoes = plusOneDataNewNotificacoes(notificacoes, recorrencia);
+            }
+        }
+    }
+
+    private List<Notificacao> plusOneDataNewNotificacoes(List<Notificacao> notificacoes, Recorrencia recorrencia) {
+        return notificacoes.stream()
+                .map(n -> {
                     Notificacao notificacao = new Notificacao();
                     BeanUtils.copyProperties(n, notificacao, "id");
+                    notificacao.setDataHora(DateUtils.plusOne(notificacao.getDataHora(), recorrencia.getUnidade()));
 
                     return notificacao;
                 }).collect(Collectors.toList());
-                eventoCopy.setNotificacoes(notificacoes);
-            }
-
-            save(eventoCopy);
-
-            dataHora = DateUtils.plus(dataHora, recorrencia.getUnidade());
-        } while (!dataHora.toLocalDate().isAfter(recorrencia.getDataLimite()));
     }
 
 }

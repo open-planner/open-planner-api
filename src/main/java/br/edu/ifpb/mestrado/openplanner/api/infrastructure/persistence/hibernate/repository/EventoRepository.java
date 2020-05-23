@@ -4,4 +4,6 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.evento.Evento;
 
 public interface EventoRepository extends BaseManyByUsuarioRepository<Evento> {
 
+    void deleteByRelacaoId(Long id);
+
 }

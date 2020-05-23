@@ -35,8 +35,10 @@ public class NotificacaoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<NotificacaoReducedResponseTO>> findAll(NotificacaoFilterRequestTO notificacaoFilterRequestTO, Pageable pageable) {
-        Specification<Notificacao> specification = new SpecificationFactory<Notificacao>().create(notificacaoFilterRequestTO, Notificacao.class);
+    public ResponseEntity<Page<NotificacaoReducedResponseTO>> findAll(NotificacaoFilterRequestTO notificacaoFilterRequestTO,
+            Pageable pageable) {
+        Specification<Notificacao> specification = new SpecificationFactory<Notificacao>().create(notificacaoFilterRequestTO,
+                Notificacao.class);
         Page<Notificacao> page = notificacaoService.findAll(specification, pageable);
         Page<NotificacaoReducedResponseTO> responseTOPage = modelMapperFacade.map(page, NotificacaoReducedResponseTO.class);
 

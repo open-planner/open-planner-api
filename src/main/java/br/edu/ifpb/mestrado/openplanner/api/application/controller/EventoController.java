@@ -61,7 +61,7 @@ public class EventoController {
     @PostMapping
     public ResponseEntity<EventoResponseTO> save(@Valid @RequestBody EventoRequestTO eventoRequestTO) {
         Evento evento = modelMapperFacade.map(eventoRequestTO, Evento.class);
-        Evento eventoSaved = eventoService.save(evento, eventoRequestTO.getRecorrencia());
+        Evento eventoSaved = eventoService.save(evento);
         EventoResponseTO responseTO = modelMapperFacade.map(eventoSaved, EventoResponseTO.class);
 
         return ResponseEntityFacade.created(responseTO);

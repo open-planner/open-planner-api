@@ -12,14 +12,14 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.notificacao.NotificacaoRequestTO;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.RecorrenciaRequestTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.recorrencia.RecorrenciaRequestTO;
 
 public class EventoRequestTO implements Serializable {
 
     private static final long serialVersionUID = 5177952186914054795L;
 
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dataHora;
 
     @NotBlank

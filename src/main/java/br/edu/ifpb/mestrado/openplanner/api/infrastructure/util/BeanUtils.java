@@ -1,6 +1,7 @@
 package br.edu.ifpb.mestrado.openplanner.api.infrastructure.util;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Embedded;
@@ -12,19 +13,26 @@ import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.bean.Nulla
 public class BeanUtils {
 
     public static void copyProperties(Object source, Object target) {
-        deepCopyProperties(source, target);
-        org.springframework.beans.BeanUtils.copyProperties(source, target, getNullProperties(source));
+        String[] ignoreProperties = getNullProperties(source);
+        deepCopyProperties(source, target, ignoreProperties);
+        org.springframework.beans.BeanUtils.copyProperties(source, target, ignoreProperties);
     }
 
     public static void copyProperties(Object source, Object target, String ...ignoreProperties) {
-        deepCopyProperties(source, target);
-        org.springframework.beans.BeanUtils.copyProperties(source, target, ArrayUtils.addAll(getNullProperties(source), ignoreProperties));
+        ignoreProperties = ArrayUtils.addAll(getNullProperties(source), ignoreProperties);
+        deepCopyProperties(source, target, ignoreProperties);
+        org.springframework.beans.BeanUtils.copyProperties(source, target, ignoreProperties);
     }
 
-    private static void deepCopyProperties(Object source, Object target) {
+    private static void deepCopyProperties(Object source, Object target, String ...ignoreProperties) {
         List<Field> sourceFields = FieldUtils.getAllFields(source.getClass());
+        List<String> ignoreList = Arrays.asList(ignoreProperties);
 
         for (Field sourceField : sourceFields) {
+            if (ignoreList.contains(sourceField.getName())) {
+                continue;
+            }
+
             Embedded embedded = sourceField.getAnnotation(Embedded.class);
 
             if (embedded != null) {

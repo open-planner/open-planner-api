@@ -12,10 +12,10 @@ public class NotificacaoRequestTO implements Serializable {
     private static final long serialVersionUID = -8691528433237011818L;
 
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dataHora;
 
-    private Boolean email;
+    private Boolean email = false;
 
     public LocalDateTime getDataHora() {
         return dataHora;

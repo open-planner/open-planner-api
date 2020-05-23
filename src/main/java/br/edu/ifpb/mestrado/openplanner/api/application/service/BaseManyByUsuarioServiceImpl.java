@@ -83,6 +83,12 @@ public abstract class BaseManyByUsuarioServiceImpl<T extends BaseManyByUsuarioEn
         super.deleteById(id);
     }
 
+    @Transactional
+    @Override
+    public void deleteAll(Iterable<T> entities) {
+        entities.forEach(e -> deleteById(e.getId()));
+    }
+
     protected void checkUsuario(Usuario usuario) {
         if (!usuario.equals(getUsuarioAutenticado()) && !getUsuarioAutenticado().isRootOrAdmin()) {
             throw new UnauthorizedUserException();

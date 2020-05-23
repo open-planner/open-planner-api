@@ -8,18 +8,20 @@ import org.springframework.data.jpa.domain.Specification;
 
 public interface BaseService<T> {
 
-    public T findById(Long id);
+    T findById(Long id);
 
-    public List<T> findAll();
+    List<T> findAll();
 
-    public Page<T> findAll(Pageable pageable);
+    Page<T> findAll(Pageable pageable);
 
-    public Page<T> findAll(Specification<T> specification, Pageable pageable);
+    Page<T> findAll(Specification<T> specification, Pageable pageable);
 
-    public T save(T entity);
+    T save(T entity);
 
-    public T update(Long id, T entity);
+    T update(Long id, T entity);
 
-    public void deleteById(Long id);
+    void deleteById(Long id);
+
+    void deleteAll(Iterable<T> entities);
 
 }

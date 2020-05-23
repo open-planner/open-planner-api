@@ -4,6 +4,8 @@ CREATE TABLE planner.evento (
   data_hora TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   descricao VARCHAR(64) NOT NULL,
   id_relacao BIGINT,
+  unidade_recorrencia VARCHAR(10),
+  data_limite_recorrencia DATE,
   excluded BOOLEAN NOT NULL DEFAULT FALSE,
   excluded_at DATE,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,

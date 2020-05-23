@@ -2,7 +2,7 @@ CREATE TABLE planner.notificacao (
   id SERIAL,
   id_usuario INT NOT NULL,
   data_hora TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  lida BOOLEAN DEFAULT FALSE,
+  lida BOOLEAN NOT NULL DEFAULT FALSE,
   email BOOLEAN DEFAULT FALSE,
   excluded BOOLEAN NOT NULL DEFAULT FALSE,
   excluded_at DATE,

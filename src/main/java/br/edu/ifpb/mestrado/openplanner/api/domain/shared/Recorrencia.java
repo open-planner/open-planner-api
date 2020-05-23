@@ -1,18 +1,23 @@
-package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared;
+package br.edu.ifpb.mestrado.openplanner.api.domain.shared;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
-public class RecorrenciaRequestTO implements Serializable {
+@Embeddable
+public class Recorrencia implements Serializable {
 
-    private static final long serialVersionUID = -8612528713985828638L;
+    private static final long serialVersionUID = 7071130319329925063L;
 
     @NotNull
+    @Column(name = "unidade_recorrencia")
     private RecorrenciaTimeUnit unidade;
 
     @NotNull
+    @Column(name = "data_limite_recorrencia")
     private LocalDate dataLimite;
 
     public RecorrenciaTimeUnit getUnidade() {
