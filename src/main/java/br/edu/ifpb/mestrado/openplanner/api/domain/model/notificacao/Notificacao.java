@@ -24,6 +24,10 @@ public class Notificacao extends AuditedBaseManyByUsuarioEntity {
 
     private Boolean email = false;
 
+    public void switchLida() {
+        lida = !lida;
+    }
+
     public LocalDateTime getDataHora() {
         return dataHora;
     }
