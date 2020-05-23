@@ -23,6 +23,7 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.service.EventoService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecificationFactory;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento.EventoFilterRequestTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento.EventoReducedResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento.EventoRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento.EventoResponseTO;
 
@@ -41,10 +42,10 @@ public class EventoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<EventoResponseTO>> findAll(EventoFilterRequestTO eventoFilterRequestTO, Pageable pageable) {
+    public ResponseEntity<Page<EventoReducedResponseTO>> findAll(EventoFilterRequestTO eventoFilterRequestTO, Pageable pageable) {
         Specification<Evento> specification = new SpecificationFactory<Evento>().create(eventoFilterRequestTO, Evento.class);
         Page<Evento> page = eventoService.findAll(specification, pageable);
-        Page<EventoResponseTO> responseTOPage = modelMapperFacade.map(page, EventoResponseTO.class);
+        Page<EventoReducedResponseTO> responseTOPage = modelMapperFacade.map(page, EventoReducedResponseTO.class);
 
         return ResponseEntityFacade.ok(responseTOPage);
     }
