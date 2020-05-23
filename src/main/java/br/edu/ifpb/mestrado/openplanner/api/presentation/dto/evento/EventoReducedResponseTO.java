@@ -1,7 +1,7 @@
 package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class EventoReducedResponseTO implements Serializable {
 
@@ -9,7 +9,7 @@ public class EventoReducedResponseTO implements Serializable {
 
     private Long id;
 
-    private LocalDate data;
+    private LocalDateTime dataHora;
 
     private String descricao;
 
@@ -21,12 +21,12 @@ public class EventoReducedResponseTO implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getData() {
-        return data;
+    public LocalDateTime getDataHora() {
+        return dataHora;
     }
 
-    public void setData(LocalDate data) {
-        this.data = data;
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
     }
 
     public String getDescricao() {

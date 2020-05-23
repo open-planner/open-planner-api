@@ -1,6 +1,6 @@
 package br.edu.ifpb.mestrado.openplanner.api.domain.model.evento;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -27,7 +27,7 @@ public class Evento extends AuditedBaseManyByUsuarioEntity {
     private static final long serialVersionUID = 533505806464092917L;
 
     @NotNull
-    private LocalDate data;
+    private LocalDateTime dataHora;
 
     @NotBlank
     @Size(min = 3, max = 64)
@@ -45,12 +45,12 @@ public class Evento extends AuditedBaseManyByUsuarioEntity {
     @JoinColumn(name = "id_relacao")
     private Evento relacao;
 
-    public LocalDate getData() {
-        return data;
+    public LocalDateTime getDataHora() {
+        return dataHora;
     }
 
-    public void setData(LocalDate data) {
-        this.data = data;
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
     }
 
     public String getDescricao() {
