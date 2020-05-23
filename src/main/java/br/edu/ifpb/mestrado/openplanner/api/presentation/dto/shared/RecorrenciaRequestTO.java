@@ -10,17 +10,17 @@ public class RecorrenciaRequestTO implements Serializable {
     private static final long serialVersionUID = -8612528713985828638L;
 
     @NotNull
-    private RecorrenciaTimeUnit tipo;
+    private RecorrenciaTimeUnit unidade;
 
     @NotNull
     private LocalDate dataLimite;
 
-    public RecorrenciaTimeUnit getTipo() {
-        return tipo;
+    public RecorrenciaTimeUnit getUnidade() {
+        return unidade;
     }
 
-    public void setTipo(RecorrenciaTimeUnit tipo) {
-        this.tipo = tipo;
+    public void setUnidade(RecorrenciaTimeUnit unidade) {
+        this.unidade = unidade;
     }
 
     public LocalDate getDataLimite() {

@@ -29,6 +29,7 @@ public class EventoRequestTO implements Serializable {
     @Valid
     private Set<NotificacaoRequestTO> notificacoes;
 
+    @Valid
     private RecorrenciaRequestTO recorrencia;
 
     public LocalDateTime getDataHora() {
