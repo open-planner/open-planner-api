@@ -5,14 +5,11 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class NotificacaoRequestTO implements Serializable {
 
     private static final long serialVersionUID = -8691528433237011818L;
 
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dataHora;
 
     private Boolean email = false;
