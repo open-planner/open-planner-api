@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.evento.Evento;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.Notificacao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.EventoService;
+import br.edu.ifpb.mestrado.openplanner.api.domain.service.NotificacaoService;
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.Recorrencia;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.repository.EventoRepository;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.service.OAuth2UserDetailsService;
@@ -21,9 +22,13 @@ public class EventoServiceImpl extends BaseManyByUsuarioServiceImpl<Evento> impl
 
     private EventoRepository eventoRepository;
 
-    public EventoServiceImpl(OAuth2UserDetailsService userDetailsService, EventoRepository eventoRepository) {
+    private NotificacaoService notificacaoService;
+
+    public EventoServiceImpl(OAuth2UserDetailsService userDetailsService, EventoRepository eventoRepository,
+            NotificacaoService notificacaoService) {
         super(userDetailsService);
         this.eventoRepository = eventoRepository;
+        this.notificacaoService = notificacaoService;
     }
 
     @Override
@@ -73,8 +78,30 @@ public class EventoServiceImpl extends BaseManyByUsuarioServiceImpl<Evento> impl
 
     @Override
     @Transactional
+    public void deleteById(Long id) {
+        Evento evento = findById(id);
+
+        if (evento.getNotificacoes() != null) {
+            notificacaoService.deleteAll(evento.getNotificacoes());
+        }
+
+        if (evento.getRelacao() == null) {
+            deleteByRelacaoId(id);
+        }
+
+        super.deleteById(id);
+    }
+
+    @Override
+    @Transactional
     public void deleteByRelacaoId(Long id) {
-        eventoRepository.deleteByRelacaoId(id);
+        List<Evento> eventos = eventoRepository.findByRelacaoId(id);
+
+        if (eventos == null) {
+            return;
+        }
+
+        eventos.stream().forEach(e -> deleteById(e.getId()));
     }
 
     @Override
