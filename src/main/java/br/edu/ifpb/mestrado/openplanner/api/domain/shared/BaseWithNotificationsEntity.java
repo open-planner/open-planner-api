@@ -20,11 +20,11 @@ public abstract class BaseWithNotificationsEntity extends BaseManyByUsuarioEntit
 
     @NotBlank
     @Size(min = 3, max = 64)
-    private String descricao;
+    protected String descricao;
 
     @Valid
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Notificacao> notificacoes;
+    protected List<Notificacao> notificacoes;
 
     public String getDescricao() {
         return descricao;

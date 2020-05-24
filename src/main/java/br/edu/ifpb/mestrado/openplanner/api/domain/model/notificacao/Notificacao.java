@@ -3,6 +3,8 @@ package br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -23,6 +25,7 @@ public class Notificacao extends AuditedBaseManyByUsuarioEntity {
     private LocalDateTime dataHora;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private TipoNotificacao tipo;
 
     @NotBlank

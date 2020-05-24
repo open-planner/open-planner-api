@@ -1,0 +1,69 @@
+package br.edu.ifpb.mestrado.openplanner.api.domain.shared;
+
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.EntityListeners;
+import javax.persistence.MappedSuperclass;
+
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+@EntityListeners(AuditingEntityListener.class)
+@MappedSuperclass
+public abstract class AuditedBaseWithRecorrenciaEntity<T extends BaseWithRecorrenciaEntity<T>> extends BaseWithRecorrenciaEntity<T> {
+
+    private static final long serialVersionUID = 1646340606002079437L;
+
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    protected LocalDateTime createdAt;
+
+    @CreatedBy
+    @Column(name = "created_by", nullable = false, updatable = false)
+    protected String createdBy;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    protected LocalDateTime updatedAt;
+
+    @LastModifiedBy
+    @Column(name = "updated_by")
+    protected String updatedBy;
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+}

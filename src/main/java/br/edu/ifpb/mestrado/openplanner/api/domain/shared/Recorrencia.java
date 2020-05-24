@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
 @Embeddable
@@ -13,6 +15,7 @@ public class Recorrencia implements Serializable {
     private static final long serialVersionUID = 7071130319329925063L;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "unidade_recorrencia")
     private RecorrenciaTimeUnit unidade;
 
