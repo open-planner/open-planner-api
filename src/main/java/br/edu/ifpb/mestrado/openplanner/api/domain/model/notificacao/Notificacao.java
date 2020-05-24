@@ -2,6 +2,7 @@ package br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -18,6 +19,7 @@ public class Notificacao extends AuditedBaseManyByUsuarioEntity {
     private static final long serialVersionUID = 5230523475587670588L;
 
     @NotNull
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime dataHora;
 
     private Boolean lida = false;

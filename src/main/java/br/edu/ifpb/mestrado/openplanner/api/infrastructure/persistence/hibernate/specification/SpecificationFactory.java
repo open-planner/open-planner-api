@@ -3,6 +3,7 @@ package br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernat
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -56,6 +57,26 @@ public class SpecificationFactory<T> {
         return (root, query, criteriaBuilder) -> {
             Expression<LocalDate> x = root.get(property);
             LocalDate y = value;
+
+            switch (operation) {
+                case GREATER_THAN:
+                    return criteriaBuilder.greaterThan(x, y);
+                case LESS_THAN:
+                    return criteriaBuilder.lessThan(x, y);
+                case GREATER_THAN_OR_EQUAL:
+                    return criteriaBuilder.greaterThanOrEqualTo(x, y);
+                case LESS_THAN_OR_EQUAL:
+                    return criteriaBuilder.lessThanOrEqualTo(x, y);
+                default:
+                    return criteriaBuilder.equal(x, y);
+            }
+        };
+    }
+
+    public Specification<T> create(String property, LocalDateTime value, Operation operation) {
+        return (root, query, criteriaBuilder) -> {
+            Expression<LocalDateTime> x = root.get(property);
+            LocalDateTime y = value;
 
             switch (operation) {
                 case GREATER_THAN:
@@ -217,6 +238,10 @@ public class SpecificationFactory<T> {
 
         if (value instanceof LocalDate) {
             return create(property, LocalDate.parse(value.toString()), operation);
+        }
+
+        if (value instanceof LocalDateTime) {
+            return create(property, LocalDateTime.parse(value.toString()), operation);
         }
 
         if (value instanceof Enum<?>) {
