@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.evento.Evento;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.Notificacao;
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.TipoNotificacao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.EventoService;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.NotificacaoService;
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.Recorrencia;
@@ -19,26 +18,19 @@ import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.BeanUtils;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.DateUtils;
 
 @Service
-public class EventoServiceImpl extends BaseManyByUsuarioServiceImpl<Evento> implements EventoService {
+public class EventoServiceImpl extends BaseWithNotificationsServiceImpl<Evento> implements EventoService {
 
     private EventoRepository eventoRepository;
 
-    private NotificacaoService notificacaoService;
-
     public EventoServiceImpl(OAuth2UserDetailsService userDetailsService, EventoRepository eventoRepository,
             NotificacaoService notificacaoService) {
-        super(userDetailsService);
+        super(userDetailsService, notificacaoService);
         this.eventoRepository = eventoRepository;
-        this.notificacaoService = notificacaoService;
     }
 
     @Override
     @Transactional
     public Evento save(Evento evento) {
-        if (evento.getNotificacoes() != null) {
-            prepareNotificacoes(evento);
-        }
-
         Evento eventoSaved = super.save(evento);
 
         if (eventoSaved.isRecorrente()) {
@@ -56,10 +48,6 @@ public class EventoServiceImpl extends BaseManyByUsuarioServiceImpl<Evento> impl
         if (eventoSaved.getRelacao() != null) {
             evento.setRecorrencia(null);
             evento.setRelacao(eventoSaved.getRelacao());
-        }
-
-        if (evento.getNotificacoes() != null) {
-            prepareNotificacoes(evento);
         }
 
         Evento eventoUpdated = super.update(id, evento);
@@ -82,15 +70,17 @@ public class EventoServiceImpl extends BaseManyByUsuarioServiceImpl<Evento> impl
     public void deleteById(Long id) {
         Evento evento = findById(id);
 
-        if (evento.getNotificacoes() != null) {
-            notificacaoService.deleteAll(evento.getNotificacoes());
-        }
-
         if (evento.getRelacao() == null) {
             deleteByRelacaoId(id);
         }
 
         super.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAll(Iterable<Evento> eventos) {
+        eventos.forEach(e -> deleteById(e.getId()));
     }
 
     @Override
@@ -108,15 +98,6 @@ public class EventoServiceImpl extends BaseManyByUsuarioServiceImpl<Evento> impl
     @Override
     protected EventoRepository getRepository() {
         return eventoRepository;
-    }
-
-    private void prepareNotificacoes(Evento evento) {
-        evento.getNotificacoes().stream()
-                .forEach(n -> {
-                    n.setUsuario(getUsuarioAutenticado());
-                    n.setTipo(TipoNotificacao.EVENTO);
-                    n.setDescricao(evento.getDescricao());
-                });
     }
 
     private void saveRecorrencias(Evento evento) {
