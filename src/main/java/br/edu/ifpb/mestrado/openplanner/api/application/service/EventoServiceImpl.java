@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.evento.Evento;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.Notificacao;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.TipoNotificacao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.EventoService;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.NotificacaoService;
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.Recorrencia;
@@ -35,7 +36,7 @@ public class EventoServiceImpl extends BaseManyByUsuarioServiceImpl<Evento> impl
     @Transactional
     public Evento save(Evento evento) {
         if (evento.getNotificacoes() != null) {
-            evento.getNotificacoes().stream().forEach(n -> n.setUsuario(getUsuarioAutenticado()));
+            prepareNotificacoes(evento);
         }
 
         Evento eventoSaved = super.save(evento);
@@ -58,7 +59,7 @@ public class EventoServiceImpl extends BaseManyByUsuarioServiceImpl<Evento> impl
         }
 
         if (evento.getNotificacoes() != null) {
-            evento.getNotificacoes().stream().forEach(n -> n.setUsuario(getUsuarioAutenticado()));
+            prepareNotificacoes(evento);
         }
 
         Evento eventoUpdated = super.update(id, evento);
@@ -109,6 +110,15 @@ public class EventoServiceImpl extends BaseManyByUsuarioServiceImpl<Evento> impl
         return eventoRepository;
     }
 
+    private void prepareNotificacoes(Evento evento) {
+        evento.getNotificacoes().stream()
+                .forEach(n -> {
+                    n.setUsuario(getUsuarioAutenticado());
+                    n.setTipo(TipoNotificacao.EVENTO);
+                    n.setDescricao(evento.getDescricao());
+                });
+    }
+
     private void saveRecorrencias(Evento evento) {
         Recorrencia recorrencia = evento.getRecorrencia();
         LocalDateTime dataHora = evento.getDataHora();
@@ -142,6 +152,13 @@ public class EventoServiceImpl extends BaseManyByUsuarioServiceImpl<Evento> impl
         }
     }
 
+    /**
+     * Cria novas notificações incrementando sua data de acordo com a recorrência
+     *
+     * @param notificacoes notificações originais
+     * @param recorrencia
+     * @return a nova lista de notificações
+     */
     private List<Notificacao> plusOneDataNewNotificacoes(List<Notificacao> notificacoes, Recorrencia recorrencia) {
         return notificacoes.stream()
                 .map(n -> {

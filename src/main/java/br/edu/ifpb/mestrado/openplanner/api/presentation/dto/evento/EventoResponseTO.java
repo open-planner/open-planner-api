@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.notificacao.NotificacaoResponseTO;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.notificacao.NotificacaoJoinResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.recorrencia.RecorrenciaResponseTO;
 
 public class EventoResponseTO implements Serializable {
@@ -17,7 +17,7 @@ public class EventoResponseTO implements Serializable {
 
     private String descricao;
 
-    private Set<NotificacaoResponseTO> notificacoes;
+    private Set<NotificacaoJoinResponseTO> notificacoes;
 
     private RecorrenciaResponseTO recorrencia;
 
@@ -47,11 +47,11 @@ public class EventoResponseTO implements Serializable {
         this.descricao = descricao;
     }
 
-    public Set<NotificacaoResponseTO> getNotificacoes() {
+    public Set<NotificacaoJoinResponseTO> getNotificacoes() {
         return notificacoes;
     }
 
-    public void setNotificacoes(Set<NotificacaoResponseTO> notificacoes) {
+    public void setNotificacoes(Set<NotificacaoJoinResponseTO> notificacoes) {
         this.notificacoes = notificacoes;
     }
 

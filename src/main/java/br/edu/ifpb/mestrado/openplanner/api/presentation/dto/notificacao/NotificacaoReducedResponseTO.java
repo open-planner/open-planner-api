@@ -3,6 +3,8 @@ package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.notificacao;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class NotificacaoReducedResponseTO implements Serializable {
 
     private static final long serialVersionUID = -6019971369962622611L;
@@ -11,9 +13,12 @@ public class NotificacaoReducedResponseTO implements Serializable {
 
     private LocalDateTime dataHora;
 
-    private Boolean lida;
+    @JsonProperty("tipo")
+    private String tipoLabel;
 
-    private Boolean email;
+    private String descricao;
+
+    private Boolean lida;
 
     public Long getId() {
         return id;
@@ -31,20 +36,28 @@ public class NotificacaoReducedResponseTO implements Serializable {
         this.dataHora = dataHora;
     }
 
+    public String getTipoLabel() {
+        return tipoLabel;
+    }
+
+    public void setTipoLabel(String tipoLabel) {
+        this.tipoLabel = tipoLabel;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
     public Boolean getLida() {
         return lida;
     }
 
     public void setLida(Boolean lida) {
         this.lida = lida;
-    }
-
-    public Boolean getEmail() {
-        return email;
-    }
-
-    public void setEmail(Boolean email) {
-        this.email = email;
     }
 
 }
