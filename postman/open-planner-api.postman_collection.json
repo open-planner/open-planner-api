@@ -1568,6 +1568,142 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "metas",
+			"item": [
+				{
+					"name": "/metas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/metas?sort=data,asc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"metas"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "data,asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/metas/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/metas/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"metas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/metas",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"data\": \"2020-12-31\",\n\t\"descricao\": \"Reserva de Emergência\",\n\t\"status\": \"EM_ANDAMENTO\",\n\t\"anotacoes\": \"Investimentos em Renda Fixa\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-12-01T00:00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t],\n\t\"tags\": [1, 2]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/metas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"metas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/metas/{id}",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"data\": \"2020-12-31\",\n\t\"descricao\": \"Reserva de Emergência\",\n\t\"status\": \"EM_ANDAMENTO\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-12-01T00:00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/metas/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"metas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/metas/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/metas/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"metas",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/metas/status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/metas/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"metas",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"auth": {
