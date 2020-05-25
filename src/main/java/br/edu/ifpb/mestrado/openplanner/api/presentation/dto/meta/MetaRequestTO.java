@@ -1,35 +1,29 @@
-package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.projeto;
+package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.meta;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Set;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Prioridade;
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Status;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.meta.Status;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.tag.Tag;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.converter.IdReference;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.notificacao.NotificacaoRequestTO;
-import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.PeriodoRequestTO;
 
-public class ProjetoRequestTO implements Serializable {
+public class MetaRequestTO implements Serializable {
 
-    private static final long serialVersionUID = 4077046499585857067L;
+    private static final long serialVersionUID = 4274896746833796526L;
 
-    @Valid
-    private PeriodoRequestTO periodo;
+    @NotNull
+    private LocalDate data;
 
     @NotBlank
     @Size(max = 128)
     private String descricao;
 
-    @NotNull
-    private Prioridade prioridade;
-
-    @NotNull
     private Status status;
 
     private String anotacoes;
@@ -39,12 +33,12 @@ public class ProjetoRequestTO implements Serializable {
     @IdReference(property = "tags", target = Tag.class)
     private Set<Long> tags;
 
-    public PeriodoRequestTO getPeriodo() {
-        return periodo;
+    public LocalDate getData() {
+        return data;
     }
 
-    public void setPeriodo(PeriodoRequestTO periodo) {
-        this.periodo = periodo;
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 
     public String getDescricao() {
@@ -53,14 +47,6 @@ public class ProjetoRequestTO implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public Prioridade getPrioridade() {
-        return prioridade;
-    }
-
-    public void setPrioridade(Prioridade prioridade) {
-        this.prioridade = prioridade;
     }
 
     public Status getStatus() {
