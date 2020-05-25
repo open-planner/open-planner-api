@@ -17,7 +17,7 @@ import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.BeanUtils;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.DateUtils;
 
 public abstract class BaseWithRecorrenciaServiceImpl<T extends BaseWithRecorrenciaEntity<T>>
-        extends BaseWithNotificationsServiceImpl<T> implements BaseManyByUsuarioService<T> {
+        extends BaseWithNotificacoesServiceImpl<T> implements BaseManyByUsuarioService<T> {
 
     public BaseWithRecorrenciaServiceImpl(OAuth2UserDetailsService userDetailsService, NotificacaoService notificacaoService) {
         super(userDetailsService, notificacaoService);

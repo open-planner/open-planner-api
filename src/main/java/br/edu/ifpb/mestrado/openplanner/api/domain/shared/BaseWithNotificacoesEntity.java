@@ -14,7 +14,7 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.Notificacao
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.TipoNotificacao;
 
 @MappedSuperclass
-public abstract class BaseWithNotificationsEntity extends BaseManyByUsuarioEntity {
+public abstract class BaseWithNotificacoesEntity extends BaseManyByUsuarioEntity {
 
     private static final long serialVersionUID = -696365959925024080L;
 

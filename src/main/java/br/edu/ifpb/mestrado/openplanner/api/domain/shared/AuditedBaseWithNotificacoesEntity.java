@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public abstract class AuditedBaseWithNotificationsEntity extends BaseWithNotificationsEntity {
+public abstract class AuditedBaseWithNotificacoesEntity extends BaseWithNotificacoesEntity {
 
     private static final long serialVersionUID = -1960601852133796065L;
 

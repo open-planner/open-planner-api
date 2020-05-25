@@ -8,7 +8,7 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.shared.BaseWithRecorrenciaEnt
 
 @NoRepositoryBean
 public interface BaseWithRecorrenciaRepository<T extends BaseWithRecorrenciaEntity<?>>
-        extends BaseManyByUsuarioRepository<T> {
+        extends BaseWithNotificacoesRepository<T> {
 
     List<T> findByRelacaoId(Long id);
 

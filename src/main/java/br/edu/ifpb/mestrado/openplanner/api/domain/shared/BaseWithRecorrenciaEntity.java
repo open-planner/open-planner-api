@@ -10,7 +10,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
-public abstract class BaseWithRecorrenciaEntity<T extends BaseWithRecorrenciaEntity<T>> extends BaseWithNotificationsEntity {
+public abstract class BaseWithRecorrenciaEntity<T extends BaseWithRecorrenciaEntity<T>> extends BaseWithNotificacoesEntity {
 
     private static final long serialVersionUID = -2003962831066734262L;
 

@@ -4,15 +4,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.BaseManyByUsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.NotificacaoService;
-import br.edu.ifpb.mestrado.openplanner.api.domain.shared.BaseWithNotificationsEntity;
+import br.edu.ifpb.mestrado.openplanner.api.domain.shared.BaseWithNotificacoesEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.security.service.OAuth2UserDetailsService;
 
-public abstract class BaseWithNotificationsServiceImpl<T extends BaseWithNotificationsEntity> extends BaseManyByUsuarioServiceImpl<T>
+public abstract class BaseWithNotificacoesServiceImpl<T extends BaseWithNotificacoesEntity> extends BaseManyByUsuarioServiceImpl<T>
         implements BaseManyByUsuarioService<T> {
 
     protected NotificacaoService notificacaoService;
 
-    public BaseWithNotificationsServiceImpl(OAuth2UserDetailsService userDetailsService, NotificacaoService notificacaoService) {
+    public BaseWithNotificacoesServiceImpl(OAuth2UserDetailsService userDetailsService, NotificacaoService notificacaoService) {
         super(userDetailsService);
         this.notificacaoService = notificacaoService;
     }
