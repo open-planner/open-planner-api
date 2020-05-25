@@ -77,7 +77,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
     @Override
     public T update(Long id, T entity) {
         T savedEntity = findById(id);
-        BeanUtils.copyProperties(entity, savedEntity);
+        BeanUtils.copyProperties(entity, savedEntity, "id");
 
         return getRepository().save(savedEntity);
     }

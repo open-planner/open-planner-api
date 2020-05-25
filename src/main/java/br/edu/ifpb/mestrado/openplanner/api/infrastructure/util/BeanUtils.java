@@ -5,10 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Embedded;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.ArrayUtils;
-
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.bean.Nullable;
 
 public class BeanUtils {
 
@@ -52,9 +51,9 @@ public class BeanUtils {
 
     private static String[] getNullProperties(Object source) {
         return FieldUtils.getAllFields(source.getClass()).stream().filter(field -> StreamUtils.propagate(() -> {
-            Nullable nullable = field.getAnnotation(Nullable.class);
+            NotNull notNull = field.getAnnotation(NotNull.class);
 
-            if (nullable != null) {
+            if (notNull == null) {
                 return false;
             }
 
