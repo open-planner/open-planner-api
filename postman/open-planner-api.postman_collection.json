@@ -1466,7 +1466,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"periodo\": {\n\t\t\"dataInicio\": \"2020-04-09T00:00:00\",\n\t\t\"dataFim\": \"2020-06-09T00:00:00\"\n\t},\n\t\"descricao\": \"Projeto Mestrado IFPB\",\n\t\"prioridade\": \"ALTA\",\n\t\"status\": \"EM_DESENVOLVIMENTO\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-05-30T00:00:00\"\n\t\t},\n\t\t{\n\t\t\t\"dataHora\": \"2020-06-08T00:00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t],\n\t\"tags\": [1, 2]\n}",
+							"raw": "{\n\t\"periodo\": {\n\t\t\"dataInicio\": \"2020-04-09T00:00:00\",\n\t\t\"dataFim\": \"2020-06-09T00:00:00\"\n\t},\n\t\"descricao\": \"Projeto Mestrado IFPB\",\n\t\"prioridade\": \"ALTA\",\n\t\"status\": \"PLANEJADO\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-05-30T00:00:00\"\n\t\t},\n\t\t{\n\t\t\t\"dataHora\": \"2020-06-08T00:00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t],\n\t\"tags\": [1, 2]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1492,7 +1492,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"periodo\": {\n\t\t\"dataInicio\": \"2020-04-09T00:00:00\",\n\t\t\"dataFim\": \"2020-06-09T00:00:00\"\n\t},\n\t\"descricao\": \"Projeto Mestrado IFPB (ES)\",\n\t\"prioridade\": \"ALTA\",\n\t\"status\": \"EM_DESENVOLVIMENTO\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-05-30T00:00:00\",\n\t\t\t\"email\": true\n\t\t},\n\t\t{\n\t\t\t\"dataHora\": \"2020-06-08T00:00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t],\n\t\"tags\": [1, 2]\n}",
+							"raw": "{\n\t\"periodo\": {\n\t\t\"dataInicio\": \"2020-04-09T00:00:00\",\n\t\t\"dataFim\": \"2020-06-09T00:00:00\"\n\t},\n\t\"descricao\": \"Projeto Mestrado IFPB (ES)\",\n\t\"prioridade\": \"ALTA\",\n\t\"status\": \"PLANEJADO\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-05-30T00:00:00\",\n\t\t\t\"email\": true\n\t\t},\n\t\t{\n\t\t\t\"dataHora\": \"2020-06-08T00:00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1697,6 +1697,161 @@
 							"path": [
 								"metas",
 								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "tarefas",
+			"item": [
+				{
+					"name": "/tarefas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tarefas?sort=dataHora,asc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tarefas"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "dataHora,asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/tarefas/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tarefas/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tarefas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/tarefas",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"dataHora\": \"2020-08-08T00:00:00\",\n\t\"descricao\": \"Corrida na praça\",\n\t\"status\": \"PLANEJADA\",\n\t\"anotacoes\": \"Treinamento de resistência\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-07-30T00:00:00\"\n\t\t},\n\t\t{\n\t\t\t\"dataHora\": \"2020-08-08T00:00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t],\n\t\"recorrencia\": {\n\t\t\"unidade\": \"WEEK\",\n\t\t\"dataLimite\": \"2020-09-08\"\n\t},\n\t\"tags\": [1, 2]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/tarefas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tarefas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/tarefas/{id}",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"dataHora\": \"2020-08-08T00:00:00\",\n\t\"descricao\": \"Corrida na praça\",\n\t\"status\": \"PLANEJADA\",\n\t\"anotacoes\": \"Treinamento de resistência\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-07-30T00:00:00\"\n\t\t},\n\t\t{\n\t\t\t\"dataHora\": \"2020-08-08T00:00:00\"\n\t\t}\n\t],\n\t\"recorrencia\": {\n\t\t\"unidade\": \"WEEK\",\n\t\t\"dataLimite\": \"2020-09-08\"\n\t}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/tarefas/9",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tarefas",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/tarefas/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tarefas/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tarefas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/tarefas/status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tarefas/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tarefas",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/tarefas/recorrencias/time-units Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tarefas/recorrencias/time-units",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tarefas",
+								"recorrencias",
+								"time-units"
 							]
 						}
 					},
