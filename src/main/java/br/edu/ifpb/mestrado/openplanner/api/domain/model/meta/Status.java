@@ -2,6 +2,7 @@ package br.edu.ifpb.mestrado.openplanner.api.domain.model.meta;
 
 public enum Status {
 
+    PLANEJADA("Planejada"),
     EM_ANDAMENTO("Em andamento"),
     ATINGIDA("Atingida"),
     NAO_ATINGIDA("Não atingida"),

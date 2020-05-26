@@ -3,6 +3,7 @@ package br.edu.ifpb.mestrado.openplanner.api.domain.model.planoferias;
 public enum Status {
 
     PLANEJADO("Planejado"),
+    EM_ANDAMENTO("Em andamento"),
     CONCLUIDO("Concluído"),
     CANCELADO("Cancelado");
 

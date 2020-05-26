@@ -2,9 +2,9 @@ package br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto;
 
 public enum Status {
 
-    A_INICIAR("A iniciar"),
+    PLANEJADO("Planejado"),
+    EM_ANDAMENTO("Em andamento"),
     CANCELADO("Cancelado"),
-    EM_DESENVOLVIMENTO("Em desenvolvimento"),
     CONCLUIDO("Concluído"),
     NAO_CONCLUIDO("Não concluído");
 
