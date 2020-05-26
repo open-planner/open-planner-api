@@ -39,6 +39,11 @@ public abstract class BaseWithNotificacoesEntity extends BaseManyByUsuarioEntity
     }
 
     public void setNotificacoes(List<Notificacao> notificacoes) {
+        if (notificacoes == null) {
+            this.notificacoes = null;
+            return;
+        }
+
         if (this.notificacoes == null) {
             this.notificacoes = new ArrayList<>(notificacoes);
             return;

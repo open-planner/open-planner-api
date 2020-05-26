@@ -1,5 +1,6 @@
 package br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.AssociationOverride;
@@ -100,7 +101,18 @@ public class Projeto extends AuditedBaseWithNotificacoesEntity {
     }
 
     public void setTags(Set<Tag> tags) {
-        this.tags = tags;
+        if (tags == null) {
+            this.tags = null;
+            return;
+        }
+
+        if (this.tags == null) {
+            this.tags = new HashSet<>(tags);
+            return;
+        }
+
+        this.tags.clear();
+        this.tags.addAll(tags);
     }
 
 }
