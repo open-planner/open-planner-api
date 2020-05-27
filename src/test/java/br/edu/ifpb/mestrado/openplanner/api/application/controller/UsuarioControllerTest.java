@@ -78,7 +78,7 @@ public class UsuarioControllerTest extends BaseControllerTest {
 
         usuarioPageMock = new PageImpl<>(usuarioListMock, PageRequest.of(0, 10), 8);
 
-        when(specificationFactoryMock.create(any(), any(Class.class))).thenReturn(Specification.where(null));
+        when(specificationFactoryMock.create(any(String.class), any(Class.class))).thenReturn(Specification.where(null));
     }
 
     @Test

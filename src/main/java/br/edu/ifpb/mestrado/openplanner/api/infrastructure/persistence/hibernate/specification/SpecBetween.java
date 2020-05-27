@@ -7,14 +7,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 @Retention(RUNTIME)
-@Target({ FIELD })
-public @interface SpecField {
+@Target(FIELD)
+public @interface SpecBetween {
 
-    /**
-     * Field name
-     */
-    public String value() default "";
+    public String left();
 
-    public Operation operation() default Operation.EQUAL;
+    public String right();
 
 }

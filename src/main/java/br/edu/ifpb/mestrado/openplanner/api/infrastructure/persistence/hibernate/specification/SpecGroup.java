@@ -7,14 +7,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 @Retention(RUNTIME)
-@Target({ FIELD })
-public @interface SpecField {
+@Target(FIELD)
+public @interface SpecGroup {
 
-    /**
-     * Field name
-     */
-    public String value() default "";
-
-    public Operation operation() default Operation.EQUAL;
+    public Operator operator() default Operator.AND;
 
 }
