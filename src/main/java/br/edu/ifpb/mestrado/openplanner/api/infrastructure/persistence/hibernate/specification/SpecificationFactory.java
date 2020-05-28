@@ -16,6 +16,7 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.DateUtils;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.FieldUtils;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.StringUtils;
 
@@ -90,6 +91,10 @@ public class SpecificationFactory<T> {
                     return criteriaBuilder.greaterThanOrEqualTo(x, y);
                 case LESS_THAN_OR_EQUAL:
                     return criteriaBuilder.lessThanOrEqualTo(x, y);
+                case DATETIME_TO_DATE:
+                    LocalDateTime startOfDay = DateUtils.atStartOfDay(y);
+                    LocalDateTime endOfDay = DateUtils.atEndOfDay(y);
+                    return criteriaBuilder.between(x, startOfDay, endOfDay);
                 default:
                     return criteriaBuilder.equal(x, y);
             }
@@ -281,7 +286,13 @@ public class SpecificationFactory<T> {
         }
 
         if (value instanceof LocalDate) {
-            return create(property, LocalDate.parse(value.toString()), operation);
+            LocalDate date = LocalDate.parse(value.toString());
+
+            if (operation.equals(Operation.DATETIME_TO_DATE)) {
+                return create(property, date.atStartOfDay(), operation);
+            }
+
+            return create(property, date, operation);
         }
 
         if (value instanceof LocalDateTime) {

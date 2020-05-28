@@ -1,9 +1,13 @@
 package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
 
 public class EventoFilterRequestTO implements Serializable {
 
@@ -11,9 +15,11 @@ public class EventoFilterRequestTO implements Serializable {
 
     private Long id;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataHora;
+    @DateTimeFormat(iso = ISO.DATE)
+    @SpecField(value = "dataHora", operation = Operation.DATETIME_TO_DATE)
+    private LocalDate data;
 
+    @SpecField(operation = Operation.LIKE_IGNORE_CASE_UNACCENT)
     private String descricao;
 
     public Long getId() {
@@ -24,12 +30,12 @@ public class EventoFilterRequestTO implements Serializable {
         this.id = id;
     }
 
-    public LocalDateTime getDataHora() {
-        return dataHora;
+    public LocalDate getData() {
+        return data;
     }
 
-    public void setDataHora(LocalDateTime dataHora) {
-        this.dataHora = dataHora;
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 
     public String getDescricao() {
