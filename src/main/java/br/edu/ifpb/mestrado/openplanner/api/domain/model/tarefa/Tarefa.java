@@ -5,10 +5,13 @@ import java.util.Set;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -30,6 +33,8 @@ public class Tarefa extends AuditedBaseWithRecorrenciaEntity<Tarefa> {
 
     private static final long serialVersionUID = -1516198226580079885L;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     private String anotacoes;
