@@ -18,4 +18,12 @@ public class DateUtils {
         return dataHora.plus(1, unitMap.get(timeUnit));
     }
 
+    public static LocalDateTime atStartOfDay(LocalDateTime dateTime) {
+        return dateTime.toLocalDate().atStartOfDay();
+    }
+
+    public static LocalDateTime atEndOfDay(LocalDateTime dateTime) {
+        return dateTime.toLocalDate().atTime(23, 59, 59);
+    }
+
 }
