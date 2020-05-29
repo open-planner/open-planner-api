@@ -1,8 +1,9 @@
-FROM openjdk:11
-
-ENV _JAVA_OPTIONS="-Xmx512m -Xms256m"
-
-ADD target/open-planner-api.jar /opt/open-planner-api.jar
-ENTRYPOINT ["java", "-Duser.timezone=GMT-03:00", "-jar", "/opt/open-planner-api.jar"]
-
+FROM openjdk:13-jdk-alpine
+LABEL maintainer="Pedro Pacheco <pedrovcpacheco@yahoo.com>"
+RUN apk add git && \    
+    git clone https://gitlab.com/ifpb-es/open-planner/open-planner-backend.git
+WORKDIR open-planner-backend
+#RUN   
+#ENTRYPOINT ["java"]
+#CMD [""]
 EXPOSE 8080

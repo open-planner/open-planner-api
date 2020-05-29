@@ -1,0 +1,87 @@
+stages:
+  - clear
+  - build
+  - test
+  - pos-build
+#  - deploy
+
+clear_stage:
+  stage: clear
+  script:
+    - docker rm -f radarifpb.duckdns.org 2>&1 &
+    - docker system prune -f
+  when: delayed
+  start_in: 1 minute
+  only:
+    refs:
+      - master
+  tags:
+    - shell
+  
+build-docker-img: &build
+  stage: build
+  variables:
+    CNAME_PROD: "radarifpb.duckdns.org"
+    GIT_STRATEGY: pull
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA . --no-cache  
+    - docker run --name ${CNAME_PROD} -p 4200:4200 -it -d $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  only:
+    refs:
+      - master
+  tags:
+    - shell
+
+teste_build:
+  <<: *build
+  stage: test
+  cache:
+    policy: pull  
+  script:
+    - docker container ls | grep ${CNAME_PROD}
+    - curl -L http://${CNAME_PROD}:4200 |grep RadarIfpbFrontend
+  when: delayed
+  start_in: 1 minute
+ 
+teste_conexao: &teste_conexao
+  <<: *build
+  stage: test
+  script:
+    - echo quit | timeout --signal=9 2 telnet ${CNAME_PROD} 4200 2>&1 &
+ 
+teste_link-quebrado: &teste_link-quebrado
+   <<: *build
+   image: node
+   stage: test
+   script:
+     - npm install -g  broken-link-checker@^0.7.8 
+     - blc --recursive --exclude-external http://${CNAME_PROD}:4200
+   tags:
+    - runner-backend-docker
+   allow_failure: true
+ 
+teste_link-quebrado_wait-on: 
+   <<: *teste_link-quebrado
+   script:
+     - npm install -g  wait-on@^3.2.0 
+     - wait-on -r http-get://localhost:4200 --timeout 90000
+   allow_failure: true
+ 
+pre-production:
+  <<: *build
+  stage: pos-build
+  variables:
+    GIT_STRATEGY: pull
+  script:
+    - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+ 
+#production:
+#  <<: *build
+#  stage: deploy
+#  script:
+#    - docker run --name ${CNAME_PROD} -p 4200:4200 -it -d $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+#  tags:
+#    - radar-ifpb-shell
+
+
