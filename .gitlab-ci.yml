@@ -1,0 +1,23 @@
+stages:
+  - pre-build
+#  - test-api
+ 
+pre-build-docker-img: &pre-build 
+  stage: pre-build
+  variables:
+    GIT_STRATEGY: pull
+  script:
+    -  docker-compose down && docker volume rm -f open-planner-backend_open-planner-db; docker rmi -f open-planner-api
+    -  docker-compose up -d
+  only:
+    refs:
+      - master
+  tags:
+    - openplanner-web-shell
+
+#testando_api: 
+#  <<: *pre-build
+#  stage: test-api
+#  script:
+#    -  curl -L http://linkedjobs.duckdns.org/swagger-ui/
+     
