@@ -18,10 +18,14 @@ services:
 
   open-planner-api:
     container_name: open-planner-api
-    build: : '.'
+    build: '.'
     restart: always
     ports:
       - "8083:8080"
+    environment: 
+      DB_URL: jdbc:postgresql://open-planner-db:5432/open-planner
+      DB_USER: user.auth
+      DB_PASSWORD: user.pass
     networks: 
       - backend
     depends_on:
