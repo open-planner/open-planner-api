@@ -1,4 +1,5 @@
-version: '3.7'
+version: '3'
+
 services:
   open-planner-db:
     container_name: open-planner-db
@@ -10,27 +11,30 @@ services:
       POSTGRES_DB: open-planner
       POSTGRES_USER: user.auth
       POSTGRES_PASSWORD: user.pass
+    networks: 
+      - backend
     volumes:
-      - ./.docker-volumes/open-planner-db:/var/lib/postgresql/data
-#  open-planner-api:
-#    container_name: open-planner-api
-#    image: open-planner-api
-#    restart: always
-#    ports:
-#      - "8080:8080"
-#    environment:
-#      DB_URL: jdbc:postgresql://open-planner-db:5432/open-planner
-#      DB_USER: user.auth
-#      DB_PASSWORD: user.pass
-#      MAIL_HOST: ?
-#      MAIL_PASSWORD: ?
-#      MAIL_PORT: ?
-#      MAIL_SENDER: ?
-#      MAIL_USERNAME: ?
-#      WEB_APP_BASE_URL: http://localhost:4200
-#      CORS_ALLOWED_ORIGIN: http://localhost:4200
-#      SPRING_PROFILES_ACTIVE: dev
-#    links:
-#      - open-planner-db
-#    depends_on:
-#      - open-planner-db
+      - open-planner-db:/var/lib/postgresql/data
+
+  open-planner-api:
+    container_name: open-planner-api
+    build: '.'
+    restart: always
+    ports:
+      - "8083:8080"
+    environment: 
+      DB_URL: jdbc:postgresql://open-planner-db:5432/open-planner
+      DB_USER: user.auth
+      DB_PASSWORD: user.pass
+    networks: 
+      - backend
+    depends_on:
+      - open-planner-db
+
+volumes:
+  open-planner-db:
+      
+networks:
+  backend:
+      
+
