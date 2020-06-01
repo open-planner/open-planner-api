@@ -22,8 +22,10 @@ services:
     restart: always
     ports:
       - "8083:8080"
-    env_file: 
-      - db.env
+    environment: 
+      DB_URL=$DB_PATH
+      DB_USER=$DB_USERS
+      DB_PASSWORD=$DB_PASS
     networks: 
       - backend
     depends_on:
