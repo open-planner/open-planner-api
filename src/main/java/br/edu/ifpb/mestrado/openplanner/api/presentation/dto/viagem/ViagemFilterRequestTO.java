@@ -7,13 +7,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Status;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Tipo;
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Viagem;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBetween;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
 
-@SpecEntity(Viagem.class)
 public class ViagemFilterRequestTO implements Serializable {
 
     private static final long serialVersionUID = -2693360313523783449L;
