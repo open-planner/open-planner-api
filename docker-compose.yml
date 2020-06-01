@@ -22,10 +22,8 @@ services:
     restart: always
     ports:
       - "8083:8080"
-    environment: 
-      DB_URL: jdbc:postgresql://open-planner-db:5432/open-planner
-      DB_USER: user.auth
-      DB_PASSWORD: user.pass
+    env_file: 
+      - db.env
     networks: 
       - backend
     depends_on:
