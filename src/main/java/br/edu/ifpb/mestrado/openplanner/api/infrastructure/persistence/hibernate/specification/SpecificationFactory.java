@@ -174,8 +174,9 @@ public class SpecificationFactory<T> {
             try {
                 Method getterMethod = FieldUtils.findGetterMethod(filterField.getName(), filter.getClass());
                 Object value = getterMethod.invoke(filter);
+                SpecField specField = filterField.getAnnotation(SpecField.class);
 
-                if (value == null) {
+                if (value == null && (specField == null || !specField.canBeNull())) {
                     continue;
                 }
 
@@ -276,6 +277,10 @@ public class SpecificationFactory<T> {
         SpecField specField = field.getAnnotation(SpecField.class);
         String property = specField != null && !StringUtils.isBlank(specField.value()) ? specField.value() : field.getName();
         Operation operation = specField != null ? specField.operation() : Operation.EQUAL;
+
+        if (value == null) {
+            return (root, query, criteriaBuilder) -> criteriaBuilder.isNull(getExpression(root, property, Object.class));
+        }
 
         if (value instanceof Number) {
             return create(property, Long.valueOf(value.toString()), operation);

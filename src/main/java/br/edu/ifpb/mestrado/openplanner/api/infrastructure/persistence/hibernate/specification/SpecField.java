@@ -17,4 +17,6 @@ public @interface SpecField {
 
     public Operation operation() default Operation.EQUAL;
 
+    public boolean canBeNull() default false;
+
 }
