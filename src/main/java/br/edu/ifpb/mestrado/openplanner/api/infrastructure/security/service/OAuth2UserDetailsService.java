@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -79,6 +80,12 @@ public class OAuth2UserDetailsService implements UserDetailsService {
 
     public UsuarioAuth getUsuarioAuth(OAuth2Authentication authentication) {
         return (UsuarioAuth) authentication.getPrincipal();
+    }
+
+    public void setAuthById(Long id) {
+        UsuarioAuth user = loadUserById(id);
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+        SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(Usuario usuario) {
