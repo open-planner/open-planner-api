@@ -6,4 +6,6 @@ public interface NotificacaoService extends BaseManyByUsuarioService<Notificacao
 
     void switchLida(Long id);
 
+    void sendMails();
+
 }

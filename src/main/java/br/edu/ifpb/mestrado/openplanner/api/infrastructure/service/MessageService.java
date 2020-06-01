@@ -35,11 +35,13 @@ public class MessageService {
     
     public String getMessage(Path path, Object[] args) {
         String message;
+
         try {
             message = messageSource.getMessage(path.toString(), args, LocaleContextHolder.getLocale());
         } catch (NoSuchMessageException e) {
             message = path.toString();
         }
+
         return message;
     }
 

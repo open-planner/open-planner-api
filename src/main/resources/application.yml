@@ -64,3 +64,6 @@ open-planner-api:
     maximum-attempts-login: ${MAXIMUM_ATTEMPTS_LOGIN:5}
   mail:
     sender: ${MAIL_SENDER:sender@email.com}
+  cron:
+    notificacao-service:
+      send-mails: ${CRON_NOTIFICACAO_MAILS:0 0/1 * * * *}

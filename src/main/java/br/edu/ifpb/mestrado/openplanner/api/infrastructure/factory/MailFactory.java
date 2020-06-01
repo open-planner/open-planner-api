@@ -1,6 +1,7 @@
 package br.edu.ifpb.mestrado.openplanner.api.infrastructure.factory;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties.WebAppProperties;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.Notificacao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.email.MailRequestTO;
 
@@ -23,6 +25,9 @@ public class MailFactory {
 
     private final String TEMPLATE_RECOVERY_USUARIO_SENHA = "mail/usuario-recovery-senha";
     private final String SUBJECT_RECOVERY_USUARIO_SENHA = "Recuperação de Senha";
+
+    private final String TEMPLATE_NOTIFICACAO = "mail/notificacoes";
+    private final String SUBJECT_NOTIFICACAO = "Notificações";
 
     private TemplateEngine templateEngine;
 
@@ -43,6 +48,15 @@ public class MailFactory {
 
     public MailRequestTO createRecoveryUsuarioSenha(Usuario usuario) {
         return createTemplateUsuario(TEMPLATE_RECOVERY_USUARIO_SENHA, SUBJECT_RECOVERY_USUARIO_SENHA, usuario);
+    }
+
+    public MailRequestTO createNotificacoes(List<Notificacao> notificacoes) {
+        Usuario usuario = notificacoes.get(0).getUsuario();
+        Map<String, Object> data = new HashMap<>();
+        data.put("usuario", usuario);
+        data.put("notificacoes", notificacoes);
+
+        return new MailRequestTO(usuario.getEmail(), SUBJECT_NOTIFICACAO, createText(TEMPLATE_NOTIFICACAO, data));
     }
 
     private MailRequestTO createTemplateUsuario(String template, String subject, Usuario usuario) {

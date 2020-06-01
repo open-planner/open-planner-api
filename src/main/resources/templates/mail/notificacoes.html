@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <div th:replace="fragments/mail/general.xhtml :: header"></div>
+
+  <h3>Olá, <span th:text="${usuario.nome}"></span>.</h3>
+
+  <p>Os seguintes compromissos estão chegando:</p>
+
+  <div class="card" th:each="notificacao : ${notificacoes}">
+    <header>
+      <h4><b th:text="${notificacao.tipo.label}"></b>: <span th:text="${notificacao.descricao}"></span></h4>
+    </header>
+    <div class="card-content">
+      <p><b>Data</b>: <span th:text="${#temporals.format(notificacao.dataHora, 'dd/MM/yyyy HH:mm')}"></span></p>
+    </div>
+  </div>
+
+  <div th:replace="fragments/mail/general.xhtml :: footer"></div>
+</body>
+
+</html>
