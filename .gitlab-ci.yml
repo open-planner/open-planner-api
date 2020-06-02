@@ -6,8 +6,9 @@ pre-build-docker-img: &pre-build
   stage: pre-build
   variables:
     GIT_STRATEGY: pull
+    DB_USERS2: $DB_USERS
   script:
-    -  echo $DB_USERS
+    -  echo $DB_USERS2
     -  docker-compose down && docker volume rm -f open-planner-backend_open-planner-db; docker rmi -f open-planner-api
     -  docker-compose up -d
   only:
