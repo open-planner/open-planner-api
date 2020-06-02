@@ -9,9 +9,11 @@
 <body>
   <div th:replace="fragments/mail/general.xhtml :: header"></div>
 
-  <p>Você solicitou recuperação de login.</p>
+  <main>
+    <p>Você solicitou recuperação de login.</p>
 
-  <p>Seu login é: <b th:text="${usuario.email}">email</b></p>
+    <p>Seu login é: <b th:text="${usuario.email}">email</b></p>
+  </main>
 
   <div th:replace="fragments/mail/general.xhtml :: footer"></div>
 </body>

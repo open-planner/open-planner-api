@@ -9,25 +9,27 @@
 <body>
   <div th:replace="fragments/mail/general.xhtml :: header"></div>
 
-  <p>Uma conta foi cadastrada com este endereço de e-mail. Para ativá-la, siga os passos clicando no link abaixo.</p>
+  <main>
+    <p>Uma conta foi cadastrada com este endereço de e-mail. Para ativá-la, siga os passos clicando no link abaixo.</p>
 
-  <ul style="list-style: none; padding-left: 0;">
-    <li>
-      <b>Nome</b>:
-      <span th:text="${usuario.nome}"></span>
-    </li>
-    <li>
-      <b>E-mail</b>:
-      <span th:text="${usuario.email}"></span>
-    </li>
-    <li>
-      <b>Data de criação</b>:
-      <span th:text="${#temporals.format(usuario.createdAt, 'dd/MM/yyyy')}"></span>
-    </li>
-    <li>
-      <a th:href="@{${webAppBaseUrl} + '/mail-activation/' + ${usuario.ativacaoToken}}">Clique aqui para confirmar o cadastro</a>
-    </li>
-  </ul>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>
+        <b>Nome</b>:
+        <span th:text="${usuario.nome}"></span>
+      </li>
+      <li>
+        <b>E-mail</b>:
+        <span th:text="${usuario.email}"></span>
+      </li>
+      <li>
+        <b>Data de criação</b>:
+        <span th:text="${#temporals.format(usuario.createdAt, 'dd/MM/yyyy')}"></span>
+      </li>
+      <li>
+        <a th:href="@{${webAppBaseUrl} + '/mail-activation/' + ${usuario.ativacaoToken}}">Clique aqui para confirmar o cadastro</a>
+      </li>
+    </ul>
+  </main>
 
   <div th:replace="fragments/mail/general.xhtml :: footer"></div>
 </body>

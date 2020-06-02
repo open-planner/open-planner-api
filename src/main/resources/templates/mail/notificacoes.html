@@ -9,18 +9,20 @@
 <body>
   <div th:replace="fragments/mail/general.xhtml :: header"></div>
 
-  <h3>Olá, <span th:text="${usuario.nome}"></span>.</h3>
+  <main>
+    <h3>Olá, <span th:text="${usuario.nome}">Usuário</span>.</h3>
 
-  <p>Os seguintes compromissos estão chegando:</p>
+    <p>Os seguintes compromissos estão chegando:</p>
 
-  <div class="card" th:each="notificacao : ${notificacoes}">
-    <header>
-      <h4><b th:text="${notificacao.tipo.label}"></b>: <span th:text="${notificacao.descricao}"></span></h4>
-    </header>
-    <div class="card-content">
-      <p><b>Data</b>: <span th:text="${#temporals.format(notificacao.dataHora, 'dd/MM/yyyy HH:mm')}"></span></p>
-    </div>
-  </div>
+    <ul>
+      <li th:each="notificacao : ${notificacoes}">
+        <b th:text="${notificacao.tipo.label}">Tipo</b>: <span th:text="${notificacao.descricao}">Descrição</span> 
+        (<span th:text="${#temporals.format(notificacao.dataHora, 'dd/MM/yyyy HH:mm')}">dd/MM/yyyy HH:mm</span>)
+      </li>
+    </ul>
+
+    <p><a th:href="@{${webAppBaseUrl}}">Clique aqui para acessar o OpenPlanner</a></p>
+  </main>
 
   <div th:replace="fragments/mail/general.xhtml :: footer"></div>
 </body>
