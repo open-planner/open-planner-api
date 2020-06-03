@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 services:
   open-planner-db:
@@ -7,10 +7,12 @@ services:
     restart: always
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_DB: open-planner
-      POSTGRES_USER: user.auth
-      POSTGRES_PASSWORD: user.pass
+    secrets:
+      - file_secret
+    #environment:
+    #  POSTGRES_DB: open-planner
+    #  POSTGRES_USER: user.auth
+    #  POSTGRES_PASSWORD: user.pass
     networks: 
       - backend
     volumes:
@@ -35,4 +37,6 @@ volumes:
 networks:
   backend:
       
-
+secrets:   
+  file_secret:
+    file: db.env 
