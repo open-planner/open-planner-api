@@ -2,6 +2,7 @@ stages:
   - clear
   - build
   - pre-build
+  - test
   
 clear_stage:
   stage: clear
@@ -15,7 +16,7 @@ clear_stage:
   tags:
     - openplanner-web-shell
 
-build-docker-img: &build
+build-img: &build
   stage: build
   variables:
     GIT_STRATEGY: pull
@@ -27,7 +28,7 @@ build-docker-img: &build
   tags:
     - openplanner-web-shell
 
-pre-build-docker-img: 
+build-stack: 
   <<: *build 
   stage: pre-build
   script:
@@ -35,9 +36,16 @@ pre-build-docker-img:
   when: delayed
   start_in: 1 minute
 
-#testando_api: 
-#  <<: *pre-build
-#  stage: test-api
-#  script:
-#    -  curl -L http://linkedjobs.duckdns.org/swagger-ui/
+testando_api: 
+  <<: *build
+  stage: test
+  script:
+    -  curl -L http://open-planner-web.duckdns.org
+
+teste_conexao: 
+  <<: *build
+  stage: test
+  script:
+    - echo quit | timeout --signal=9 2 telnet open-planner-web.duckdns.org 8083 2>&1 &
+
      
