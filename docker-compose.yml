@@ -35,4 +35,4 @@ networks:
       
 secrets:   
   file_secret:
-    file: ~/db.env 
+    file: /opt/db.env 
