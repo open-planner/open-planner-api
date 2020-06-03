@@ -20,7 +20,7 @@ services:
 
   open-planner-api:
     container_name: open-planner-api
-    build: '.'
+    image: openplannerbackend_open-planner-api
     restart: always
     ports:
       - "8083:8080"
@@ -48,6 +48,6 @@ networks:
   backend:
 secrets:
   db_pass_mail:
+    external: true
   db_pass_root:
     external: true
-    
