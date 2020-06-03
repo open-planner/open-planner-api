@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM openjdk:13-jdk-alpine
 LABEL maintainer="Pedro Pacheco <pedrovcpacheco@yahoo.com>"
 ENV JAVA_OPTIONS="-Xmx512m -Xms256m"
 ENV PATH=/open-planner-backend/apache-maven-3.6.3/bin:$PATH
