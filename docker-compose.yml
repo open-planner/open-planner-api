@@ -9,10 +9,6 @@ services:
       - "5432:5432"
     secrets:
       - file_secret
-    #environment:
-    #  POSTGRES_DB: open-planner
-    #  POSTGRES_USER: user.auth
-    #  POSTGRES_PASSWORD: user.pass
     networks: 
       - backend
     volumes:
@@ -39,4 +35,4 @@ networks:
       
 secrets:   
   file_secret:
-    file: db.env 
+    file: ~/db.env 
