@@ -20,7 +20,7 @@ services:
 
   open-planner-api:
     container_name: open-planner-api
-    image: openplannerbackend_open-planner-api
+    image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     restart: always
     ports:
       - "8083:8080"

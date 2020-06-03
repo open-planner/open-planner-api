@@ -1,19 +1,39 @@
 stages:
+  - clear
+  - build
   - pre-build
-#  - test-api
- 
-pre-build-docker-img: &pre-build 
-  stage: pre-build
-  variables:
-    GIT_STRATEGY: pull
+  
+clear_stage:
+  stage: clear
   script:
-    -  docker stack rm open-planner-backend
-    -  docker stack deploy -c docker-compose.yml open-planner-backend
+    - docker stack rm open-planner-backend
+    - docker system prune -f
+    - docker rmi -f $CI_REGISTRY_IMAGE:$CI_COMMIT_BEFORE_SHA	
   only:
     refs:
       - master
   tags:
     - openplanner-web-shell
+
+build-docker-img: &build
+  stage: build
+  variables:
+    GIT_STRATEGY: pull
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA . --no-cache  
+  only:
+    refs:
+      - master
+  tags:
+    - openplanner-web-shell
+
+pre-build-docker-img: 
+  <<: *build 
+  stage: pre-build
+  script:
+    -  docker stack deploy -c docker-compose.yml open-planner-backend
+  when: delayed
+  start_in: 1 minute
 
 #testando_api: 
 #  <<: *pre-build
