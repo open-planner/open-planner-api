@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.permissao.Permissao;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.converter.IdReference;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.modelmapper.IdReference;
 
 public class UsuarioRequestTO implements Serializable {
 

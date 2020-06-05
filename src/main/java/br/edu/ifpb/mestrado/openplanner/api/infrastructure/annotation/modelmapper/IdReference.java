@@ -1,4 +1,4 @@
-package br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.converter;
+package br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.modelmapper;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

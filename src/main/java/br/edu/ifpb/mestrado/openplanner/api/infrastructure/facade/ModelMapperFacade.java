@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Component;
 
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InformationNotFoundException;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.converter.IdReference;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.modelmapper.IdReference;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.factory.RepositoryFactory;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.service.exception.IdReferenceException;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.FieldUtils;

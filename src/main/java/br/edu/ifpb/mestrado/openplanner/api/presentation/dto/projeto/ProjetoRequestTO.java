@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Prioridade;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Status;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.tag.Tag;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.converter.IdReference;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.annotation.modelmapper.IdReference;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.notificacao.NotificacaoRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.PeriodoRequestTO;
 
