@@ -2,6 +2,11 @@ server:
   port: ${PORT:8080}
 
 spring:
+  http:
+    encoding:
+      enabled: true
+      charset: UTF-8
+      force: true
   jackson:
     deserialization:
       FAIL_ON_UNKNOWN_PROPERTIES: true
