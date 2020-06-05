@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 services:
   open-planner-db:
@@ -7,10 +7,12 @@ services:
     restart: always
     ports:
       - "5432:5432"
-    environment:
+    secrets:
+      - db_pass_root
+    environment:  
       POSTGRES_DB: open-planner
       POSTGRES_USER: user.auth
-      POSTGRES_PASSWORD: user.pass
+      POSTGRES_PASSWORD: "/run/secrets/db_pass_root"
     networks: 
       - backend
     volumes:
@@ -18,12 +20,23 @@ services:
 
   open-planner-api:
     container_name: open-planner-api
-    build: '.'
+    image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     restart: always
     ports:
       - "8083:8080"
-    env_file: 
-      - db.env
+    secrets:
+      - db_pass_root
+      - db_pass_mail
+    environment:  
+      DB_URL: jdbc:postgresql://open-planner-db:5432/open-planner
+      DB_USER: user.auth
+      DB_PASSWORD: "/run/secrets/db_pass_root"
+      MAIL_HOST: smtp.gmail.com
+      MAIL_PORT: 587
+      MAIL_SENDER: openplanner.ifpb@gmail.com
+      MAIL_USERNAME: openplanner.ifpb@gmail.com
+      MAIL_PASSWORD: "/run/secrets/db_pass_mail"
+      WEB_APP_BASE_URL: http://open-planner-web.duckdns.org
     networks: 
       - backend
     depends_on:
@@ -31,8 +44,10 @@ services:
 
 volumes:
   open-planner-db:
-      
 networks:
   backend:
-      
-
+secrets:
+  db_pass_mail:
+    external: true
+  db_pass_root:
+    external: true
