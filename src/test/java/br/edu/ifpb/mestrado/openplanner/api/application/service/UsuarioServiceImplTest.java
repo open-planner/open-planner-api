@@ -1,10 +1,12 @@
 package br.edu.ifpb.mestrado.openplanner.api.application.service;
 
+import static br.edu.ifpb.mestrado.openplanner.api.test.util.ServiceTestUtils.EMAIL_ADMIN;
 import static br.edu.ifpb.mestrado.openplanner.api.test.util.ServiceTestUtils.assertAuditingFields;
 import static br.edu.ifpb.mestrado.openplanner.api.test.util.ServiceTestUtils.assertPage;
 import static br.edu.ifpb.mestrado.openplanner.api.test.util.ServiceTestUtils.assertPageNoContent;
 import static br.edu.ifpb.mestrado.openplanner.api.test.util.ServiceTestUtils.createSpecification;
-import static br.edu.ifpb.mestrado.openplanner.api.test.util.ServiceTestUtils.mockAuthenticationForAuditing;
+import static br.edu.ifpb.mestrado.openplanner.api.test.util.ServiceTestUtils.mockAdminAuth;
+import static br.edu.ifpb.mestrado.openplanner.api.test.util.ServiceTestUtils.mockAuth;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,7 +54,6 @@ import br.edu.ifpb.mestrado.openplanner.api.test.util.UsuarioTestUtils;
 @SpringBootTest
 public class UsuarioServiceImplTest {
 
-    private static final String MOCK_EMAIL_ADMIN = "admin@email.com";
     private static final String MOCK_EMAIL_ROOT = "root@email.com";
 
     private UsuarioService usuarioService;
@@ -74,7 +75,7 @@ public class UsuarioServiceImplTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        mockAuthenticationForAuditing(MOCK_EMAIL_ADMIN);
+        mockAdminAuth();
         doNothing().when(mailService).send(any(MailRequestTO.class));
 
         usuarioRepository
@@ -148,7 +149,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testFindAllByPageable_whenRoot() {
-        mockAuthenticationForAuditing(MOCK_EMAIL_ROOT);
+        mockAuth(MOCK_EMAIL_ROOT);
         Page<Usuario> usuariosPage = usuarioService.findAll(PageRequest.of(0, 10));
 
         assertPage(usuariosPage, 10, 0, 9, 1, 9);
@@ -208,7 +209,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testGetAutenticado_whenNotAuthenticated() {
-        mockAuthenticationForAuditing(null);
+        mockAuth(null);
 
         assertThrows(NotAuthenticatedUserException.class, () -> usuarioService.getAutenticado());
     }
@@ -233,7 +234,7 @@ public class UsuarioServiceImplTest {
         assertThat(usuario.getSenha().getValor()).isNotNull();
         assertThat(usuario.getSenha().getResetToken()).isNull();
         assertThat(usuario.getAtivacaoToken()).isNotNull();
-        assertAuditingFields(usuario, MOCK_EMAIL_ADMIN);
+        assertAuditingFields(usuario, EMAIL_ADMIN);
     }
 
     @Test
@@ -249,7 +250,7 @@ public class UsuarioServiceImplTest {
         assertThat(usuario.getSenha().getValor()).isNotNull();
         assertThat(usuario.getSenha().getResetToken()).isNull();
         assertThat(usuario.getAtivacaoToken()).isNull();
-        assertAuditingFields(usuario, MOCK_EMAIL_ADMIN);
+        assertAuditingFields(usuario, EMAIL_ADMIN);
     }
 
     @Test
@@ -281,7 +282,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testSave_whenHasPermissaoAdminAndAdminOrRootNotAuthenticated() {
-        mockAuthenticationForAuditing("system@email.com");
+        mockAuth("system@email.com");
         Usuario usuario = UsuarioTestUtils.createForSaveService("Miguel Lima", "miguel.lima@email.com",
                 findPermissoesByIds(Permissao.ID_ADMIN));
 
@@ -334,7 +335,7 @@ public class UsuarioServiceImplTest {
     @Test
     public void testUpdateAutenticado() {
         Usuario usuario = usuarioRepository.save(UsuarioTestUtils.create("Miguel Lima", "miguel.lima@email.com"));
-        mockAuthenticationForAuditing("miguel.lima@email.com");
+        mockAuth("miguel.lima@email.com");
 
         Usuario usuarioAtualizado = usuarioService.updateAutenticado(new UsuarioBuilder()
                 .withNome("Miguel Borba Lima")
@@ -368,7 +369,7 @@ public class UsuarioServiceImplTest {
     @Test
     public void testUpdateSenhaAutenticado() {
         usuarioRepository.save(UsuarioTestUtils.create("Alice Lima", "alice.lima@email.com"));
-        mockAuthenticationForAuditing("alice.lima@email.com");
+        mockAuth("alice.lima@email.com");
 
         Usuario usuarioAtualizado = usuarioService.updateSenhaAutenticado(UsuarioTestUtils.MOCK_SENHA_PREFIX + "alice.lima@email.com",
                 "Alice.Lima@987");
@@ -379,7 +380,7 @@ public class UsuarioServiceImplTest {
     @Test
     public void testUpdateSenhaAutenticado_whenInvalidActualPassword() {
         usuarioRepository.save(UsuarioTestUtils.create("Alice Lima", "alice.lima@email.com"));
-        mockAuthenticationForAuditing("alice.lima@email.com");
+        mockAuth("alice.lima@email.com");
 
         assertThrows(InvalidActualPasswordException.class,
                 () -> usuarioService.updateSenhaAutenticado(UsuarioTestUtils.MOCK_SENHA_PREFIX + "alicelima@email.com", "Alice.Lima@987"));
@@ -388,7 +389,7 @@ public class UsuarioServiceImplTest {
     @Test
     public void testUpdateSenhaAutenticado_whenInvalidPassword() {
         usuarioRepository.save(UsuarioTestUtils.create("Alice Lima", "alice.lima@email.com"));
-        mockAuthenticationForAuditing("alice.lima@email.com");
+        mockAuth("alice.lima@email.com");
         
         assertThrows(InvalidPasswordException.class,
                 () -> usuarioService.updateSenhaAutenticado(UsuarioTestUtils.MOCK_SENHA_PREFIX + "alice.lima@email.com", "alice.lima"));

@@ -17,7 +17,9 @@ import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate
 
 public class ServiceTestUtils {
 
-    public static void mockAuthenticationForAuditing(String username) {
+    public static final String EMAIL_ADMIN = "admin@email.com";
+
+    public static void mockAuth(String username) {
         Authentication authentication = mock(Authentication.class);
         when(authentication.getPrincipal()).thenReturn(username);
 
@@ -25,6 +27,10 @@ public class ServiceTestUtils {
         when(securityContext.getAuthentication()).thenReturn(authentication);
 
         SecurityContextHolder.setContext(securityContext);
+    }
+
+    public static void mockAdminAuth() {
+        mockAuth(EMAIL_ADMIN);
     }
 
     public static <T> Specification<T> createSpecification(Object filter, Class<T> entityClass) {
