@@ -72,3 +72,5 @@ open-planner-api:
   cron:
     notificacao-service:
       send-mails: ${CRON_NOTIFICACAO_MAILS:0 0/30 * * * *}
+  usuario:
+    minimum-age: ${USUARIO_MINIMUM_AGE:14}

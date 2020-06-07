@@ -52,7 +52,7 @@ public class ApplicationResponseEntityExceptionHandler extends ResponseEntityExc
 
     @ExceptionHandler({ BusinessException.class })
     public ResponseEntity<Object> handleBusinessException(BusinessException exception, WebRequest request) {
-        return handleException(exception, HttpStatus.BAD_REQUEST, request, exception.getMessage());
+        return handleException(exception, HttpStatus.BAD_REQUEST, request, exception.getMessage(), exception.getArgs());
     }
 
     @ExceptionHandler({ AuthenticationException.class })
@@ -128,8 +128,9 @@ public class ApplicationResponseEntityExceptionHandler extends ResponseEntityExc
         return handleExceptionInternal(exception, errors, headers, HttpStatus.BAD_REQUEST, request);
     }
 
-    protected ResponseEntity<Object> handleException(Exception exception, HttpStatus status, WebRequest request, String key) {
-        List<String> errors = List.of(messageService.getMessage(key));
+    protected ResponseEntity<Object> handleException(Exception exception, HttpStatus status, WebRequest request, String key,
+            String... args) {
+        List<String> errors = List.of(messageService.getMessage(key, args));
 
         return handleExceptionInternal(exception, errors, new HttpHeaders(), status, request);
     }

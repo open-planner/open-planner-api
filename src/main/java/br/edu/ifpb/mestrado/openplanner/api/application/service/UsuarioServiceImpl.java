@@ -1,8 +1,11 @@
 package br.edu.ifpb.mestrado.openplanner.api.application.service;
 
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties.OpenPlannerApiProperties;
 import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties.SecurityProperties;
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.BusinessException;
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.DuplicateKeyException;
@@ -31,13 +34,16 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 
     private SecurityProperties securityProperties;
 
+    private OpenPlannerApiProperties openPlannerApiProperties;
+
     public UsuarioServiceImpl(OAuth2UserDetailsService userDetailsService, UsuarioRepository usuarioRepository, MailService mailService,
-            MailFactory mailFactory, SecurityProperties securityProperties) {
+            MailFactory mailFactory, SecurityProperties securityProperties, OpenPlannerApiProperties openPlannerApiProperties) {
         super(userDetailsService);
         this.usuarioRepository = usuarioRepository;
         this.mailService = mailService;
         this.mailFactory = mailFactory;
         this.securityProperties = securityProperties;
+        this.openPlannerApiProperties = openPlannerApiProperties;
     }
 
     @Transactional(readOnly = true)
@@ -203,6 +209,7 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 
     private void checkSave(Usuario usuario) {
         checkUniqueFields(usuario);
+        checkDataNascimento(usuario);
 
         if (usuario.getPermissoes() == null || usuario.getPermissoes().isEmpty()) {
             return;
@@ -227,6 +234,8 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
             usuario.setEmail(usuario.getEmail().toLowerCase());
         }
 
+        checkDataNascimento(usuario);
+
         if (id == Usuario.ID_ROOT) {
             checkUpdateRoot(usuario);
         }
@@ -237,6 +246,14 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 
         if (id == Usuario.ID_ADMIN) {
             checkUpdateAdmin(usuario);
+        }
+    }
+
+    private void checkDataNascimento(Usuario usuario) {
+        Integer minimumAge = openPlannerApiProperties.getUsuario().getMinimumAge();
+
+        if (usuario.getDataNascimento().isAfter(LocalDate.now().minusYears(minimumAge))) {
+            throw new BusinessException("usuario.minimum-age", minimumAge.toString());
         }
     }
 
