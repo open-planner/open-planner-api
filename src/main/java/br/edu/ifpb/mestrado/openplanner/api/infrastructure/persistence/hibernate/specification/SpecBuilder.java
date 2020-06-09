@@ -84,14 +84,14 @@ public class SpecBuilder<T> {
                 SpecBetween specBetween = filterField.getAnnotation(SpecBetween.class);
 
                 if (specBetween != null) {
-                    specs.add(specFactory.create(specBetween, value));
+                    specs.add(specFactory.between(specBetween.left(), specBetween.right(), value));
                     continue;
                 }
 
                 SpecJoin specJoin = filterField.getAnnotation(SpecJoin.class);
 
                 if (specJoin != null) {
-                    specs.add(specFactory.create(specJoin, filterField, value));
+                    specs.add(specFactory.join(filterField, value, specJoin.entity(), specJoin.properties()));
                     continue;
                 }
 

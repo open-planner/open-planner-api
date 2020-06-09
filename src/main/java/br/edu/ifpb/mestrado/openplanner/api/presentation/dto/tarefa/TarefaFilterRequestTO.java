@@ -6,11 +6,13 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.tag.Tag;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.tarefa.Status;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.tarefa.Tarefa;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecJoin;
 
 @SpecEntity(Tarefa.class)
 public class TarefaFilterRequestTO implements Serializable {
@@ -28,7 +30,8 @@ public class TarefaFilterRequestTO implements Serializable {
 
     private Status status;
 
-    @SpecField(value = "tags.id")
+    @SpecJoin(properties = { "tags" }, entity = Tag.class)
+    @SpecField(value = "id")
     private Long tags;
 
     public Long getId() {
@@ -61,6 +64,14 @@ public class TarefaFilterRequestTO implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Long getTags() {
+        return tags;
+    }
+
+    public void setTags(Long tags) {
+        this.tags = tags;
     }
 
 }

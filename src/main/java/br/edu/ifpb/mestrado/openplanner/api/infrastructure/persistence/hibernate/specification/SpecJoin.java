@@ -11,6 +11,11 @@ import java.lang.annotation.Target;
 @Target(FIELD)
 public @interface SpecJoin {
 
+    /**
+     * Deep properties
+     */
+    public String[] properties();
+
     public Class<? extends Serializable> entity();
 
 }

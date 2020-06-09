@@ -71,8 +71,17 @@ public class SpecUtils {
                 : field.getName();
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T, U> Expression<U> getExpression(Root<T> root, String property, Class<U> type) {
+    public static Operation getOperation(Field field) {
+        SpecField specField = field.getAnnotation(SpecField.class);
+
+        return specField != null ? specField.operation() : Operation.EQUAL;
+    }
+
+    public static String[] getDeepProperties(Field field) {
+        return getPropertyName(field).split("\\.");
+    }
+
+    public static <T> Expression<?> getExpression(Root<T> root, String property) {
         if (!isDeepProperty(property)) {
             return root.get(property);
         }
@@ -84,7 +93,7 @@ public class SpecUtils {
             path = path.get(splittedProperty[i]);
         }
 
-        return (Expression<U>) path;
+        return path;
     }
 
 }
