@@ -28,7 +28,7 @@ import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InformationNotFoundException;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecificationFactory;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecFactory;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.test.builder.UsuarioBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.test.util.ControllerTestUtils;
@@ -45,7 +45,7 @@ public class UsuarioControllerTest extends BaseControllerTest {
     @MockBean
     private UsuarioService usuarioServiceMock;
 
-    private SpecificationFactory<Usuario> specificationFactoryMock;
+    private SpecFactory<Usuario> specificationFactoryMock;
 
     private List<Usuario> usuarioListMock;
 
@@ -61,7 +61,7 @@ public class UsuarioControllerTest extends BaseControllerTest {
     @SuppressWarnings("unchecked")
     @BeforeEach
     public void setUp() throws Exception {
-        specificationFactoryMock = mock(SpecificationFactory.class);
+        specificationFactoryMock = mock(SpecFactory.class);
 
         usuarioAdminMock = UsuarioTestUtils.createAdminMock();
 

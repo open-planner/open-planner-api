@@ -25,6 +25,9 @@ public class TarefaFilterRequestTO implements Serializable {
 
     private Status status;
 
+    @SpecField(value = "tags.id")
+    private Long tags;
+
     public Long getId() {
         return id;
     }

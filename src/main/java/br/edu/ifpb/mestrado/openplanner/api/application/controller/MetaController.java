@@ -24,7 +24,7 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.meta.Meta;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.meta.Status;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.MetaService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecificationFactory;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecFactory;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.meta.MetaFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.meta.MetaReducedResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.meta.MetaRequestTO;
@@ -47,7 +47,7 @@ public class MetaController {
 
     @GetMapping
     public ResponseEntity<Page<MetaReducedResponseTO>> findAll(MetaFilterRequestTO metaFilterRequestTO, Pageable pageable) {
-        Specification<Meta> specification = new SpecificationFactory<Meta>().create(metaFilterRequestTO, Meta.class);
+        Specification<Meta> specification = new SpecFactory<Meta>().create(metaFilterRequestTO, Meta.class);
         Page<Meta> page = metaService.findAll(specification, pageable);
         Page<MetaReducedResponseTO> responseTOPage = modelMapperFacade.map(page, MetaReducedResponseTO.class);
 

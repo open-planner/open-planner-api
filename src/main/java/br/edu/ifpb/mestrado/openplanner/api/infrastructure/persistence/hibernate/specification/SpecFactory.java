@@ -20,9 +20,8 @@ import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.DateUtils;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.FieldUtils;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.util.StringUtils;
 
-public class SpecificationFactory<T> {
+public class SpecFactory<T> {
 
-    private static final String SERIAL_VERSION_FIELD = "serialVersionUID";
     private static final String POSTGRESQL_UNACCENT_FUNCTION = "unaccent";
 
     public Specification<T> create(String property, Long value, Operation operation) {
@@ -166,8 +165,8 @@ public class SpecificationFactory<T> {
     }
 
     public Specification<T> create(Object filter, Class<T> entityClass, Operator operator) {
-        List<Field> filterFields = FieldUtils.getAllFields(filter.getClass(), SERIAL_VERSION_FIELD);
-        List<Field> entityFields = FieldUtils.getAllFields(entityClass, SERIAL_VERSION_FIELD);
+        List<Field> filterFields = FieldUtils.getAllFields(filter.getClass());
+        List<Field> entityFields = FieldUtils.getAllFields(entityClass);
         List<Specification<T>> specs = new ArrayList<>();
 
         for (Field filterField : filterFields) {
@@ -198,7 +197,7 @@ public class SpecificationFactory<T> {
                     specs.add(create(filterField, value));
                 }
             } catch (Exception exception) {
-                exception.printStackTrace();
+//                exception.printStackTrace();
                 continue;
             }
         }
@@ -245,7 +244,7 @@ public class SpecificationFactory<T> {
         Integer index = 1;
 
         do {
-            List<Field> deepEntityFields = FieldUtils.getAllFields(entityField.getType(), SERIAL_VERSION_FIELD);
+            List<Field> deepEntityFields = FieldUtils.getAllFields(entityField.getType());
 
             if (!hasProperty(splittedValue[index], deepEntityFields)) {
                 return false;
