@@ -37,26 +37,31 @@ public class Usuario extends AuditedBaseEntity {
 
     @NotNull
     @Size(min = 5, max = 128)
-    @Column(name = "nome", nullable = false)
     private String nome;
 
     @NotNull
-    @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
     @NotNull
     @Size(min = 5, max = 128)
     @Email
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(unique = true)
     private String email;
+
+    @Email
+    @Size(min = 5, max = 128)
+    @Column(unique = true)
+    private String emailAlterado;
 
     @Valid
     @Embedded
     private Senha senha;
 
     @Nullable
-    @Column(name = "ativacao_token")
     private String ativacaoToken;
+
+    @Nullable
+    private String alteracaoToken;
 
     @NotNull
     @Column(name = "pendente", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
@@ -99,6 +104,10 @@ public class Usuario extends AuditedBaseEntity {
         ativacaoToken = UUID.randomUUID().toString();
     }
 
+    public void generateAlteracaoToken() {
+        alteracaoToken = UUID.randomUUID().toString();
+    }
+
     public Boolean hasSenha() {
         return senha != null && senha.getValor() != null && !senha.getValor().isBlank();
     }
@@ -135,6 +144,14 @@ public class Usuario extends AuditedBaseEntity {
         this.email = email;
     }
 
+    public String getEmailAlterado() {
+        return emailAlterado;
+    }
+
+    public void setEmailAlterado(String emailAlterado) {
+        this.emailAlterado = emailAlterado;
+    }
+
     public Senha getSenha() {
         return senha;
     }
@@ -149,6 +166,14 @@ public class Usuario extends AuditedBaseEntity {
 
     public void setAtivacaoToken(String ativacaoToken) {
         this.ativacaoToken = ativacaoToken;
+    }
+
+    public String getAlteracaoToken() {
+        return alteracaoToken;
+    }
+
+    public void setAlteracaoToken(String alteracaoToken) {
+        this.alteracaoToken = alteracaoToken;
     }
 
     public Boolean getPendente() {
