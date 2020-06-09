@@ -8,10 +8,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Prioridade;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Projeto;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Status;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.tag.Tag;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBetween;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecJoin;
 
 @SpecEntity(Projeto.class)
 public class ProjetoFilterRequestTO implements Serializable {
@@ -34,6 +36,10 @@ public class ProjetoFilterRequestTO implements Serializable {
     private Prioridade prioridade;
 
     private Status status;
+
+    @SpecJoin(properties = { "tags" }, entity = Tag.class)
+    @SpecField(value = "id")
+    private Long tag;
 
     public Long getId() {
         return id;
@@ -81,6 +87,14 @@ public class ProjetoFilterRequestTO implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Long getTag() {
+        return tag;
+    }
+
+    public void setTag(Long tag) {
+        this.tag = tag;
     }
 
 }

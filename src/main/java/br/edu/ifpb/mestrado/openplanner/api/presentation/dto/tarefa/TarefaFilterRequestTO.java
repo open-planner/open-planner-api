@@ -32,7 +32,7 @@ public class TarefaFilterRequestTO implements Serializable {
 
     @SpecJoin(properties = { "tags" }, entity = Tag.class)
     @SpecField(value = "id")
-    private Long tags;
+    private Long tag;
 
     public Long getId() {
         return id;
@@ -66,12 +66,12 @@ public class TarefaFilterRequestTO implements Serializable {
         this.status = status;
     }
 
-    public Long getTags() {
-        return tags;
+    public Long getTag() {
+        return tag;
     }
 
-    public void setTags(Long tags) {
-        this.tags = tags;
+    public void setTag(Long tag) {
+        this.tag = tag;
     }
 
 }
