@@ -6,11 +6,14 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Prioridade;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Projeto;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Status;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBetween;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
 
+@SpecEntity(Projeto.class)
 public class ProjetoFilterRequestTO implements Serializable {
 
     private static final long serialVersionUID = -792829285160148170L;

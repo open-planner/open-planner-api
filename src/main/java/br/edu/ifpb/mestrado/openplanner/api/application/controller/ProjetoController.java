@@ -25,7 +25,7 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Projeto;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Status;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.ProjetoService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecFactory;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.projeto.ProjetoFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.projeto.ProjetoReducedResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.projeto.ProjetoRequestTO;
@@ -48,7 +48,7 @@ public class ProjetoController {
 
     @GetMapping
     public ResponseEntity<Page<ProjetoReducedResponseTO>> findAll(ProjetoFilterRequestTO projetoFilterRequestTO, Pageable pageable) {
-        Specification<Projeto> specification = new SpecFactory<Projeto>().create(projetoFilterRequestTO, Projeto.class);
+        Specification<Projeto> specification = new SpecBuilder<Projeto>().add(projetoFilterRequestTO).build();
         Page<Projeto> page = projetoService.findAll(specification, pageable);
         Page<ProjetoReducedResponseTO> responseTOPage = modelMapperFacade.map(page, ProjetoReducedResponseTO.class);
 

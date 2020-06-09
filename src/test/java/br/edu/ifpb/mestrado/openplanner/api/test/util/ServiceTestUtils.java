@@ -13,7 +13,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.AuditedBaseEntity;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecFactory;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 
 public class ServiceTestUtils {
 
@@ -33,8 +33,8 @@ public class ServiceTestUtils {
         mockAuth(EMAIL_ADMIN);
     }
 
-    public static <T> Specification<T> createSpecification(Object filter, Class<T> entityClass) {
-        return new SpecFactory<T>().create(filter, entityClass);
+    public static <T> Specification<T> createSpecification(Object filter) {
+        return new SpecBuilder<T>().add(filter).build();
     }
 
     public static void assertPage(Page<?> page, int pageSize, int pageNumber, int numberOfElements, int totalPages, int totalElements) {

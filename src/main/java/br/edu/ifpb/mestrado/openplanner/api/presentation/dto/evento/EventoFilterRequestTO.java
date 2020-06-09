@@ -6,9 +6,12 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.evento.Evento;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
 
+@SpecEntity(Evento.class)
 public class EventoFilterRequestTO implements Serializable {
 
     private static final long serialVersionUID = -530735338790696989L;

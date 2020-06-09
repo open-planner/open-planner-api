@@ -28,7 +28,7 @@ import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InformationNotFoundException;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecFactory;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.test.builder.UsuarioBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.test.util.ControllerTestUtils;
@@ -45,7 +45,7 @@ public class UsuarioControllerTest extends BaseControllerTest {
     @MockBean
     private UsuarioService usuarioServiceMock;
 
-    private SpecFactory<Usuario> specificationFactoryMock;
+    private SpecBuilder<Usuario> specBuilder;
 
     private List<Usuario> usuarioListMock;
 
@@ -61,7 +61,7 @@ public class UsuarioControllerTest extends BaseControllerTest {
     @SuppressWarnings("unchecked")
     @BeforeEach
     public void setUp() throws Exception {
-        specificationFactoryMock = mock(SpecFactory.class);
+        specBuilder = mock(SpecBuilder.class);
 
         usuarioAdminMock = UsuarioTestUtils.createAdminMock();
 
@@ -78,7 +78,7 @@ public class UsuarioControllerTest extends BaseControllerTest {
 
         usuarioPageMock = new PageImpl<>(usuarioListMock, PageRequest.of(0, 10), 8);
 
-        when(specificationFactoryMock.create(any(String.class), any(Class.class))).thenReturn(Specification.where(null));
+        when(specBuilder.add(any(String.class)).build()).thenReturn(Specification.where(null));
     }
 
     @Test

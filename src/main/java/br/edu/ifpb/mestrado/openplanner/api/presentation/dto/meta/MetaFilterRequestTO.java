@@ -6,10 +6,13 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.meta.Meta;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.meta.Status;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
 
+@SpecEntity(Meta.class)
 public class MetaFilterRequestTO implements Serializable {
 
     private static final long serialVersionUID = 7793931799975538097L;

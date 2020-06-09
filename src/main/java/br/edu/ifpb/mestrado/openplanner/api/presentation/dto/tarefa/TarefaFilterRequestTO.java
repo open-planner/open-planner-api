@@ -7,9 +7,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.tarefa.Status;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.tarefa.Tarefa;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
 
+@SpecEntity(Tarefa.class)
 public class TarefaFilterRequestTO implements Serializable {
 
     private static final long serialVersionUID = 5002772490664267241L;

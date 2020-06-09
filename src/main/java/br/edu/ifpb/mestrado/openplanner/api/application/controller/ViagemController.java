@@ -25,7 +25,7 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Tipo;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Viagem;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.ViagemService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecFactory;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.EnumOptionTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.viagem.ViagemFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.viagem.ViagemReducedResponseTO;
@@ -48,7 +48,7 @@ public class ViagemController {
 
     @GetMapping
     public ResponseEntity<Page<ViagemReducedResponseTO>> findAll(ViagemFilterRequestTO viagemFilterRequestTO, Pageable pageable) {
-        Specification<Viagem> specification = new SpecFactory<Viagem>().create(viagemFilterRequestTO, Viagem.class);
+        Specification<Viagem> specification = new SpecBuilder<Viagem>().add(viagemFilterRequestTO).build();
         Page<Viagem> viagensPage = viagemService.findAll(specification, pageable);
         Page<ViagemReducedResponseTO> responseTOPage = modelMapperFacade.map(viagensPage, ViagemReducedResponseTO.class);
 

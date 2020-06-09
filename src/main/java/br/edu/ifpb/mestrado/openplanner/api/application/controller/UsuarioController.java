@@ -18,7 +18,7 @@ import br.edu.ifpb.mestrado.openplanner.api.application.factory.UsuarioLinkFacto
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecFactory;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioReducedResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioRequestTO;
@@ -40,7 +40,7 @@ public class UsuarioController {
     @PreAuthorize("hasAnyAuthority('ROOT', 'ADMIN') and #oauth2.hasScope('read')")
     @GetMapping
     public ResponseEntity<Page<UsuarioReducedResponseTO>> findAll(UsuarioFilterRequestTO filterRequestTO, Pageable pageable) {
-        Specification<Usuario> specification = new SpecFactory<Usuario>().create(filterRequestTO, Usuario.class);
+        Specification<Usuario> specification = new SpecBuilder<Usuario>().add(filterRequestTO).build();
         Page<Usuario> page = usuarioService.findAll(specification, pageable);
         Page<UsuarioReducedResponseTO> responseTOPage = modelMapperFacade.map(page, UsuarioReducedResponseTO.class);
 
