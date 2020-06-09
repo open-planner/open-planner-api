@@ -239,12 +239,14 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void testAtivacao() {
-        Usuario usuario = usuarioService.activate(UsuarioTestUtils.MOCK_TOKEN_PREFIX + "jose.souza@email.com");
+        String email = "jose.souza@email.com";
+        usuarioService.activate(UsuarioTestUtils.MOCK_TOKEN_PREFIX + email);
+        Usuario usuario = usuarioService.findByEmail(email);
 
         assertThat(usuario.getId()).isNotNull();
         assertThat(usuario.getNome()).isEqualTo("José de Souza");
         assertThat(usuario.getDataNascimento()).isEqualTo(LocalDate.now().minusYears(20));
-        assertThat(usuario.getEmail()).isEqualTo("jose.souza@email.com");
+        assertThat(usuario.getEmail()).isEqualTo(email);
         assertThat(usuario.getPendente()).isFalse();
         assertThat(usuario.getBloqueado()).isFalse();
         assertThat(usuario.getSenha().getValor()).isNotNull();

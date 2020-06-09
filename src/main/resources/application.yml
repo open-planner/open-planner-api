@@ -49,6 +49,9 @@ open-planner-api:
     base-package: br.edu.ifpb.mestrado.openplanner.api.application
   web-app:
     base-url: ${WEB_APP_BASE_URL:http://localhost:4200}
+    mail-activation-path: ${WEB_APP_MAIL_ACTIVATION_PATH:/#/mail-activation/{token}}
+    update-mail-path: ${WEB_APP_UPDATE_MAIL_PATH:/#/update-mail/{token}}
+    recovery-password-path: ${WEB_APP_RECOVERY_PASSWORD_PATH:/#/recovery-password/{token}}
   access-control-headers:
     allow-origin: ${ACCESS_CONTROL_ALLOW_ORIGIN:*}
     allow-credentials: ${ACCESS_CONTROL_ALLOW_CREDENTIALS:false}

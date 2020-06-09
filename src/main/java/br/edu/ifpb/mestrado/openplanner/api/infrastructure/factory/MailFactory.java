@@ -20,8 +20,11 @@ public class MailFactory {
     private final String TEMPLATE_REGISTRATION_USUARIO = "mail/usuario-registration";
     private final String SUBJECT_REGISTRATION_USUARIO = "Cadastro de Usuário";
 
-    private final String TEMPLATE_RECOVERY_USUARIO_LOGIN = "mail/usuario-recovery-login";
-    private final String SUBJECT_RECOVERY_USUARIO_LOGIN = "Recuperação de Login";
+    private final String TEMPLATE_UPDATE_USUARIO_EMAIL = "mail/usuario-update-email";
+    private final String SUBJECT_UPDATE_USUARIO_EMAIL = "Alteração de E-mail do Usuário";
+
+    private final String TEMPLATE_UPDATE_USUARIO_SENHA = "mail/usuario-update-senha";
+    private final String SUBJECT_UPDATE_USUARIO_SENHA = "Alteração de Senha do Usuário";
 
     private final String TEMPLATE_RECOVERY_USUARIO_SENHA = "mail/usuario-recovery-senha";
     private final String SUBJECT_RECOVERY_USUARIO_SENHA = "Recuperação de Senha";
@@ -39,15 +42,29 @@ public class MailFactory {
     }
 
     public MailRequestTO createRegistrationUsuario(Usuario usuario) {
-        return createTemplateUsuario(TEMPLATE_REGISTRATION_USUARIO, SUBJECT_REGISTRATION_USUARIO, usuario);
+        Map<String, Object> data = new HashMap<>();
+        data.put("webAppMailActivationPath", buildTokenPath(webAppProperties.getMailActivationPath(), usuario.getAtivacaoToken()));
+
+        return createTemplateUsuario(TEMPLATE_REGISTRATION_USUARIO, SUBJECT_REGISTRATION_USUARIO, usuario, data);
     }
 
-    public MailRequestTO createRecoveryUsuarioLogin(Usuario usuario) {
-        return createTemplateUsuario(TEMPLATE_RECOVERY_USUARIO_LOGIN, SUBJECT_RECOVERY_USUARIO_LOGIN, usuario);
+    public MailRequestTO createUpdateEmailUsuario(Usuario usuario) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("webAppUpdateMailPath", buildTokenPath(webAppProperties.getUpdateMailPath(), usuario.getAlteracaoToken()));
+
+        return createTemplateUsuario(TEMPLATE_UPDATE_USUARIO_EMAIL, SUBJECT_UPDATE_USUARIO_EMAIL, usuario, data);
+    }
+
+    public MailRequestTO createUpdateSenhaUsuario(Usuario usuario) {
+        return createTemplateUsuario(TEMPLATE_UPDATE_USUARIO_SENHA, SUBJECT_UPDATE_USUARIO_SENHA, usuario);
     }
 
     public MailRequestTO createRecoveryUsuarioSenha(Usuario usuario) {
-        return createTemplateUsuario(TEMPLATE_RECOVERY_USUARIO_SENHA, SUBJECT_RECOVERY_USUARIO_SENHA, usuario);
+        Map<String, Object> data = new HashMap<>();
+        data.put("webAppRecoveryPasswordPath",
+                buildTokenPath(webAppProperties.getRecoveryPasswordPath(), usuario.getSenha().getResetToken()));
+
+        return createTemplateUsuario(TEMPLATE_RECOVERY_USUARIO_SENHA, SUBJECT_RECOVERY_USUARIO_SENHA, usuario, data);
     }
 
     public MailRequestTO createNotificacoes(List<Notificacao> notificacoes) {
@@ -59,11 +76,14 @@ public class MailFactory {
         return new MailRequestTO(usuario.getEmail(), SUBJECT_NOTIFICACAO, createText(TEMPLATE_NOTIFICACAO, data));
     }
 
-    private MailRequestTO createTemplateUsuario(String template, String subject, Usuario usuario) {
-        Map<String, Object> data = new HashMap<>();
+    private MailRequestTO createTemplateUsuario(String template, String subject, Usuario usuario, Map<String, Object> data) {
         data.put("usuario", usuario);
 
         return new MailRequestTO(usuario.getEmail(), subject, createText(template, data));
+    }
+
+    private MailRequestTO createTemplateUsuario(String template, String subject, Usuario usuario) {
+        return createTemplateUsuario(template, subject, usuario, new HashMap<>());
     }
 
     private String createText(String template, Map<String, Object> data) {
@@ -72,6 +92,10 @@ public class MailFactory {
         data.entrySet().forEach(d -> context.setVariable(d.getKey(), d.getValue()));
 
         return templateEngine.process(template, context);
+    }
+
+    private String buildTokenPath(String path, String token) {
+        return path.replace("{token}", token);
     }
 
 }

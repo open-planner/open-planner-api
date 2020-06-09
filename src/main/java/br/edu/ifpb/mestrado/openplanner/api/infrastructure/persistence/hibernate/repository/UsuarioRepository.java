@@ -11,6 +11,8 @@ public interface UsuarioRepository extends BaseRepository<Usuario> {
 
     Optional<Usuario> findByAtivacaoToken(String token);
 
+    Optional<Usuario> findByAlteracaoToken(String token);
+
     Optional<Usuario> findBySenhaResetToken(String resetToken);
 
     List<Usuario> findByExcludedAndPendenteAndBloqueado(Boolean excluded, Boolean pendente, Boolean bloqueado);

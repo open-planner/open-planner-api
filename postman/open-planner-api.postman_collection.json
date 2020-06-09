@@ -54,13 +54,13 @@
 							"urlencoded": [
 								{
 									"key": "username",
-									"value": "admin@email.com",
+									"value": "fagnersilvalima@hotmail.com",
 									"description": "admin@email.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "Admin@123",
+									"value": "Fagner@123",
 									"description": "Admin@123",
 									"type": "text"
 								},
@@ -230,7 +230,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"token\": \"4fe4f807-ea21-4427-acb2-290710c25b36\"\n}"
+									"raw": "{\n  \"token\": \"967f5b7d-d0d3-4cd4-902d-dba1e84202c0\"\n}"
 								},
 								"url": {
 									"raw": "{{base_url}}/public/usuarios/ativacao",
@@ -241,6 +241,37 @@
 										"public",
 										"usuarios",
 										"ativacao"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/public/usuarios/atualizacao/email",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"token\": \"c5cae7f8-a4c3-4199-b0cf-653a58f04bbc\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/public/usuarios/atualizacao/email",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"public",
+										"usuarios",
+										"atualizacao",
+										"email"
 									]
 								}
 							},
@@ -395,7 +426,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"nome\": \"Fagner Lima\",\n\t\"dataNascimento\": \"1991-10-15\",\n\t\"email\": \"fagnerlima91@gmail.com\"\n}"
+							"raw": "{\n\t\"nome\": \"Fagner Lima\",\n\t\"dataNascimento\": \"1991-10-15\",\n\t\"email\": \"fagnersilvalima@hotmail.com\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/me",
@@ -423,7 +454,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"senhaAtual\": \"Admin@123\",\n\t\"senhaNova\": \"Fagner@123\"\n}"
+							"raw": "{\n\t\"senhaAtual\": \"Fagner@1234\",\n\t\"senhaNova\": \"Fagner@123\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/me/senha",
@@ -1149,7 +1180,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/planos-ferias",
+							"raw": "{{base_url}}/planos-ferias?sort=periodo.dataInicio,asc",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1158,9 +1189,8 @@
 							],
 							"query": [
 								{
-									"key": "data",
-									"value": "2020-09-12",
-									"disabled": true
+									"key": "sort",
+									"value": "periodo.dataInicio,asc"
 								}
 							]
 						}
@@ -1467,13 +1497,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/projetos/3",
+							"raw": "{{base_url}}/projetos/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"projetos",
-								"3"
+								"1"
 							]
 						}
 					},

@@ -62,6 +62,13 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 
     @Transactional(readOnly = true)
     @Override
+    public Usuario findByAlteracaoToken(String token) {
+        return usuarioRepository.findByAlteracaoToken(token)
+                .orElseThrow(() -> new InformationNotFoundException());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public Usuario findBySenhaResetToken(String resetToken) {
         return usuarioRepository.findBySenhaResetToken(resetToken).orElseThrow(() -> new InvalidTokenException());
     }
@@ -96,32 +103,56 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 
     @Transactional
     @Override
-    public Usuario activate(String token) {
+    public void activate(String token) {
         Usuario usuario = findByAtivacaoToken(token);
         usuario.setAtivacaoToken(null);
         usuario.setPendente(false);
 
-        return super.save(usuario);
+        super.save(usuario);
+    }
+
+    @Transactional
+    @Override
+    public void confirmUpdateEmail(String token) {
+        Usuario usuario = findByAlteracaoToken(token);
+        usuario.setEmail(usuario.getEmailAlterado());
+        usuario.setEmailAlterado(null);
+        usuario.setAlteracaoToken(null);
+        usuario.setPendente(true);
+        usuario.generateAtivacaoToken();
+
+        Usuario usuarioUpdated = super.save(usuario);
+
+        sendMailRegistration(usuarioUpdated);
     }
 
     @Transactional
     @Override
     public Usuario update(Long id, Usuario usuario) {
-        Boolean resendMailPendente = false;
+        Boolean resendMailRegistration = false;
         Usuario usuarioSaved = findById(id);
 
         checkUpdate(id, usuario, usuarioSaved);
 
-        if (!usuario.getEmail().equalsIgnoreCase(usuarioSaved.getEmail()) && usuarioSaved.getPendente()) {
-            resendMailPendente = true;
+        if (!usuario.getEmail().equalsIgnoreCase(usuarioSaved.getEmail())) {
+            if (!usuarioSaved.getPendente()) {
+                usuario.setEmailAlterado(usuario.getEmail());
+                usuario.setEmail(usuarioSaved.getEmail());
+                usuario.generateAlteracaoToken();
+            } else {
+                usuario.generateAtivacaoToken();
+                resendMailRegistration = true;
+            }
         }
 
         usuario.setSenha(usuarioSaved.getSenha());
 
         Usuario usuarioUpdated = super.update(id, usuario);
 
-        if (resendMailPendente) {
+        if (resendMailRegistration) {
             sendMailRegistration(usuarioUpdated);
+        } else if (usuarioUpdated.getEmailAlterado() != null) {
+            sendMailUpdateEmail(usuarioUpdated);
         }
 
         return usuarioUpdated;
@@ -144,7 +175,11 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
         usuario.setPendente(false);
         usuario.setBloqueado(false);
 
-        return super.update(usuario.getId(), usuario);
+        Usuario usuarioUpdated = super.update(usuario.getId(), usuario);
+
+        sendMailUpdateSenha(usuarioUpdated);
+
+        return usuarioUpdated;
     }
 
     @Transactional
@@ -158,7 +193,11 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 
         usuario.updateSenha(BcryptUtils.encode(senhaNova));
 
-        return super.update(usuario.getId(), usuario);
+        Usuario usuarioUpdated = super.update(usuario.getId(), usuario);
+
+        sendMailUpdateSenha(usuarioUpdated);
+
+        return usuarioUpdated;
     }
 
     @Transactional
@@ -288,6 +327,14 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario> implements Usua
 
     private void sendMailRegistration(Usuario usuario) {
         mailService.send(mailFactory.createRegistrationUsuario(usuario));
+    }
+
+    private void sendMailUpdateEmail(Usuario usuario) {
+        mailService.send(mailFactory.createUpdateEmailUsuario(usuario));
+    }
+
+    private void sendMailUpdateSenha(Usuario usuario) {
+        mailService.send(mailFactory.createUpdateSenhaUsuario(usuario));
     }
 
     private void sendMailRecoverySenha(Usuario usuario) {

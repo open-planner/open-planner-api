@@ -10,8 +10,7 @@
   <div th:replace="fragments/mail/general.xhtml :: header"></div>
 
   <main>
-    <p>Uma conta cadastrada com este endereço de e-mail encontra-se pendente de ativação.
-      Para ativá-la, siga os passos clicando no link abaixo.</p>
+    <p>Sua conta teve seu endereço de e-mail alterado. Para confirmar a alteração, siga os passos clicando no link abaixo.</p>
 
     <ul style="list-style: none; padding-left: 0;">
       <li>
@@ -20,14 +19,14 @@
       </li>
       <li>
         <b>E-mail</b>:
-        <span th:text="${usuario.email}"></span>
+        <span th:text="${usuario.emailAlterado}"></span>
       </li>
       <li>
-        <b>Data de criação</b>:
-        <span th:text="${#temporals.format(usuario.createdAt, 'dd/MM/yyyy')}"></span>
+        <b>Data de alteração</b>:
+        <span th:text="${#temporals.format(usuario.updatedAt, 'dd/MM/yyyy')}"></span>
       </li>
       <li>
-        <a th:href="@{${webAppBaseUrl} + ${webAppMailActivationPath}}">Clique aqui para confirmar o cadastro</a>
+        <a th:href="@{${webAppBaseUrl} + ${webAppUpdateMailPath}}">Clique aqui para confirmar a alteração do e-mail</a>
       </li>
     </ul>
   </main>
