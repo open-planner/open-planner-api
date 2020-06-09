@@ -4,14 +4,14 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotBlank;
 
-public class UsuarioPublicAtivacaoRequestTO implements Serializable {
+public class UsuarioPublicTokenRequestTO implements Serializable {
 
     private static final long serialVersionUID = 7738381374517418728L;
 
     @NotBlank
     private String token;
 
-    public UsuarioPublicAtivacaoRequestTO() {
+    public UsuarioPublicTokenRequestTO() {
         super();
     }
 
@@ -25,7 +25,7 @@ public class UsuarioPublicAtivacaoRequestTO implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("UsuarioPublicAtivacaoRequestTO [token=%s]", token);
+        return String.format("UsuarioPublicTokenRequestTO [token=%s]", token);
     }
 
 }

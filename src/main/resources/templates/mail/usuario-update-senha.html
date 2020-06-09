@@ -10,9 +10,9 @@
   <div th:replace="fragments/mail/general.xhtml :: header"></div>
 
   <main>
-    <p>Você solicitou recuperação de login.</p>
+    <p>Sua senha foi alterada. Se não foi você que realizou esta alteração, clique no link "Esqueci minha senha" na página de login.</p>
 
-    <p>Seu login é: <b th:text="${usuario.email}">email</b></p>
+    <p><a th:href="@{${webAppBaseUrl}}">Clique aqui para solicitar uma nova senha</a></p>
   </main>
 
   <div th:replace="fragments/mail/general.xhtml :: footer"></div>

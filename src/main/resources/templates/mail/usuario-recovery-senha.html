@@ -12,7 +12,7 @@
   <main>
     <p>Você solicitou recuperação de senha. Para cadastrar uma nova senha, siga os passos clicando no link abaixo.</p>
 
-    <p><a th:href="@{${webAppBaseUrl} + '/usuario/atualizacao-senha?token=' + ${usuario.senha.resetToken}}">Clique aqui para cadastrar uma nova senha</a></p>
+    <p><a th:href="@{${webAppBaseUrl} + ${webAppRecoveryPasswordPath}}">Clique aqui para cadastrar uma nova senha</a></p>
   </main>
 
   <div th:replace="fragments/mail/general.xhtml :: footer"></div>
