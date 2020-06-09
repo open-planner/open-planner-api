@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.Notificacao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.tag.Tag;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.tarefa.Status;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.tarefa.Tarefa;
@@ -32,7 +33,11 @@ public class TarefaFilterRequestTO implements Serializable {
 
     @SpecJoin(properties = { "tags" }, entity = Tag.class)
     @SpecField(value = "id")
-    private Long tag;
+    private Long tagId;
+
+    @SpecJoin(properties = { "notificacoes" }, entity = Notificacao.class)
+    @SpecField(value = "id")
+    private Long notificacaoId;
 
     public Long getId() {
         return id;
@@ -66,12 +71,19 @@ public class TarefaFilterRequestTO implements Serializable {
         this.status = status;
     }
 
-    public Long getTag() {
-        return tag;
+    public Long getTagId() {
+        return tagId;
     }
 
-    public void setTag(Long tag) {
-        this.tag = tag;
+    public void setTagId(Long tagId) {
+        this.tagId = tagId;
     }
 
+    public Long getNotificacaoId() {
+        return notificacaoId;
+    }
+
+    public void setNotificacaoId(Long notificacaoId) {
+        this.notificacaoId = notificacaoId;
+    }
 }
