@@ -5,18 +5,18 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import br.edu.ifpb.mestrado.openplanner.api.domain.shared.Periodo;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBetween;
 
-@SpecEntity(Periodo.class)
 public class PeriodoFilterRequestTO implements Serializable {
 
     private static final long serialVersionUID = 6907306552014617874L;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @SpecBetween(left = "periodo.dataInicio", right = "periodo.dataFim")
     private LocalDate dataInicio;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @SpecBetween(left = "periodo.dataInicio", right = "periodo.dataFim")
     private LocalDate dataFim;
 
     public LocalDate getDataInicio() {

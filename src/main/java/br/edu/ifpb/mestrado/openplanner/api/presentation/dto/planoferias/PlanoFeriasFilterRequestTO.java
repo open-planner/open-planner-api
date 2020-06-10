@@ -8,9 +8,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.planoferias.PlanoFerias;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.planoferias.Status;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operator;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBetween;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecGroup;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.PeriodoFilterRequestTO;
 
 @SpecEntity(PlanoFerias.class)
 public class PlanoFeriasFilterRequestTO implements Serializable {
@@ -23,9 +26,8 @@ public class PlanoFeriasFilterRequestTO implements Serializable {
     @SpecBetween(left = "periodo.dataInicio", right = "periodo.dataFim")
     private LocalDate data;
 
-    // TODO checar possibilidade
-//  @SpecGroup(operator = Operator.OR)
-//  private PeriodoFilterRequestTO periodo;
+    @SpecGroup(operator = Operator.OR)
+    private PeriodoFilterRequestTO periodo;
 
     @SpecField(operation = Operation.LIKE_IGNORE_CASE_UNACCENT)
     private String destino;
@@ -48,13 +50,13 @@ public class PlanoFeriasFilterRequestTO implements Serializable {
         this.data = data;
     }
 
-//  public PeriodoFilterRequestTO getPeriodo() {
-//      return periodo;
-//  }
-//
-//  public void setPeriodo(PeriodoFilterRequestTO periodo) {
-//      this.periodo = periodo;
-//  }
+    public PeriodoFilterRequestTO getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(PeriodoFilterRequestTO periodo) {
+        this.periodo = periodo;
+    }
 
     public String getDestino() {
         return destino;
