@@ -19,12 +19,7 @@ public class SpecUtils {
             return hasProperty(specBetween.left(), entityFields) && hasProperty(specBetween.right(), entityFields);
         }
 
-        SpecField specField = filterField.getAnnotation(SpecField.class);
-        String value = specField != null && !StringUtils.isBlank(specField.value())
-                ? specField.value()
-                : filterField.getName();
-
-        return hasProperty(value, entityFields);
+        return hasProperty(getPropertyName(filterField), entityFields);
     }
 
     public static Boolean hasProperty(String value, List<Field> entityFields) {

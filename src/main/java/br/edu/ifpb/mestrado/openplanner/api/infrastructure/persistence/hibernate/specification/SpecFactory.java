@@ -222,19 +222,20 @@ public class SpecFactory<T> {
         return new SpecBuilder<T>().add(x).add(y).build();
     }
 
-    public <U> Specification<T> join(Field field, Object value, Class<U> joinClass, String[] joinProperties) {
+    public Specification<T> join(Field field, Object value) {
         return (root, query, criteriaBuilder) -> {
-            Join<T, Object> joinRoot = root.join(joinProperties[0]);
+            String[] deepProperties = SpecUtils.getDeepProperties(field);
+            Join<T, Object> joinRoot = root.join(deepProperties[0]);
 
-            if (joinProperties.length > 1) {
+            if (deepProperties.length > 2) {
                 Integer index = 1;
 
                 do {
-                    joinRoot = joinRoot.join(joinProperties[index]);
-                } while (index < joinProperties.length - 1);
+                    joinRoot = joinRoot.join(deepProperties[index]);
+                } while (index < deepProperties.length - 2);
             }
 
-            return create(joinRoot.get(SpecUtils.getPropertyName(field)), field, value)
+            return create(joinRoot.get(deepProperties[deepProperties.length - 1]), field, value)
                     .toPredicate(root, query, criteriaBuilder);
         };
     }

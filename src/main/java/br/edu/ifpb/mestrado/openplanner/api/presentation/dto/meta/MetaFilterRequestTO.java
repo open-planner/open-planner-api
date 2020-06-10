@@ -8,8 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.meta.Meta;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.meta.Status;
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.Notificacao;
-import br.edu.ifpb.mestrado.openplanner.api.domain.model.tag.Tag;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
@@ -30,12 +28,12 @@ public class MetaFilterRequestTO implements Serializable {
 
     private Status status;
 
-    @SpecJoin(properties = { "tags" }, entity = Tag.class)
-    @SpecField(value = "id")
+    @SpecJoin
+    @SpecField("tags.id")
     private Long tagId;
 
-    @SpecJoin(properties = { "notificacoes" }, entity = Notificacao.class)
-    @SpecField(value = "id")
+    @SpecJoin
+    @SpecField("notificacoes.id")
     private Long notificacaoId;
 
     public Long getId() {
