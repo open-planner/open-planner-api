@@ -16,6 +16,8 @@ public class NotificacaoFilterRequestTO implements Serializable {
 
     private static final long serialVersionUID = 4848916736116970863L;
 
+    private Long id;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @SpecField(operation = Operation.LESS_THAN_OR_EQUAL)
     private LocalDateTime dataHora;
@@ -25,6 +27,14 @@ public class NotificacaoFilterRequestTO implements Serializable {
     private Boolean lida;
 
     private Boolean email;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public LocalDateTime getDataHora() {
         return dataHora;

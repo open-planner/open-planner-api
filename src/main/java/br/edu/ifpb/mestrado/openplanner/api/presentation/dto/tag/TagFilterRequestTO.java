@@ -33,9 +33,4 @@ public class TagFilterRequestTO implements Serializable {
         this.descricao = descricao;
     }
 
-    @Override
-    public String toString() {
-        return String.format("TagFilterRequestTO [id=%s, descricao=%s]", id, descricao);
-    }
-
 }

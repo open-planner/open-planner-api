@@ -10,6 +10,7 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.evento.Evento;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecJoin;
 
 @SpecEntity(Evento.class)
 public class EventoFilterRequestTO implements Serializable {
@@ -24,6 +25,10 @@ public class EventoFilterRequestTO implements Serializable {
 
     @SpecField(operation = Operation.LIKE_IGNORE_CASE_UNACCENT)
     private String descricao;
+
+    @SpecJoin
+    @SpecField("notificacoes.id")
+    private Long notificacaoId;
 
     public Long getId() {
         return id;
@@ -47,6 +52,14 @@ public class EventoFilterRequestTO implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Long getNotificacaoId() {
+        return notificacaoId;
+    }
+
+    public void setNotificacaoId(Long notificacaoId) {
+        this.notificacaoId = notificacaoId;
     }
 
 }
