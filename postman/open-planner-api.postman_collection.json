@@ -54,13 +54,13 @@
 							"urlencoded": [
 								{
 									"key": "username",
-									"value": "fagnersilvalima@hotmail.com",
+									"value": "admin@email.com",
 									"description": "admin@email.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "Fagner@123",
+									"value": "Admin@123",
 									"description": "Admin@123",
 									"type": "text"
 								},
@@ -69,7 +69,10 @@
 									"value": "password",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{base_url}}/oauth/token",
@@ -841,7 +844,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/notificacoes?sort=dataHora,desc&dataHora=2020-06-02T23:59:59",
+							"raw": "{{base_url}}/notificacoes?page=0&size=10&sort=dataHora,desc",
 							"host": [
 								"{{base_url}}"
 							],
@@ -850,12 +853,42 @@
 							],
 							"query": [
 								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
 									"key": "sort",
 									"value": "dataHora,desc"
 								},
 								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								},
+								{
 									"key": "dataHora",
-									"value": "2020-06-02T23:59:59"
+									"value": "2020-06-02T23:59:59",
+									"disabled": true
+								},
+								{
+									"key": "tipo",
+									"value": "EVENTO",
+									"description": "EVENTO,PROJETO,META,TAREFA",
+									"disabled": true
+								},
+								{
+									"key": "lida",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "true",
+									"disabled": true
 								}
 							]
 						}
@@ -893,7 +926,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/tags?sort=descricao,asc",
+							"raw": "{{base_url}}/tags?page=0&size=10&sort=descricao,asc",
 							"host": [
 								"{{base_url}}"
 							],
@@ -902,8 +935,26 @@
 							],
 							"query": [
 								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
 									"key": "sort",
 									"value": "descricao,asc"
+								},
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "descricao",
+									"value": "estudos",
+									"disabled": true
 								}
 							]
 						}
@@ -1011,7 +1062,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/viagens?sort=periodo.dataInicio,asc",
+							"raw": "{{base_url}}/viagens?page=0&size=10&sort=data,asc",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1020,22 +1071,42 @@
 							],
 							"query": [
 								{
-									"key": "sort",
-									"value": "periodo.dataInicio,asc"
+									"key": "page",
+									"value": "0"
 								},
 								{
-									"key": "destino",
-									"value": "rio",
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "data,asc"
+								},
+								{
+									"key": "id",
+									"value": "1",
 									"disabled": true
 								},
 								{
 									"key": "tipo",
 									"value": "PESSOAL",
+									"description": "PESSOAL,PROFISSIONAL",
 									"disabled": true
 								},
 								{
 									"key": "data",
-									"value": "2020-10-15",
+									"value": "2020-01-01",
+									"disabled": true
+								},
+								{
+									"key": "destino",
+									"value": "sao paulo",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "PLANEJADA",
+									"description": "PLANEJADA,CONCLUIDA,CANCELADA",
 									"disabled": true
 								}
 							]
@@ -1180,7 +1251,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/planos-ferias?sort=periodo.dataInicio,asc",
+							"raw": "{{base_url}}/planos-ferias?page=0&size=10&sort=data,asc",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1189,8 +1260,37 @@
 							],
 							"query": [
 								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
 									"key": "sort",
-									"value": "periodo.dataInicio,asc"
+									"value": "data,asc"
+								},
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "data",
+									"value": "2020-01-01",
+									"disabled": true
+								},
+								{
+									"key": "destino",
+									"value": "sao paulo",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "PLANEJADO",
+									"description": "PLANEJADO,EM_ANDAMENTO,CONCLUIDO,CANCELADO",
+									"disabled": true
 								}
 							]
 						}
@@ -1316,7 +1416,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/eventos?sort=dataHora,asc&data=2020-08-08&descricao=niver",
+							"raw": "{{base_url}}/eventos?page=0&size=10&sort=data,asc",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1325,16 +1425,36 @@
 							],
 							"query": [
 								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
 									"key": "sort",
-									"value": "dataHora,asc"
+									"value": "data,asc"
+								},
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "data",
-									"value": "2020-08-08"
+									"value": "2020-01-01",
+									"disabled": true
 								},
 								{
 									"key": "descricao",
-									"value": "niver"
+									"value": "aniversario",
+									"disabled": true
+								},
+								{
+									"key": "notificacaoId",
+									"value": "1",
+									"disabled": true
 								}
 							]
 						}
@@ -1482,8 +1602,40 @@
 									"value": "periodo.dataInicio,asc"
 								},
 								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								},
+								{
 									"key": "data",
 									"value": "2020-04-09",
+									"disabled": true
+								},
+								{
+									"key": "descricao",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "prioridade",
+									"value": "MEDIA",
+									"description": "BAIXA,MEDIA,ALTA,URGENTE",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "PLANEJADO",
+									"description": "PLANEJADO,EM_ANDAMENTO,CANCELADO,CONCLUIDO,NAO_CONCLUIDO",
+									"disabled": true
+								},
+								{
+									"key": "tagId",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "notificacaoId",
+									"value": "1",
 									"disabled": true
 								}
 							]
@@ -1628,7 +1780,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/metas?sort=data,asc",
+							"raw": "{{base_url}}/metas?page=0&size=10&sort=data,asc",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1637,8 +1789,47 @@
 							],
 							"query": [
 								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
 									"key": "sort",
 									"value": "data,asc"
+								},
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "data",
+									"value": "2020-08-08",
+									"disabled": true
+								},
+								{
+									"key": "descricao",
+									"value": "corrida",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "PLANEJADA",
+									"description": "PLANEJADA,EM_ANDAMENTO,ATINGIDA,NAO_ATINGIDA,CANCELADA",
+									"disabled": true
+								},
+								{
+									"key": "tagId",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "notificacaoId",
+									"value": "6",
+									"disabled": true
 								}
 							]
 						}
@@ -1670,7 +1861,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"data\": \"2020-12-31\",\n\t\"descricao\": \"Reserva de Emergência\",\n\t\"status\": \"EM_ANDAMENTO\",\n\t\"anotacoes\": \"Investimentos em Renda Fixa\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-12-01T00:00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t],\n\t\"tags\": [1, 2]\n}",
+							"raw": "{\n\t\"data\": \"2020-12-31\",\n\t\"descricao\": \"Reserva de Emergência\",\n\t\"status\": \"EM_ANDAMENTO\",\n\t\"anotacoes\": \"Investimentos em Renda Fixa\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-12-01T00:00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t],\n\t\"tags\": [2]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1764,7 +1955,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/tarefas?sort=dataHora,asc",
+							"raw": "{{base_url}}/tarefas?page=0&size=10&sort=dataHora,asc",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1773,8 +1964,21 @@
 							],
 							"query": [
 								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
 									"key": "sort",
 									"value": "dataHora,asc"
+								},
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "data",
@@ -1789,6 +1993,17 @@
 								{
 									"key": "status",
 									"value": "PLANEJADA",
+									"description": "PLANEJADA,EM_ANDAMENTO,CONCLUIDA,NAO_CONCLUIDA,CANCELADA",
+									"disabled": true
+								},
+								{
+									"key": "notificacaoId",
+									"value": "6",
+									"disabled": true
+								},
+								{
+									"key": "tagId",
+									"value": "1",
 									"disabled": true
 								}
 							]
@@ -1821,7 +2036,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"dataHora\": \"2020-08-08T00:00:00\",\n\t\"descricao\": \"Corrida na praça\",\n\t\"status\": \"PLANEJADA\",\n\t\"anotacoes\": \"Treinamento de resistência\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-06-02T13:25:00\",\n\t\t\t\"email\": true\n\t\t},\n\t\t{\n\t\t\t\"dataHora\": \"2020-08-08T00:00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t],\n\t\"recorrencia\": {\n\t\t\"unidade\": \"WEEK\",\n\t\t\"dataLimite\": \"2020-09-08\"\n\t},\n\t\"tags\": [1, 2]\n}",
+							"raw": "{\n\t\"dataHora\": \"2020-08-08T00:00:00\",\n\t\"descricao\": \"Corrida na praça\",\n\t\"status\": \"PLANEJADA\",\n\t\"anotacoes\": \"Treinamento de resistência\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-06-02T13:25:00\",\n\t\t\t\"email\": true\n\t\t},\n\t\t{\n\t\t\t\"dataHora\": \"2020-08-08T00:00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t],\n\t\"recorrencia\": {\n\t\t\"unidade\": \"WEEK\",\n\t\t\"dataLimite\": \"2020-09-08\"\n\t},\n\t\"tags\": [2]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
