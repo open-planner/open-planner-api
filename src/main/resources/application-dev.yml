@@ -1,6 +1,9 @@
-spring:
-  jpa:
-    properties:
+logging:
+  level:
+    org:
       hibernate:
-        show_sql: true
-        format_sql: false
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
