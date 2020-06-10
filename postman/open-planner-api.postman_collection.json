@@ -1062,7 +1062,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/viagens?page=0&size=10&sort=data,asc",
+							"raw": "{{base_url}}/viagens?page=0&size=10&sort=periodo.dataInicio,asc",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1080,7 +1080,7 @@
 								},
 								{
 									"key": "sort",
-									"value": "data,asc"
+									"value": "periodo.dataInicio,asc"
 								},
 								{
 									"key": "id",
@@ -1096,6 +1096,16 @@
 								{
 									"key": "data",
 									"value": "2020-01-01",
+									"disabled": true
+								},
+								{
+									"key": "periodo.dataInicio",
+									"value": "2020-11-10",
+									"disabled": true
+								},
+								{
+									"key": "periodo.dataFim",
+									"value": "2020-11-15",
 									"disabled": true
 								},
 								{
@@ -1251,7 +1261,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/planos-ferias?page=0&size=10&sort=data,asc",
+							"raw": "{{base_url}}/planos-ferias?page=0&size=10&sort=periodo.dataInicio,asc",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1269,7 +1279,7 @@
 								},
 								{
 									"key": "sort",
-									"value": "data,asc"
+									"value": "periodo.dataInicio,asc"
 								},
 								{
 									"key": "id",
@@ -1279,6 +1289,16 @@
 								{
 									"key": "data",
 									"value": "2020-01-01",
+									"disabled": true
+								},
+								{
+									"key": "periodo.dataInicio",
+									"value": "2020-08-01",
+									"disabled": true
+								},
+								{
+									"key": "periodo.dataFim",
+									"value": "2020-08-30",
 									"disabled": true
 								},
 								{
@@ -1612,6 +1632,16 @@
 									"disabled": true
 								},
 								{
+									"key": "periodo.dataInicio",
+									"value": "2020-05-01",
+									"disabled": true
+								},
+								{
+									"key": "periodo.dataFim",
+									"value": "2020-05-09",
+									"disabled": true
+								},
+								{
 									"key": "descricao",
 									"value": "1",
 									"disabled": true
@@ -1668,7 +1698,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"periodo\": {\n\t\t\"dataInicio\": \"2020-04-09T00:00:00\",\n\t\t\"dataFim\": \"2020-06-09T00:00:00\"\n\t},\n\t\"descricao\": \"Projeto Mestrado IFPB\",\n\t\"prioridade\": \"ALTA\",\n\t\"status\": \"PLANEJADO\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-05-30T00:00:00\",\n\t\t\t\"email\": true\n\t\t},\n\t\t{\n\t\t\t\"dataHora\": \"2020-06-08T00:00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t],\n\t\"tags\": [1, 2]\n}",
+							"raw": "{\n\t\"periodo\": {\n\t\t\"dataInicio\": \"2020-05-09T00:00:00\",\n\t\t\"dataFim\": \"2020-07-09T00:00:00\"\n\t},\n\t\"descricao\": \"Projeto Mestrado IFPB\",\n\t\"prioridade\": \"ALTA\",\n\t\"status\": \"PLANEJADO\",\n\t\"notificacoes\": [\n\t\t{\n\t\t\t\"dataHora\": \"2020-05-30T00:00:00\",\n\t\t\t\"email\": true\n\t\t},\n\t\t{\n\t\t\t\"dataHora\": \"2020-06-08T00:00:00\",\n\t\t\t\"email\": true\n\t\t}\n\t],\n\t\"tags\": [1, 2]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
