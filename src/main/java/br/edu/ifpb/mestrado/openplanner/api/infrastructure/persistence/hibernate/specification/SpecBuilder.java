@@ -30,22 +30,11 @@ public class SpecBuilder<T> {
      * @param filter object annotated with {@link SpecEntity}
      * @return SpecBuilder instance
      */
-    public SpecBuilder<T> add(Object filter) {
-        return add(filter, Operator.AND);
-    }
-
-    /**
-     * Accept an object annotated with {@link SpecEntity}.
-     *
-     * @param filter object annotated with {@link SpecEntity}
-     * @param operator operator (AND/OR)
-     * @return SpecBuilder instance
-     */
     @SuppressWarnings("unchecked")
-    public SpecBuilder<T> add(Object filter, Operator operator) {
+    public SpecBuilder<T> add(Object filter) {
         Class<T> entityClass = (Class<T>) filter.getClass().getAnnotation(SpecEntity.class).value();
 
-        return add(filter, entityClass, operator);
+        return add(filter, entityClass);
     }
 
     public Specification<T> build() {
@@ -71,7 +60,7 @@ public class SpecBuilder<T> {
         return result;
     }
 
-    private SpecBuilder<T> add(Object filter, Class<T> entityClass, Operator operator) {
+    private SpecBuilder<T> add(Object filter, Class<T> entityClass) {
         List<Field> filterFields = FieldUtils.getAllFields(filter.getClass());
         List<Field> entityFields = FieldUtils.getAllFields(entityClass);
 
@@ -89,8 +78,8 @@ public class SpecBuilder<T> {
 
                 if (specGroup != null) {
                     specs.add(new SpecBuilder<T>()
-                            .add(value, entityClass, specGroup.operator())
-                            .build(operator));
+                            .add(value, entityClass)
+                            .build(specGroup.operator()));
                     continue;
                 }
 
