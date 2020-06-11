@@ -3,7 +3,6 @@ package br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernat
 import java.lang.reflect.Field;
 import java.util.List;
 
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
@@ -76,7 +75,7 @@ public class SpecUtils {
         return getPropertyName(field).split("\\.");
     }
 
-    public static <T> Expression<?> getExpression(Root<T> root, String property) {
+    public static <T> Path<?> getPath(Root<T> root, String property) {
         if (!isDeepProperty(property)) {
             return root.get(property);
         }
@@ -89,6 +88,10 @@ public class SpecUtils {
         }
 
         return path;
+    }
+
+    public static <T> Path<?> getPath(Root<T> root, Field field) {
+        return getPath(root, getPropertyName(field));
     }
 
 }
