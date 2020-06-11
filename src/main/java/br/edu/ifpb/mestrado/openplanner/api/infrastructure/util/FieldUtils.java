@@ -2,6 +2,7 @@ package br.edu.ifpb.mestrado.openplanner.api.infrastructure.util;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -39,14 +40,14 @@ public class FieldUtils {
      * @param type classe alvo
      * @return todos os campos da classe {@code type}
      */
-    public static List<Field> getAllFields(Class<?> type, String ...ignoreProperties) {
+    public static List<Field> getAllFields(Class<?> type, String ...ignoredProperties) {
         List<Field> fields = getAllFields(type);
 
-        if (ignoreProperties == null || ignoreProperties.length == 0) {
+        if (ignoredProperties == null || ignoredProperties.length == 0) {
             return fields;
         }
 
-        List<String> ignorePropertiesList = List.of(ignoreProperties);
+        List<String> ignorePropertiesList = List.of(ignoredProperties);
 
         return fields.stream()
                 .filter(f -> !ignorePropertiesList.contains(f.getName()))
@@ -66,6 +67,21 @@ public class FieldUtils {
 
         return fields.stream().filter(field -> field.getName().equals(name)).findFirst()
                 .orElseThrow(() -> new NoSuchFieldException(name));
+    }
+
+    /**
+     * Retorna o campo anotado com {@code annotationClass} da classe {@code type}
+     *
+     * @param type classe alvo
+     * @param annotationClass annotation do campo
+     * @return o campo anotado com {@code annotationClass}
+     * @throws NoSuchFieldException
+     */
+    public static Field getField(Class<?> type, Class<? extends Annotation> annotationClass) throws NoSuchFieldException {
+        List<Field> fields = getAllFields(type);
+
+        return fields.stream().filter(field -> field.getAnnotation(annotationClass) != null).findFirst()
+                .orElseThrow(() -> new NoSuchFieldException(annotationClass.getName()));
     }
 
     public static Method findGetterMethod(String propertyName, Class<?> type) throws IntrospectionException {

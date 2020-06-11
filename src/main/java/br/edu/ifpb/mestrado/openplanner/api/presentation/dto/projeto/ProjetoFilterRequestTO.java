@@ -6,11 +6,17 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Prioridade;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Projeto;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.projeto.Status;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBetween;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecJoin;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecPeriod;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.PeriodoFilterRequestTO;
 
+@SpecEntity(Projeto.class)
 public class ProjetoFilterRequestTO implements Serializable {
 
     private static final long serialVersionUID = -792829285160148170L;
@@ -21,9 +27,8 @@ public class ProjetoFilterRequestTO implements Serializable {
     @SpecBetween(left = "periodo.dataInicio", right = "periodo.dataFim")
     private LocalDate data;
 
-    // TODO checar possibilidade
-//  @SpecGroup(operator = Operator.OR)
-//  private PeriodoFilterRequestTO periodo;
+    @SpecPeriod(start = "periodo.dataInicio", end = "periodo.dataFim")
+    private PeriodoFilterRequestTO periodo;
 
     @SpecField(operation = Operation.LIKE_IGNORE_CASE_UNACCENT)
     private String descricao;
@@ -31,6 +36,14 @@ public class ProjetoFilterRequestTO implements Serializable {
     private Prioridade prioridade;
 
     private Status status;
+
+    @SpecJoin
+    @SpecField(value = "tags.id")
+    private Long tagId;
+
+    @SpecJoin
+    @SpecField("notificacoes.id")
+    private Long notificacaoId;
 
     public Long getId() {
         return id;
@@ -48,13 +61,13 @@ public class ProjetoFilterRequestTO implements Serializable {
         this.data = data;
     }
 
-//  public PeriodoFilterRequestTO getPeriodo() {
-//      return periodo;
-//  }
-//
-//  public void setPeriodo(PeriodoFilterRequestTO periodo) {
-//      this.periodo = periodo;
-//  }
+    public PeriodoFilterRequestTO getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(PeriodoFilterRequestTO periodo) {
+        this.periodo = periodo;
+    }
 
     public String getDescricao() {
         return descricao;
@@ -78,6 +91,22 @@ public class ProjetoFilterRequestTO implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Long getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(Long tagId) {
+        this.tagId = tagId;
+    }
+
+    public Long getNotificacaoId() {
+        return notificacaoId;
+    }
+
+    public void setNotificacaoId(Long notificacaoId) {
+        this.notificacaoId = notificacaoId;
     }
 
 }

@@ -5,14 +5,19 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEndPeriod;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecStartPeriod;
+
 public class PeriodoFilterRequestTO implements Serializable {
 
     private static final long serialVersionUID = 6907306552014617874L;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @SpecStartPeriod
     private LocalDate dataInicio;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @SpecEndPeriod
     private LocalDate dataFim;
 
     public LocalDate getDataInicio() {

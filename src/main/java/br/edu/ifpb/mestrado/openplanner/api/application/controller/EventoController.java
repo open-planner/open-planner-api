@@ -24,7 +24,7 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.evento.Evento;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.EventoService;
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.RecorrenciaTimeUnit;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecificationFactory;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento.EventoFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento.EventoReducedResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento.EventoRequestTO;
@@ -47,7 +47,7 @@ public class EventoController {
 
     @GetMapping
     public ResponseEntity<Page<EventoReducedResponseTO>> findAll(EventoFilterRequestTO eventoFilterRequestTO, Pageable pageable) {
-        Specification<Evento> specification = new SpecificationFactory<Evento>().create(eventoFilterRequestTO, Evento.class);
+        Specification<Evento> specification = new SpecBuilder<Evento>().add(eventoFilterRequestTO).build();
         Page<Evento> page = eventoService.findAll(specification, pageable);
         Page<EventoReducedResponseTO> responseTOPage = modelMapperFacade.map(page, EventoReducedResponseTO.class);
 

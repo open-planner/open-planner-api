@@ -21,7 +21,7 @@ import br.edu.ifpb.mestrado.openplanner.api.application.facade.ResponseEntityFac
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.tag.Tag;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.TagService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecificationFactory;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.tag.TagFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.tag.TagRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.tag.TagResponseTO;
@@ -42,7 +42,7 @@ public class TagController {
 
     @GetMapping
     public ResponseEntity<Page<TagResponseTO>> findAll(TagFilterRequestTO tagFilterRequestTO, Pageable pageable) {
-        Specification<Tag> specification = new SpecificationFactory<Tag>().create(tagFilterRequestTO, Tag.class);
+        Specification<Tag> specification = new SpecBuilder<Tag>().add(tagFilterRequestTO).build();
         Page<Tag> page = tagService.findAll(specification, pageable);
         Page<TagResponseTO> responseTOPage = modelMapperFacade.map(page, TagResponseTO.class);
 

@@ -16,7 +16,7 @@ import br.edu.ifpb.mestrado.openplanner.api.application.facade.ResponseEntityFac
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.Notificacao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.NotificacaoService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecificationFactory;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.notificacao.NotificacaoFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.notificacao.NotificacaoReducedResponseTO;
 
@@ -37,8 +37,7 @@ public class NotificacaoController {
     @GetMapping
     public ResponseEntity<Page<NotificacaoReducedResponseTO>> findAll(NotificacaoFilterRequestTO notificacaoFilterRequestTO,
             Pageable pageable) {
-        Specification<Notificacao> specification = new SpecificationFactory<Notificacao>().create(notificacaoFilterRequestTO,
-                Notificacao.class);
+        Specification<Notificacao> specification = new SpecBuilder<Notificacao>().add(notificacaoFilterRequestTO).build();
         Page<Notificacao> page = notificacaoService.findAll(specification, pageable);
         Page<NotificacaoReducedResponseTO> responseTOPage = modelMapperFacade.map(page, NotificacaoReducedResponseTO.class);
 

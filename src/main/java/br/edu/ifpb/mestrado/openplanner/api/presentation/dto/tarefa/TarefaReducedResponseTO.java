@@ -2,8 +2,11 @@ package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.tarefa;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.tag.TagResponseTO;
 
 public class TarefaReducedResponseTO implements Serializable {
 
@@ -17,6 +20,8 @@ public class TarefaReducedResponseTO implements Serializable {
 
     @JsonProperty("status")
     private String statusLabel;
+
+    private Set<TagResponseTO> tags;
 
     public Long getId() {
         return id;
@@ -48,6 +53,14 @@ public class TarefaReducedResponseTO implements Serializable {
 
     public void setStatusLabel(String statusLabel) {
         this.statusLabel = statusLabel;
+    }
+
+    public Set<TagResponseTO> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<TagResponseTO> tags) {
+        this.tags = tags;
     }
 
 }

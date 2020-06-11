@@ -25,7 +25,7 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.tarefa.Tarefa;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.TarefaService;
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.RecorrenciaTimeUnit;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecificationFactory;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.EnumOptionTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.tarefa.TarefaFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.tarefa.TarefaReducedResponseTO;
@@ -48,7 +48,7 @@ public class TarefaController {
 
     @GetMapping
     public ResponseEntity<Page<TarefaReducedResponseTO>> findAll(TarefaFilterRequestTO tarefaFilterRequestTO, Pageable pageable) {
-        Specification<Tarefa> specification = new SpecificationFactory<Tarefa>().create(tarefaFilterRequestTO, Tarefa.class);
+        Specification<Tarefa> specification = new SpecBuilder<Tarefa>().add(tarefaFilterRequestTO).build();
         Page<Tarefa> page = tarefaService.findAll(specification, pageable);
         Page<TarefaReducedResponseTO> responseTOPage = modelMapperFacade.map(page, TarefaReducedResponseTO.class);
 

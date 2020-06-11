@@ -24,7 +24,7 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.planoferias.PlanoFerias
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.planoferias.Status;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.PlanoFeriasService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecificationFactory;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.planoferias.PlanoFeriasFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.planoferias.PlanoFeriasReducedResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.planoferias.PlanoFeriasRequestTO;
@@ -48,7 +48,7 @@ public class PlanoFeriasController {
     @GetMapping
     public ResponseEntity<Page<PlanoFeriasReducedResponseTO>> find(PlanoFeriasFilterRequestTO planoFeriasFilterRequestTO,
             Pageable pageable) {
-        Specification<PlanoFerias> specification = new SpecificationFactory<PlanoFerias>().create(planoFeriasFilterRequestTO, PlanoFerias.class);
+        Specification<PlanoFerias> specification = new SpecBuilder<PlanoFerias>().add(planoFeriasFilterRequestTO).build();
         Page<PlanoFerias> planoFeriasPage = planoFeriasService.findAll(specification, pageable);
         Page<PlanoFeriasReducedResponseTO> responseTO = modelMapperFacade.map(planoFeriasPage, PlanoFeriasReducedResponseTO.class);
 

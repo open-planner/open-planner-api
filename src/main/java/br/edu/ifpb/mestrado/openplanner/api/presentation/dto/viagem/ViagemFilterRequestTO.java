@@ -7,10 +7,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Status;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Tipo;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Viagem;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBetween;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecPeriod;
+import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.PeriodoFilterRequestTO;
 
+@SpecEntity(Viagem.class)
 public class ViagemFilterRequestTO implements Serializable {
 
     private static final long serialVersionUID = -2693360313523783449L;
@@ -23,9 +28,8 @@ public class ViagemFilterRequestTO implements Serializable {
     @SpecBetween(left = "periodo.dataInicio", right = "periodo.dataFim")
     private LocalDate data;
 
-    // TODO checar possibilidade
-//    @SpecGroup(operator = Operator.OR)
-//    private PeriodoFilterRequestTO periodo;
+    @SpecPeriod(start = "periodo.dataInicio", end = "periodo.dataFim")
+    private PeriodoFilterRequestTO periodo;
 
     @SpecField(operation = Operation.LIKE_IGNORE_CASE_UNACCENT)
     private String destino;
@@ -56,13 +60,13 @@ public class ViagemFilterRequestTO implements Serializable {
         this.data = data;
     }
 
-//    public PeriodoFilterRequestTO getPeriodo() {
-//        return periodo;
-//    }
-//
-//    public void setPeriodo(PeriodoFilterRequestTO periodo) {
-//        this.periodo = periodo;
-//    }
+    public PeriodoFilterRequestTO getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(PeriodoFilterRequestTO periodo) {
+        this.periodo = periodo;
+    }
 
     public String getDestino() {
         return destino;

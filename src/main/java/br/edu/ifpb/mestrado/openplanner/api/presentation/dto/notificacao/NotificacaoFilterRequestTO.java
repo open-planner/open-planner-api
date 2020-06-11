@@ -5,13 +5,18 @@ import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.Notificacao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.TipoNotificacao;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
 
+@SpecEntity(Notificacao.class)
 public class NotificacaoFilterRequestTO implements Serializable {
 
     private static final long serialVersionUID = 4848916736116970863L;
+
+    private Long id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @SpecField(operation = Operation.LESS_THAN_OR_EQUAL)
@@ -22,6 +27,14 @@ public class NotificacaoFilterRequestTO implements Serializable {
     private Boolean lida;
 
     private Boolean email;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public LocalDateTime getDataHora() {
         return dataHora;

@@ -7,9 +7,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.tarefa.Status;
+import br.edu.ifpb.mestrado.openplanner.api.domain.model.tarefa.Tarefa;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecJoin;
 
+@SpecEntity(Tarefa.class)
 public class TarefaFilterRequestTO implements Serializable {
 
     private static final long serialVersionUID = 5002772490664267241L;
@@ -24,6 +28,14 @@ public class TarefaFilterRequestTO implements Serializable {
     private String descricao;
 
     private Status status;
+
+    @SpecJoin
+    @SpecField("tags.id")
+    private Long tagId;
+
+    @SpecJoin
+    @SpecField("notificacoes.id")
+    private Long notificacaoId;
 
     public Long getId() {
         return id;
@@ -57,4 +69,19 @@ public class TarefaFilterRequestTO implements Serializable {
         this.status = status;
     }
 
+    public Long getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(Long tagId) {
+        this.tagId = tagId;
+    }
+
+    public Long getNotificacaoId() {
+        return notificacaoId;
+    }
+
+    public void setNotificacaoId(Long notificacaoId) {
+        this.notificacaoId = notificacaoId;
+    }
 }

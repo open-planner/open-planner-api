@@ -161,7 +161,7 @@ public class UsuarioServiceImplTest {
                 .withId(Usuario.ID_ADMIN)
                 .build();
 
-        Page<Usuario> usuariosPage = usuarioService.findAll(createSpecification(filter, Usuario.class), PageRequest.of(0, 10));
+        Page<Usuario> usuariosPage = usuarioService.findAll(createSpecification(filter), PageRequest.of(0, 10));
 
         assertPage(usuariosPage, 10, 0, 1, 1, 1);
         assertIsAdmin(usuariosPage.getContent().get(0));
@@ -173,7 +173,7 @@ public class UsuarioServiceImplTest {
                 .withNome("jose souza")
                 .build();
 
-        Page<Usuario> usuariosPage = usuarioService.findAll(createSpecification(filter, Usuario.class), PageRequest.of(0, 10));
+        Page<Usuario> usuariosPage = usuarioService.findAll(createSpecification(filter), PageRequest.of(0, 10));
 
         assertPage(usuariosPage, 10, 0, 1, 1, 1);
     }
@@ -184,7 +184,7 @@ public class UsuarioServiceImplTest {
                 .withEmail("jose")
                 .build();
 
-        Page<Usuario> usuariosPage = usuarioService.findAll(createSpecification(filter, Usuario.class), PageRequest.of(0, 10));
+        Page<Usuario> usuariosPage = usuarioService.findAll(createSpecification(filter), PageRequest.of(0, 10));
 
         assertPage(usuariosPage, 10, 0, 2, 1, 2);
     }
@@ -195,7 +195,7 @@ public class UsuarioServiceImplTest {
                 .withNome("alberto")
                 .build();
 
-        Page<Usuario> usuariosPage = usuarioService.findAll(createSpecification(filter, Usuario.class), PageRequest.of(0, 10));
+        Page<Usuario> usuariosPage = usuarioService.findAll(createSpecification(filter), PageRequest.of(0, 10));
 
         assertPageNoContent(usuariosPage, 10, 0);
     }

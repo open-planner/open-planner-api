@@ -15,11 +15,11 @@ public class UsuarioSpecification {
     }
 
     public static Specification<Usuario> notPendente() {
-        return new SpecificationFactory<Usuario>().create(Usuario_.PENDENTE, false);
+        return new SpecFactory<Usuario>().create(Usuario_.PENDENTE, false);
     }
 
     public static Specification<Usuario> notBloqueado() {
-        return new SpecificationFactory<Usuario>().create(Usuario_.BLOQUEADO, false);
+        return new SpecFactory<Usuario>().create(Usuario_.BLOQUEADO, false);
     }
 
 }
