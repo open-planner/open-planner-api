@@ -203,23 +203,43 @@ public class SpecFactory<T> {
         };
     }
 
+    @SuppressWarnings("unchecked")
     public Specification<T> between(String leftProperty, String rightProperty, Object value) {
-        Specification<T> x = null;
-        Specification<T> y = null;
+        return (root, query, criteriaBuilder) -> {
+            Expression<?> x = SpecUtils.getExpression(root, leftProperty);
+            Expression<?> y = SpecUtils.getExpression(root, rightProperty);
 
-        if (value instanceof Number) {
-            x = create(leftProperty, Long.valueOf(value.toString()), Operation.LESS_THAN_OR_EQUAL);
-            y = create(rightProperty, Long.valueOf(value.toString()), Operation.GREATER_THAN_OR_EQUAL);
-        } else if (value instanceof LocalDate) {
-            x = create(leftProperty, LocalDate.parse(value.toString()), Operation.LESS_THAN_OR_EQUAL);
-            y = create(rightProperty, LocalDate.parse(value.toString()), Operation.GREATER_THAN_OR_EQUAL);
-        }
+            if (value instanceof Number) {
+                return criteriaBuilder.between(criteriaBuilder.literal(Long.valueOf(value.toString())),
+                        (Expression<Long>) x,
+                        (Expression<Long>) y);
+            } else if (value instanceof LocalDate) {
+                return criteriaBuilder.between(criteriaBuilder.literal((LocalDate) value),
+                        (Expression<LocalDate>) x,
+                        (Expression<LocalDate>) y);
+            }
 
-        if (x == null || y == null) {
             return null;
-        }
+        };
+    }
 
-        return new SpecBuilder<T>().add(x).add(y).build();
+    @SuppressWarnings("unchecked")
+    public Specification<T> between(String property, Object leftValue, Object rightValue) {
+        return (root, query, criteriaBuilder) -> {
+            Expression<?> x = SpecUtils.getExpression(root, property);
+
+            if (leftValue instanceof Number && rightValue instanceof Number) {
+                return criteriaBuilder.between((Expression<Long>) x,
+                        criteriaBuilder.literal(Long.valueOf(leftValue.toString())),
+                        criteriaBuilder.literal(Long.valueOf(rightValue.toString())));
+            } else if (leftValue instanceof LocalDate && rightValue instanceof LocalDate) {
+                return criteriaBuilder.between((Expression<LocalDate>) x,
+                        criteriaBuilder.literal((LocalDate) leftValue),
+                        criteriaBuilder.literal((LocalDate) rightValue));
+            }
+
+            return null;
+        };
     }
 
     public Specification<T> join(Field field, Object value) {

@@ -2,6 +2,7 @@ package br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernat
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,26 +75,31 @@ public class SpecBuilder<T> {
                     continue;
                 }
 
-                SpecGroup specGroup = filterField.getAnnotation(SpecGroup.class);
-
-                if (specGroup != null) {
-                    specs.add(new SpecBuilder<T>()
-                            .add(value, entityClass)
-                            .build(specGroup.operator()));
-                    continue;
-                }
-
                 SpecBetween specBetween = filterField.getAnnotation(SpecBetween.class);
 
                 if (specBetween != null) {
-                    specs.add(specFactory.between(specBetween.left(), specBetween.right(), value));
+                    addBetween(specBetween, value);
                     continue;
                 }
 
                 SpecJoin specJoin = filterField.getAnnotation(SpecJoin.class);
 
                 if (specJoin != null) {
-                    specs.add(specFactory.join(filterField, value));
+                    addJoin(filterField, value);
+                    continue;
+                }
+
+                SpecGroup specGroup = filterField.getAnnotation(SpecGroup.class);
+
+                if (specGroup != null) {
+                    addGroup(specGroup, value, entityClass);
+                    continue;
+                }
+
+                SpecPeriod specPeriod = filterField.getAnnotation(SpecPeriod.class);
+
+                if (specPeriod != null) {
+                    addPeriod(specPeriod, value);
                     continue;
                 }
 
@@ -106,6 +112,40 @@ public class SpecBuilder<T> {
         }
 
         return this;
+    }
+
+    private void addBetween(SpecBetween specBetween, Object value) {
+        specs.add(specFactory.between(specBetween.left(), specBetween.right(), value));
+    }
+
+    private void addJoin(Field filterField, Object value) {
+        specs.add(specFactory.join(filterField, value));
+    }
+
+    private void addGroup(SpecGroup specGroup, Object value, Class<T> entityClass) {
+        specs.add(new SpecBuilder<T>()
+                .add(value, entityClass)
+                .build(specGroup.operator()));
+    }
+
+    private void addPeriod(SpecPeriod specPeriod, Object value) throws Exception {
+        Field startField = FieldUtils.getField(value.getClass(), SpecStartPeriod.class);
+        Field endField = FieldUtils.getField(value.getClass(), SpecEndPeriod.class);
+
+        Method startGetterMethod = FieldUtils.findGetterMethod(startField.getName(), value.getClass());
+        Method endGetterMethod = FieldUtils.findGetterMethod(endField.getName(), value.getClass());
+
+        LocalDate startValue = (LocalDate) startGetterMethod.invoke(value);
+        LocalDate endValue = (LocalDate) endGetterMethod.invoke(value);
+
+        if (startValue == null || endValue == null || startValue.isAfter(endValue)) {
+            return;
+        }
+
+        specs.add(new SpecBuilder<T>()
+                .add(specFactory.between(specPeriod.start(), startValue, endValue))
+                .add(specFactory.between(specPeriod.end(), startValue, endValue))
+                .build(Operator.OR));
     }
 
 }

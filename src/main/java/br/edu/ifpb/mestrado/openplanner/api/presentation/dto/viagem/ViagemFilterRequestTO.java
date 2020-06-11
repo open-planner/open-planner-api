@@ -9,11 +9,10 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Status;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Tipo;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Viagem;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operator;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBetween;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecGroup;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecPeriod;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.PeriodoFilterRequestTO;
 
 @SpecEntity(Viagem.class)
@@ -29,7 +28,7 @@ public class ViagemFilterRequestTO implements Serializable {
     @SpecBetween(left = "periodo.dataInicio", right = "periodo.dataFim")
     private LocalDate data;
 
-    @SpecGroup(operator = Operator.OR)
+    @SpecPeriod(start = "periodo.dataInicio", end = "periodo.dataFim")
     private PeriodoFilterRequestTO periodo;
 
     @SpecField(operation = Operation.LIKE_IGNORE_CASE_UNACCENT)
