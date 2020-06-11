@@ -4,7 +4,6 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -20,7 +19,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -28,7 +26,6 @@ import br.edu.ifpb.mestrado.openplanner.api.application.configuration.properties
 import br.edu.ifpb.mestrado.openplanner.api.application.service.exception.InformationNotFoundException;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.test.builder.UsuarioBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.test.util.ControllerTestUtils;
@@ -45,8 +42,6 @@ public class UsuarioControllerTest extends BaseControllerTest {
     @MockBean
     private UsuarioService usuarioServiceMock;
 
-    private SpecBuilder<Usuario> specBuilder;
-
     private List<Usuario> usuarioListMock;
 
     private Page<Usuario> usuarioPageMock;
@@ -58,11 +53,8 @@ public class UsuarioControllerTest extends BaseControllerTest {
         super(oauth2Properties);
     }
 
-    @SuppressWarnings("unchecked")
     @BeforeEach
     public void setUp() throws Exception {
-        specBuilder = mock(SpecBuilder.class);
-
         usuarioAdminMock = UsuarioTestUtils.createAdminMock();
 
         usuarioListMock = new ArrayList<>();
@@ -77,8 +69,6 @@ public class UsuarioControllerTest extends BaseControllerTest {
         }
 
         usuarioPageMock = new PageImpl<>(usuarioListMock, PageRequest.of(0, 10), 8);
-
-        when(specBuilder.add(any(String.class)).build()).thenReturn(Specification.where(null));
     }
 
     @Test
