@@ -29,6 +29,10 @@ Projeto da disciplina de Engenharia de Software do Mestrado Profissional de Info
 * Metas
 * Tarefas
 
+## Diagrama de Classes UML
+
+![class-diagram](docs/uml/open-planner-api_class-diagram.png)
+
 ## Utilização
 
 ### Opção 1
@@ -87,8 +91,13 @@ open-planner-api:
     sender: ${MAIL_SENDER:sender@email.com}
 ```
 
-## Documentação Swagger
+## Swagger
 
 > Habilitado apenas para o profile **dev**
 
 http://localhost:8080/swagger-ui.html
+
+## Postman
+
+* [Collection](/postman/open-planner-api.postman_collection.json)
+* [Environment](/postman/open-planner-api.postman_environment.json)
