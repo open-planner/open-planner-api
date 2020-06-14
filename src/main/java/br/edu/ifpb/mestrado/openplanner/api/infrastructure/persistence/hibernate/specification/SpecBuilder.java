@@ -129,8 +129,8 @@ public class SpecBuilder<T> {
     }
 
     private void addPeriod(SpecPeriod specPeriod, Object value) throws Exception {
-        Field startField = FieldUtils.getField(value.getClass(), SpecStartPeriod.class);
-        Field endField = FieldUtils.getField(value.getClass(), SpecEndPeriod.class);
+        Field startField = FieldUtils.getField(value.getClass(), SpecPeriodStartDate.class);
+        Field endField = FieldUtils.getField(value.getClass(), SpecPeriodEndDate.class);
 
         Method startGetterMethod = FieldUtils.findGetterMethod(startField.getName(), value.getClass());
         Method endGetterMethod = FieldUtils.findGetterMethod(endField.getName(), value.getClass());
