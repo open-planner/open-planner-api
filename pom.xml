@@ -11,9 +11,9 @@
   </parent>
   <groupId>br.edu.ifpb.mestrado.openplanner.api</groupId>
   <artifactId>open-planner-api</artifactId>
-  <version>0.1.0-alpha</version>
+  <version>1.0.0.SNAPSHOT</version>
   <name>open-planner-api</name>
-  <description>OpenPlanner</description>
+  <description>Projeto da disciplina de Engenharia de Software do Mestrado Profissional de Informática do IFPB</description>
 
   <properties>
     <java.version>11</java.version>
