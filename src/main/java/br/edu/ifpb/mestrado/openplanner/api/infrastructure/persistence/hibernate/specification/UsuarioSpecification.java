@@ -2,6 +2,8 @@ package br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernat
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.github.fagnerlima.springspecificationtools.SpecFactory;
+
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario_;
 

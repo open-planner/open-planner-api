@@ -6,12 +6,13 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import com.github.fagnerlima.springspecificationtools.SpecOperation;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecEntity;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecField;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecJoin;
+
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.tarefa.Status;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.tarefa.Tarefa;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecJoin;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecOperation;
 
 @SpecEntity(Tarefa.class)
 public class TarefaFilterRequestTO implements Serializable {

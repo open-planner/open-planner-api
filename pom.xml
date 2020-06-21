@@ -24,6 +24,7 @@
     <spring-security-jwt.version>1.0.10.RELEASE</spring-security-jwt.version>
     <jacoco.version>0.8.5</jacoco.version>
     <modelmapper.version>2.3.5</modelmapper.version>
+    <spring-specification-tools.version>0.2.0</spring-specification-tools.version>
     <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
     <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
 
@@ -96,6 +97,11 @@
       <groupId>org.modelmapper</groupId>
       <artifactId>modelmapper</artifactId>
       <version>${modelmapper.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.fagnerlima</groupId>
+      <artifactId>spring-specification-tools</artifactId>
+      <version>${spring-specification-tools.version}</version>
     </dependency>
 
     <dependency>

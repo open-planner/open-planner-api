@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.fagnerlima.springspecificationtools.SpecBuilder;
+
 import br.edu.ifpb.mestrado.openplanner.api.application.facade.ResponseEntityFacade;
 import br.edu.ifpb.mestrado.openplanner.api.application.factory.PermissaoLinkFactory;
 import br.edu.ifpb.mestrado.openplanner.api.application.factory.UsuarioLinkFactory;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.UsuarioService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioReducedResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.usuario.UsuarioRequestTO;

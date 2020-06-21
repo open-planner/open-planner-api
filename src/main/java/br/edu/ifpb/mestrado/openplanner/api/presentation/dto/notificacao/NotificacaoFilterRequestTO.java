@@ -5,11 +5,12 @@ import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.github.fagnerlima.springspecificationtools.SpecOperation;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecEntity;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecField;
+
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.Notificacao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.TipoNotificacao;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecOperation;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
 
 @SpecEntity(Notificacao.class)
 public class NotificacaoFilterRequestTO implements Serializable {

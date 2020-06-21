@@ -2,10 +2,11 @@ package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.tag;
 
 import java.io.Serializable;
 
+import com.github.fagnerlima.springspecificationtools.SpecOperation;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecEntity;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecField;
+
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.tag.Tag;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecOperation;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
 
 @SpecEntity(Tag.class)
 public class TagFilterRequestTO implements Serializable {

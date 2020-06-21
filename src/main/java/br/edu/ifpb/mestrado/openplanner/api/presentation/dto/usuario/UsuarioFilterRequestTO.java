@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 
+import com.github.fagnerlima.springspecificationtools.SpecOperation;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecEntity;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecField;
+
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.usuario.Usuario;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecOperation;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
 
 @SpecEntity(Usuario.class)
 public class UsuarioFilterRequestTO implements Serializable {

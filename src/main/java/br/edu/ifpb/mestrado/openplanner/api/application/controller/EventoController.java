@@ -19,12 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.fagnerlima.springspecificationtools.SpecBuilder;
+
 import br.edu.ifpb.mestrado.openplanner.api.application.facade.ResponseEntityFacade;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.evento.Evento;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.EventoService;
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.RecorrenciaTimeUnit;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento.EventoFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento.EventoReducedResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.evento.EventoRequestTO;

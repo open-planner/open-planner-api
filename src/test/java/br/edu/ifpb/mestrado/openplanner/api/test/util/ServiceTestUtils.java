@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import org.springframework.data.domain.Page;
@@ -12,8 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.github.fagnerlima.springspecificationtools.SpecBuilder;
+
 import br.edu.ifpb.mestrado.openplanner.api.domain.shared.AuditedBaseEntity;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 
 public class ServiceTestUtils {
 
@@ -33,7 +35,7 @@ public class ServiceTestUtils {
         mockAuth(EMAIL_ADMIN);
     }
 
-    public static <T> Specification<T> createSpecification(Object filter) {
+    public static <T extends Serializable> Specification<T> createSpecification(Object filter) {
         return new SpecBuilder<T>().add(filter).build();
     }
 

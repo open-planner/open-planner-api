@@ -5,14 +5,15 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.github.fagnerlima.springspecificationtools.SpecOperation;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecBetween;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecEntity;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecField;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecPeriod;
+
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Status;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Tipo;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.viagem.Viagem;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecOperation;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBetween;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecPeriod;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.shared.PeriodoFilterRequestTO;
 
 @SpecEntity(Viagem.class)

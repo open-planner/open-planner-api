@@ -19,12 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.fagnerlima.springspecificationtools.SpecBuilder;
+
 import br.edu.ifpb.mestrado.openplanner.api.application.facade.ResponseEntityFacade;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.planoferias.PlanoFerias;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.planoferias.Status;
 import br.edu.ifpb.mestrado.openplanner.api.domain.service.PlanoFeriasService;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.facade.ModelMapperFacade;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBuilder;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.planoferias.PlanoFeriasFilterRequestTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.planoferias.PlanoFeriasReducedResponseTO;
 import br.edu.ifpb.mestrado.openplanner.api.presentation.dto.planoferias.PlanoFeriasRequestTO;

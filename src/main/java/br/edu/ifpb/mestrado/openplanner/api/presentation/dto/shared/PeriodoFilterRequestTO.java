@@ -5,8 +5,8 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecPeriodEndDate;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecPeriodStartDate;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecPeriodEndDate;
+import com.github.fagnerlima.springspecificationtools.annotation.SpecPeriodStartDate;
 
 public class PeriodoFilterRequestTO implements Serializable {
 
