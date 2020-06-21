@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.Notificacao;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.notificacao.TipoNotificacao;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecOperation;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
 
@@ -19,7 +19,7 @@ public class NotificacaoFilterRequestTO implements Serializable {
     private Long id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    @SpecField(operation = Operation.LESS_THAN_OR_EQUAL)
+    @SpecField(operation = SpecOperation.LESS_THAN_OR_EQUAL)
     private LocalDateTime dataHora;
 
     private TipoNotificacao tipo;

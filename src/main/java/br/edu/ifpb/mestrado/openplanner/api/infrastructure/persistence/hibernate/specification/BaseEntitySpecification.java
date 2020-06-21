@@ -8,7 +8,7 @@ import br.edu.ifpb.mestrado.openplanner.api.domain.shared.BaseEntity_;
 public class BaseEntitySpecification {
 
     public static <T extends BaseEntity> Specification<T> idGreaterThan(Long id) {
-        return new SpecFactory<T>().create(BaseEntity_.ID, id, Operation.GREATER_THAN);
+        return new SpecFactory<T>().create(BaseEntity_.ID, id, SpecOperation.GREATER_THAN);
     }
 
     public static <T extends BaseEntity> Specification<T> positiveId() {

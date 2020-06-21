@@ -1,6 +1,6 @@
 package br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification;
 
-public enum Operation {
+public enum SpecOperation {
 
     EQUAL, EQUAL_IGNORE_CASE,
     LIKE, LIKE_IGNORE_CASE,

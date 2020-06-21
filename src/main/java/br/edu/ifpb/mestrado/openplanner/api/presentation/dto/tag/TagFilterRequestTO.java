@@ -3,7 +3,7 @@ package br.edu.ifpb.mestrado.openplanner.api.presentation.dto.tag;
 import java.io.Serializable;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.tag.Tag;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecOperation;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
 
@@ -14,7 +14,7 @@ public class TagFilterRequestTO implements Serializable {
 
     private Long id;
 
-    @SpecField(operation = Operation.LIKE_IGNORE_CASE_UNACCENT)
+    @SpecField(operation = SpecOperation.LIKE_IGNORE_CASE_UNACCENT)
     private String descricao;
 
     public Long getId() {

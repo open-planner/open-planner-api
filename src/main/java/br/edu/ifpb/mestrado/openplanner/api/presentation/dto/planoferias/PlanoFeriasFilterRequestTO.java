@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.planoferias.PlanoFerias;
 import br.edu.ifpb.mestrado.openplanner.api.domain.model.planoferias.Status;
-import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.Operation;
+import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecOperation;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecBetween;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecEntity;
 import br.edu.ifpb.mestrado.openplanner.api.infrastructure.persistence.hibernate.specification.SpecField;
@@ -28,7 +28,7 @@ public class PlanoFeriasFilterRequestTO implements Serializable {
     @SpecPeriod(start = "periodo.dataInicio", end = "periodo.dataFim")
     private PeriodoFilterRequestTO periodo;
 
-    @SpecField(operation = Operation.LIKE_IGNORE_CASE_UNACCENT)
+    @SpecField(operation = SpecOperation.LIKE_IGNORE_CASE_UNACCENT)
     private String destino;
 
     private Status status;

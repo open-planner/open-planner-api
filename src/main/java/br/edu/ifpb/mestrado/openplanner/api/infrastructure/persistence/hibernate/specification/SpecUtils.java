@@ -65,10 +65,10 @@ public class SpecUtils {
                 : field.getName();
     }
 
-    public static Operation getOperation(Field field) {
+    public static SpecOperation getOperation(Field field) {
         SpecField specField = field.getAnnotation(SpecField.class);
 
-        return specField != null ? specField.operation() : Operation.EQUAL;
+        return specField != null ? specField.operation() : SpecOperation.EQUAL;
     }
 
     public static String[] getDeepProperties(Field field) {
