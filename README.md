@@ -7,9 +7,34 @@ Projeto da disciplina de Engenharia de Software do Mestrado Profissional de Info
 
 ## Requisitos
 
-* Maven
-* JDK11
-* PostgreSQL 10
+* Java 11;
+* Docker;
+* Docker Compose.
+
+## Instalação
+
+Inicialmente deve-se configurar as seguintes variáveis de ambiente no arquivo `docker-compose.dev.yml`:
+
+* MAIL_HOST
+* MAIL_PASSWORD
+* MAIL_PORT
+* MAIL_SENDER
+* MAIL_USERNAME
+
+Em seguida executar os seguintes scripts:
+
+```
+./build-dev.sh
+./start-dev.sh
+```
+
+A API estará disponível no endereço http://localhost:8080.
+
+Para parar a execução dos containers deve-se executar o seguinte script:
+
+```
+./stop-dev.sh
+```
 
 ## Funcionalidades
 
@@ -69,6 +94,9 @@ spring:
 open-planner-api:
   web-app:
     base-url: ${WEB_APP_BASE_URL:http://localhost:4200}
+    mail-activation-path: ${WEB_APP_MAIL_ACTIVATION_PATH:/#/mail-activation/{token}}
+    update-mail-path: ${WEB_APP_UPDATE_MAIL_PATH:/#/update-mail/{token}}
+    recovery-password-path: ${WEB_APP_RECOVERY_PASSWORD_PATH:/#/recovery-password/{token}}
   access-control-headers:
     allow-origin: ${ACCESS_CONTROL_ALLOW_ORIGIN:*}
     allow-credentials: ${ACCESS_CONTROL_ALLOW_CREDENTIALS:false}
@@ -89,6 +117,11 @@ open-planner-api:
     maximum-attempts-login: ${MAXIMUM_ATTEMPTS_LOGIN:5}
   mail:
     sender: ${MAIL_SENDER:sender@email.com}
+  cron:
+    notificacao-service:
+      send-mails: ${CRON_NOTIFICACAO_MAILS:0 0/30 * * * *}
+  usuario:
+    minimum-age: ${USUARIO_MINIMUM_AGE:14}
 ```
 
 ## Swagger
