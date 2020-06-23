@@ -58,21 +58,6 @@ Para parar a execução dos containers deve-se executar o seguinte script:
 
 ![class-diagram](docs/uml/open-planner-api_class-diagram.png)
 
-## Utilização
-
-### Opção 1
-
-```
-mvn clean install
-java -Dserver.port=8080 -Dspring.profiles.active=dev -jar target/open-planner-api-*.jar
-```
-
-### Opção 2
-
-```
-mvn spring-boot:run -Dspring-boot.run.profiles=dev
-```
-
 ## Profiles
 
 * **dev**: desenvolvimento
