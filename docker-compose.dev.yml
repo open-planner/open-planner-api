@@ -33,3 +33,17 @@ services:
       - open-planner-db
     depends_on:
       - open-planner-db
+  open-planner-web:
+    container_name: open-planner-web
+    build:
+      dockerfile: Dockerfile
+      context: ./web
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_API: http://localhost:4200
+    depends_on:
+      - open-planner-db
+      - open-planner-api
+      
