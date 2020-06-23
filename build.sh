@@ -1,3 +1,4 @@
 #!/bin/bash
-mvn clean install
+./mvnw clean install -DskipTests
 docker build -t open-planner-api .
+
